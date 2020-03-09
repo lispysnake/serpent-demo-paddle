@@ -44,6 +44,7 @@ void main()
     auto context = new serpent.Context();
     context.display.pipeline.driverType = DriverType.Vulkan;
     context.display.size(1366, 768);
+    context.display.logicalSize(480, 270);
     context.display.title = "#serpent Paddle Demo";
     context.display.backgroundColor = 0x0;
 
