@@ -98,8 +98,8 @@ public:
         transBall.position.x = (width / 2.0f) - (ballTexture.width / 2.0f);
 
         /* Set up basic physics */
-        auto ballSpeed = (meterSize * 1.5f) / 1000.0f;
-        auto velBall = VelocityComponent(ballSpeed, ballSpeed);
+        auto ballSpeed = (meterSize * -1.5f) / 1000.0f;
+        auto velBall = VelocityComponent(ballSpeed, 0.0f);
 
         view.addComponent(entBall, spriteBall);
         view.addComponent(entBall, transBall);
