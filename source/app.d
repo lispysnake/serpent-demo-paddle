@@ -34,6 +34,16 @@ class MyApp : serpent.App
         scene = new Scene("default");
         context.display.addScene(scene);
         scene.addCamera(new OrthographicCamera());
+
+        auto ent = view.createEntity();
+        auto tex = new Texture("assets/paddle.png");
+        auto sprite = SpriteComponent();
+        auto trans = TransformComponent();
+        trans.position.x = 5.0f;
+        trans.position.y = 25.0f;
+        sprite.texture = tex;
+        view.addComponent(ent, sprite);
+        view.addComponent(ent, trans);
         return true;
     }
 }
