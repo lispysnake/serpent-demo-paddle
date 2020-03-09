@@ -37,13 +37,17 @@ final class Stage
 
 private:
 
+    Texture ballTexture;
+    Texture paddleTextureTeam1;
+    ;
+    Texture paddleTextureTeam2;
+
     box2f worldTop;
     box2f worldLeft;
     box2f worldRight;
     box2f worldBottom;
     float _width = 0;
     float _height = 0;
-    Texture ballTexture;
     float meterSize;
 
 public:
@@ -62,6 +66,9 @@ public:
         meterSize = width / 10.0f;
 
         ballTexture = new Texture("assets/ball.png");
+
+        paddleTextureTeam1 = new Texture("assets/paddle.png");
+        paddleTextureTeam2 = new Texture("assets/paddle.png");
     }
 
     /**
@@ -107,5 +114,32 @@ public:
         view.addComponent(entBall, transBall);
         view.addComponent(entBall, velBall);
         view.addComponent(entBall, boxBall);
+    }
+
+    final void spawnPaddle(View!ReadWrite view, bool leftEdge)
+    {
+        /* CPU paddle */
+        auto entPaddle = view.createEntity();
+
+        /* Sprite */
+        auto spritePaddle = SpriteComponent();
+        spritePaddle.texture = leftEdge ? paddleTextureTeam1 : paddleTextureTeam2;
+
+        /* Transform */
+        auto transPaddle = TransformComponent();
+        if (leftEdge)
+        {
+            transPaddle.position.x = 25.0f;
+        }
+        else
+        {
+            transPaddle.position.x = width - spritePaddle.texture.width - 25.0f;
+        }
+
+        transPaddle.position.y = (height / 2.0f) - (spritePaddle.texture.height / 2.0f);
+
+        view.addComponent(entPaddle, spritePaddle);
+        view.addComponent(entPaddle, transPaddle);
+
     }
 }

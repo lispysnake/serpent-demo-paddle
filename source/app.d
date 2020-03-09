@@ -80,24 +80,9 @@ public:
         context.input.keyPressed.connect(&keyPressed);
         context.input.keyReleased.connect(&keyReleased);
 
-        /* Player paddle */
-        auto ent = view.createEntity();
-        auto tex = new Texture("assets/paddle.png");
-        auto sprite = SpriteComponent();
-        auto trans = TransformComponent();
-        trans.position.x = 25.0f;
-        trans.position.y = (context.display.logicalHeight / 2.0f) - (tex.height / 2.0f);
-        sprite.texture = tex;
-        view.addComponent(ent, sprite);
-        view.addComponent(ent, trans);
-
-        /* CPU paddle */
-        auto entCPU = view.createEntity();
-        view.addComponent(entCPU, sprite);
-        auto trans2 = TransformComponent();
-        trans2.position.x = context.display.logicalWidth - tex.width - 25.0f;
-        trans2.position.y = (context.display.logicalHeight / 2.0f) - (tex.height / 2.0f);
-        view.addComponent(entCPU, trans2);
+        /* Spawn the paddles */
+        arena.spawnPaddle(view, true);
+        arena.spawnPaddle(view, false);
 
         /* Spawn first play ball */
         arena.spawnBall(view);
