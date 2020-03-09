@@ -47,6 +47,11 @@ final @serpentComponent struct VelocityComponent
 final class PhysicsProcessor : Processor!ReadWrite
 {
 
+    final override void bootstrap(View!ReadWrite view)
+    {
+        context.entity.tryRegisterComponent!VelocityComponent;
+    }
+
     final override void run(View!ReadWrite view)
     {
         foreach (ent, trans, vel; view.withComponents!(TransformComponent, VelocityComponent))
