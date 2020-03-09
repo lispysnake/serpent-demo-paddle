@@ -73,6 +73,28 @@ final class PhysicsProcessor : Processor!ReadWrite
         context.entity.tryRegisterComponent!VelocityComponent;
     }
 
+    pragma(inline, true) box2f transformedBounds(TransformComponent* transform,
+            BoxCollider2DComponent* collider)
+    {
+        return rectanglef(transform.position.x + collider.shape.min.x,
+                transform.position.y + collider.shape.min.y,
+                collider.shape.max.x - collider.shape.min.x,
+                collider.shape.max.y - collider.shape.min.y);
+    }
+
+    final void applyCollisions(View!ReadWrite view, EntityID rootEntity, ref box2f rootBounds)
+    {
+        foreach (ent, transform, vel, collider; view.withComponents!(TransformComponent,
+                VelocityComponent, BoxCollider2DComponent))
+        {
+            /* Don't self collide */
+            if (ent.id == rootEntity)
+            {
+                continue;
+            }
+        }
+    }
+
     /**
      * Perform updates for the current frame tick.
      */
@@ -80,10 +102,20 @@ final class PhysicsProcessor : Processor!ReadWrite
     {
         auto frameTime = context.frameTime();
 
+        /* Update base velocity */
         foreach (ent, transform, vel; view.withComponents!(TransformComponent, VelocityComponent))
         {
             transform.position.x += vel.xVelocity * frameTime;
             transform.position.y += vel.yVelocity * frameTime;
+        }
+
+        foreach (ent, transform, vel, collider; view.withComponents!(TransformComponent,
+                VelocityComponent, BoxCollider2DComponent))
+        {
+            box2f boundBox = transformedBounds(transform, collider);
+
+            /* Step through every other collidable entity that isn't this one */
+            applyCollisions(view, ent.id, boundBox);
         }
     }
 }
