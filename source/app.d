@@ -76,7 +76,6 @@ void main()
     context.display.size(1366, 768);
     context.display.logicalSize(480, 270);
     context.display.title = "#serpent Paddle Demo";
-    context.display.backgroundColor = 0x0;
 
     /* TODO: Remove need for casts! */
     import serpent.graphics.pipeline.bgfx;
