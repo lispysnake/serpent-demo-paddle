@@ -34,6 +34,17 @@ private:
 
     final void keyPressed(KeyboardEvent e)
     {
+        switch (e.scancode())
+        {
+        case SDL_SCANCODE_LEFT:
+            break;
+        case SDL_SCANCODE_RIGHT:
+            break;
+        case SDL_SCANCODE_SPACE:
+            break;
+        default:
+            break;
+        }
     }
 
     final void keyReleased(KeyboardEvent e)
