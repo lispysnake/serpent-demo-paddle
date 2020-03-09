@@ -78,8 +78,8 @@ public:
         auto tex = new Texture("assets/paddle.png");
         auto sprite = SpriteComponent();
         auto trans = TransformComponent();
-        trans.position.x = 5.0f;
-        trans.position.y = 75.0f;
+        trans.position.x = 25.0f;
+        trans.position.y = 175.0f;
         sprite.texture = tex;
         view.addComponent(ent, sprite);
         view.addComponent(ent, trans);
@@ -88,8 +88,8 @@ public:
         auto entCPU = view.createEntity();
         view.addComponent(entCPU, sprite);
         auto trans2 = TransformComponent();
-        trans2.position.x = context.display.logicalWidth - tex.width - 5.0f;
-        trans2.position.y = 75.0f;
+        trans2.position.x = context.display.logicalWidth - tex.width - 25.0f;
+        trans2.position.y = 175.0f;
         view.addComponent(entCPU, trans2);
 
         /* ball */
@@ -112,7 +112,7 @@ void main()
     auto context = new serpent.Context();
     context.display.pipeline.driverType = DriverType.Vulkan;
     context.display.size(1366, 768);
-    context.display.logicalSize(480, 270);
+    context.display.logicalSize(1366, 768);
     context.display.title = "#serpent Paddle Demo";
 
     /* TODO: Remove need for casts! */
