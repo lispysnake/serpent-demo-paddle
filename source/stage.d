@@ -23,6 +23,7 @@
 module stage;
 
 import gfm.math;
+import serpent;
 
 /**
  * The Stage is basically our game layout. It is divided as such that
@@ -38,8 +39,9 @@ private:
     box2f worldLeft;
     box2f worldRight;
     box2f worldBottom;
-    int _width = 0;
-    int _height = 0;
+    float _width = 0;
+    float _height = 0;
+    Texture ballTexture;
 
 public:
 
@@ -48,16 +50,18 @@ public:
     /**
      * Construct a new Stage with the given width and height
      */
-    this(int width, int height)
+    this(float width, float height)
     {
-        _width = width;
-        _height = height;
+        this._width = width;
+        this._height = height;
+
+        ballTexture = new Texture("assets/ball.png");
     }
 
     /**
      * Return stage width
      */
-    pure final const @property int width() @safe @nogc nothrow
+    pure final const @property float width() @safe @nogc nothrow
     {
         return _width;
     }
@@ -65,8 +69,24 @@ public:
     /**
      * Return stage height
      */
-    pure final const @property int height() @safe @nogc nothrow
+    pure final const @property float height() @safe @nogc nothrow
     {
         return _height;
+    }
+
+    /**
+     * Spawn a new ball into play
+     */
+    final void spawnBall(View!ReadWrite view) @safe
+    {
+        /* ball */
+        auto entBall = view.createEntity();
+        auto spriteBall = SpriteComponent();
+        spriteBall.texture = ballTexture;
+        auto transBall = TransformComponent();
+        transBall.position.y = (height / 2.0f) - (ballTexture.height / 2.0f);
+        transBall.position.x = (width / 2.0f) - (ballTexture.width / 2.0f);
+        view.addComponent(entBall, spriteBall);
+        view.addComponent(entBall, transBall);
     }
 }

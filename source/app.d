@@ -98,16 +98,9 @@ public:
         trans2.position.y = 175.0f;
         view.addComponent(entCPU, trans2);
 
-        /* ball */
-        auto entBall = view.createEntity();
-        auto ballTex = new Texture("assets/ball.png");
-        auto spriteBall = SpriteComponent();
-        spriteBall.texture = ballTex;
-        auto transBall = TransformComponent();
-        transBall.position.y = (context.display.logicalHeight / 2.0f) - (ballTex.height / 2.0f);
-        transBall.position.x = (context.display.logicalWidth / 2.0f) - (ballTex.width / 2.0f);
-        view.addComponent(entBall, spriteBall);
-        view.addComponent(entBall, transBall);
+        /* Spawn first play ball */
+        arena.spawnBall(view);
+
         return true;
     }
 }
