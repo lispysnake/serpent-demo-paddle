@@ -103,6 +103,10 @@ final class PhysicsProcessor : Processor!ReadWrite
             /* Swap velocity as we're inverting the bounce */
             rootVelocity.xVelocity = -rootVelocity.xVelocity;
             rootVelocity.yVelocity = -rootVelocity.yVelocity;
+
+            /* Spin ourselves */
+            rootVelocity.xVelocity += (vel.xVelocity * 0.5f);
+            rootVelocity.yVelocity += (vel.yVelocity * 0.5f);
         }
     }
 
