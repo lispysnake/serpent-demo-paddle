@@ -115,6 +115,8 @@ void main()
     context.display.logicalSize(1366, 768);
     context.display.title = "#serpent Paddle Demo";
 
+    context.systemGroup.add(new PhysicsProcessor());
+
     /* TODO: Remove need for casts! */
     import serpent.graphics.pipeline.bgfx;
 
