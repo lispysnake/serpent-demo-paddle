@@ -49,6 +49,7 @@ final @serpentComponent struct VelocityComponent
 final @serpentComponent struct BoxCollider2DComponent
 {
     box2f shape;
+    bool staticGeom = false;
 
     this(box2f shape)
     {
@@ -82,7 +83,8 @@ final class PhysicsProcessor : Processor!ReadWrite
                 collider.shape.max.y - collider.shape.min.y);
     }
 
-    final void applyCollisions(View!ReadWrite view, EntityID rootEntity, ref box2f rootBounds)
+    final void applyCollisions(View!ReadWrite view, EntityID rootEntity,
+            VelocityComponent* rootVelocity, ref box2f rootBounds)
     {
         foreach (ent, transform, vel, collider; view.withComponents!(TransformComponent,
                 VelocityComponent, BoxCollider2DComponent))
@@ -92,6 +94,15 @@ final class PhysicsProcessor : Processor!ReadWrite
             {
                 continue;
             }
+            box2f boundsBox = transformedBounds(transform, collider);
+            if (!rootBounds.intersects(boundsBox))
+            {
+                continue;
+            }
+
+            /* Swap velocity as we're inverting the bounce */
+            rootVelocity.xVelocity = -rootVelocity.xVelocity;
+            rootVelocity.yVelocity = -rootVelocity.yVelocity;
         }
     }
 
@@ -115,7 +126,12 @@ final class PhysicsProcessor : Processor!ReadWrite
             box2f boundBox = transformedBounds(transform, collider);
 
             /* Step through every other collidable entity that isn't this one */
-            applyCollisions(view, ent.id, boundBox);
+            if (collider.staticGeom)
+            {
+                continue;
+            }
+
+            applyCollisions(view, ent.id, vel, boundBox);
         }
     }
 }

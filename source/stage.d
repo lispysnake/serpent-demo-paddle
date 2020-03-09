@@ -138,8 +138,16 @@ public:
 
         transPaddle.position.y = (height / 2.0f) - (spritePaddle.texture.height / 2.0f);
 
+        /* Physics */
+        auto velPaddle = VelocityComponent(0.0f, (meterSize * 0.03f) / 1000.0f);
+        auto boxPaddle = BoxCollider2DComponent(rectanglef(0.0f, 0.0f,
+                spritePaddle.texture.width, spritePaddle.texture.height));
+        boxPaddle.staticGeom = true;
+
         view.addComponent(entPaddle, spritePaddle);
         view.addComponent(entPaddle, transPaddle);
+        view.addComponent(entPaddle, velPaddle);
+        view.addComponent(entPaddle, boxPaddle);
 
     }
 }
