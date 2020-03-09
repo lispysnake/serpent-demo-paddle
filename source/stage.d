@@ -87,6 +87,35 @@ public:
         return _height;
     }
 
+    final void spawnEdge(View!ReadWrite view, box2f rect) @system
+    {
+        auto ent = view.createEntity();
+        auto transform = TransformComponent();
+        auto collider = BoxCollider2DComponent(rect);
+        collider.staticGeom = true;
+
+        view.addComponent(ent, transform);
+        view.addComponent(ent, collider);
+    }
+
+    /**
+     * Spawn all edges
+     */
+    final void spawnEdges(View!ReadWrite view) @system
+    {
+        /* Left edge */
+        spawnEdge(view, rectanglef(0.0f, 0.0f, 1.0f, height));
+
+        /* Right edge */
+        spawnEdge(view, rectanglef(width, 0.0f, 1.0f, height));
+
+        /* Top edge */
+        spawnEdge(view, rectanglef(0.0f, 0.0f, width, 1.0f));
+
+        /* Bottom edge */
+        spawnEdge(view, rectanglef(0.0f, height, width, 1.0f));
+    }
+
     /**
      * Spawn a new ball into play
      */
@@ -149,6 +178,5 @@ public:
         view.addComponent(entPaddle, transPaddle);
         view.addComponent(entPaddle, velPaddle);
         view.addComponent(entPaddle, boxPaddle);
-
     }
 }

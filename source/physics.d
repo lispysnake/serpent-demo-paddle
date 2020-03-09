@@ -86,8 +86,8 @@ final class PhysicsProcessor : Processor!ReadWrite
     final void applyCollisions(View!ReadWrite view, EntityID rootEntity,
             VelocityComponent* rootVelocity, ref box2f rootBounds)
     {
-        foreach (ent, transform, vel, collider; view.withComponents!(TransformComponent,
-                VelocityComponent, BoxCollider2DComponent))
+        foreach (ent, transform, collider; view.withComponents!(TransformComponent,
+                BoxCollider2DComponent))
         {
             /* Don't self collide */
             if (ent.id == rootEntity)
@@ -103,6 +103,13 @@ final class PhysicsProcessor : Processor!ReadWrite
             /* Swap velocity as we're inverting the bounce */
             rootVelocity.xVelocity = -rootVelocity.xVelocity;
             rootVelocity.yVelocity = -rootVelocity.yVelocity;
+
+            if (!view.hasComponent!VelocityComponent(ent.id))
+            {
+                continue;
+            }
+
+            auto vel = view.data!VelocityComponent(ent.id);
 
             /* Spin ourselves */
             rootVelocity.xVelocity += (vel.xVelocity * 0.5f);

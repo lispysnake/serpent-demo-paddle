@@ -87,6 +87,8 @@ public:
         /* Spawn first play ball */
         arena.spawnBall(view);
 
+        arena.spawnEdges(view);
+
         return true;
     }
 }
