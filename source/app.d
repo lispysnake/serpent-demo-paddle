@@ -25,12 +25,15 @@ import serpent.graphics.sprite;
 
 import bindbc.sdl;
 
+import stage;
+
 /* Simple no-op app */
 class MyApp : serpent.App
 {
 
 private:
     Scene scene;
+    Stage arena;
 
     final void keyPressed(KeyboardEvent e)
     {
@@ -66,6 +69,9 @@ public:
 
     final override bool bootstrap(View!ReadWrite view)
     {
+        /* Construct the play arena */
+        arena = new Stage(context.display.logicalWidth(), context.display.logicalHeight());
+
         scene = new Scene("default");
         context.display.addScene(scene);
         scene.addCamera(new OrthographicCamera());
