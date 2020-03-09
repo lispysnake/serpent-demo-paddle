@@ -23,17 +23,44 @@
 import serpent;
 import serpent.graphics.sprite;
 
+import bindbc.sdl;
+
 /* Simple no-op app */
 class MyApp : serpent.App
 {
 
+private:
     Scene scene;
+
+    final void keyPressed(KeyboardEvent e)
+    {
+    }
+
+    final void keyReleased(KeyboardEvent e)
+    {
+        switch (e.scancode)
+        {
+        case SDL_SCANCODE_F:
+            context.display.fullscreen = !context.display.fullscreen;
+            break;
+        case SDL_SCANCODE_Q:
+            context.quit();
+            break;
+        default:
+            break;
+        }
+    }
+
+public:
 
     final override bool bootstrap(View!ReadWrite view)
     {
         scene = new Scene("default");
         context.display.addScene(scene);
         scene.addCamera(new OrthographicCamera());
+
+        context.input.keyPressed.connect(&keyPressed);
+        context.input.keyReleased.connect(&keyReleased);
 
         /* Player paddle */
         auto ent = view.createEntity();
