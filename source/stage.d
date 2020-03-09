@@ -83,7 +83,7 @@ public:
     /**
      * Spawn a new ball into play
      */
-    final void spawnBall(View!ReadWrite view) @safe
+    final void spawnBall(View!ReadWrite view) @system
     {
         /* ball */
         auto entBall = view.createEntity();
@@ -100,9 +100,12 @@ public:
         /* Set up basic physics */
         auto ballSpeed = (meterSize * -1.5f) / 1000.0f;
         auto velBall = VelocityComponent(ballSpeed, 0.0f);
+        auto boxBall = BoxCollider2DComponent(rectanglef(0.0f, 0.0f,
+                ballTexture.width, ballTexture.height));
 
         view.addComponent(entBall, spriteBall);
         view.addComponent(entBall, transBall);
         view.addComponent(entBall, velBall);
+        view.addComponent(entBall, boxBall);
     }
 }

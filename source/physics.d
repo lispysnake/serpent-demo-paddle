@@ -44,6 +44,19 @@ final @serpentComponent struct VelocityComponent
 }
 
 /**
+ * Super simple collision with a box shape
+ */
+final @serpentComponent struct BoxCollider2DComponent
+{
+    box2f shape;
+
+    this(box2f shape)
+    {
+        this.shape = shape;
+    }
+}
+
+/**
  * PhysicsProcessor is very simple right now. Move things around the screen
  * when they have a velocity. Eventually we need to add collisions but we'll
  * do that after.
@@ -56,6 +69,7 @@ final class PhysicsProcessor : Processor!ReadWrite
      */
     final override void bootstrap(View!ReadWrite view)
     {
+        context.entity.tryRegisterComponent!BoxCollider2DComponent;
         context.entity.tryRegisterComponent!VelocityComponent;
     }
 
