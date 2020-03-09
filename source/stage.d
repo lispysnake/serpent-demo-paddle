@@ -67,7 +67,7 @@ public:
 
         ballTexture = new Texture("assets/ball.png");
 
-        paddleTextureTeam1 = new Texture("assets/paddle.png");
+        paddleTextureTeam1 = new Texture("assets/paddle2.png");
         paddleTextureTeam2 = new Texture("assets/paddle.png");
     }
 
