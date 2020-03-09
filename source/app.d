@@ -45,6 +45,7 @@ void main()
     context.display.pipeline.driverType = DriverType.Vulkan;
     context.display.size(1366, 768);
     context.display.title = "#serpent Paddle Demo";
+    context.display.backgroundColor = 0x0;
 
     /* TODO: Remove need for casts! */
     import serpent.graphics.pipeline.bgfx;
