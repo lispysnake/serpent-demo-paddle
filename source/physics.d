@@ -64,9 +64,12 @@ final class PhysicsProcessor : Processor!ReadWrite
      */
     final override void run(View!ReadWrite view)
     {
-        foreach (ent, trans, vel; view.withComponents!(TransformComponent, VelocityComponent))
+        auto frameTime = context.frameTime();
+
+        foreach (ent, transform, vel; view.withComponents!(TransformComponent, VelocityComponent))
         {
-            /* Process the entity */
+            transform.position.x += vel.xVelocity * frameTime;
+            transform.position.y += vel.yVelocity * frameTime;
         }
     }
 }

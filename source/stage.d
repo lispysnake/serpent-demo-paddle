@@ -44,6 +44,7 @@ private:
     float _width = 0;
     float _height = 0;
     Texture ballTexture;
+    float meterSize;
 
 public:
 
@@ -56,6 +57,9 @@ public:
     {
         this._width = width;
         this._height = height;
+
+        /* 10 meters wide */
+        meterSize = width / 10.0f;
 
         ballTexture = new Texture("assets/ball.png");
     }
@@ -94,7 +98,8 @@ public:
         transBall.position.x = (width / 2.0f) - (ballTexture.width / 2.0f);
 
         /* Set up basic physics */
-        auto velBall = VelocityComponent(0.0f, 0.0f);
+        auto ballSpeed = (meterSize * 1.5f) / 1000.0f;
+        auto velBall = VelocityComponent(ballSpeed, ballSpeed);
 
         view.addComponent(entBall, spriteBall);
         view.addComponent(entBall, transBall);
