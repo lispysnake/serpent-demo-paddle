@@ -40,9 +40,9 @@ private:
     {
         switch (e.scancode())
         {
-        case SDL_SCANCODE_LEFT:
+        case SDL_SCANCODE_UP:
             break;
-        case SDL_SCANCODE_RIGHT:
+        case SDL_SCANCODE_DOWN:
             break;
         case SDL_SCANCODE_SPACE:
             break;

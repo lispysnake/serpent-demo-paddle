@@ -105,8 +105,8 @@ public:
         transBall.position.x = (width / 2.0f) - (ballTexture.width / 2.0f);
 
         /* Set up basic physics */
-        auto ballSpeed = (meterSize * -1.5f) / 1000.0f;
-        auto velBall = VelocityComponent(ballSpeed, 0.0f);
+        auto ballSpeed = (meterSize * -3.5f) / 1000.0f;
+        auto velBall = VelocityComponent(ballSpeed, ballSpeed / 6.0f);
         auto boxBall = BoxCollider2DComponent(rectanglef(0.0f, 0.0f,
                 ballTexture.width, ballTexture.height));
 
@@ -137,9 +137,10 @@ public:
         }
 
         transPaddle.position.y = (height / 2.0f) - (spritePaddle.texture.height / 2.0f);
+        transPaddle.position.y -= 135.0f;
 
         /* Physics */
-        auto velPaddle = VelocityComponent(0.0f, (meterSize * 0.03f) / 1000.0f);
+        auto velPaddle = VelocityComponent(0.0f, (meterSize * 0.2f) / 1000.0f);
         auto boxPaddle = BoxCollider2DComponent(rectanglef(0.0f, 0.0f,
                 spritePaddle.texture.width, spritePaddle.texture.height));
         boxPaddle.staticGeom = true;
