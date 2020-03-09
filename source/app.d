@@ -26,6 +26,7 @@ import serpent.graphics.sprite;
 import bindbc.sdl;
 
 import stage;
+import physics;
 
 /* Simple no-op app */
 class MyApp : serpent.App
