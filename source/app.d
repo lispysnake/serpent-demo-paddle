@@ -35,15 +35,24 @@ class MyApp : serpent.App
         context.display.addScene(scene);
         scene.addCamera(new OrthographicCamera());
 
+        /* Player paddle */
         auto ent = view.createEntity();
         auto tex = new Texture("assets/paddle.png");
         auto sprite = SpriteComponent();
         auto trans = TransformComponent();
         trans.position.x = 5.0f;
-        trans.position.y = 25.0f;
+        trans.position.y = 75.0f;
         sprite.texture = tex;
         view.addComponent(ent, sprite);
         view.addComponent(ent, trans);
+
+        /* CPU paddle */
+        auto entCPU = view.createEntity();
+        view.addComponent(entCPU, sprite);
+        auto trans2 = TransformComponent();
+        trans2.position.x = context.display.logicalWidth - tex.width - 5.0f;
+        trans2.position.y = 75.0f;
+        view.addComponent(entCPU, trans2);
         return true;
     }
 }
