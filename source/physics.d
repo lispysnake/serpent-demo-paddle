@@ -24,6 +24,10 @@ module physics;
 
 import serpent;
 
+/**
+ * VelocityComponent allows us define 2D velocity for sprites in our
+ * game.
+ */
 final @serpentComponent struct VelocityComponent
 {
     float xVelocity = 0.0f;
@@ -47,11 +51,17 @@ final @serpentComponent struct VelocityComponent
 final class PhysicsProcessor : Processor!ReadWrite
 {
 
+    /**
+     * Initialise the processor and register required components
+     */
     final override void bootstrap(View!ReadWrite view)
     {
         context.entity.tryRegisterComponent!VelocityComponent;
     }
 
+    /**
+     * Perform updates for the current frame tick.
+     */
     final override void run(View!ReadWrite view)
     {
         foreach (ent, trans, vel; view.withComponents!(TransformComponent, VelocityComponent))
