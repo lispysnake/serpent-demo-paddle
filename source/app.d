@@ -86,7 +86,7 @@ public:
         auto sprite = SpriteComponent();
         auto trans = TransformComponent();
         trans.position.x = 25.0f;
-        trans.position.y = 175.0f;
+        trans.position.y = (context.display.logicalHeight / 2.0f) - (tex.height / 2.0f);
         sprite.texture = tex;
         view.addComponent(ent, sprite);
         view.addComponent(ent, trans);
@@ -96,7 +96,7 @@ public:
         view.addComponent(entCPU, sprite);
         auto trans2 = TransformComponent();
         trans2.position.x = context.display.logicalWidth - tex.width - 25.0f;
-        trans2.position.y = 175.0f;
+        trans2.position.y = (context.display.logicalHeight / 2.0f) - (tex.height / 2.0f);
         view.addComponent(entCPU, trans2);
 
         /* Spawn first play ball */
