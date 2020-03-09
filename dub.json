@@ -1,0 +1,25 @@
+{
+	"authors": [
+		"Lispy Snake Ltd.",
+	],
+	"copyright": "Copyright © 2019-2020 Lispy Snake, Ltd.",
+	"description": "Serpent Demo (Paddle Theme)",
+	"license": "ZLib",
+	"name": "serpent-demo-paddle",
+	"dependencies": {
+		"serpent": {
+			"path": "serpent",
+		},
+	},
+	"buildTypes": {
+		"debug": {
+			"buildOptions": ["debugMode", "optimize"],
+			"dflags-dmd": ["-g", "-fPIC"],
+			"dflags-ldc": ["-gc", "-O2", "--relocation-model=pic"]
+		},
+		"release": {
+			"buildOptions": ["releaseMode", "optimize", "inline"],
+			"dflags-ldc": ["-flto=thin", "--relocation-model=pic"]
+		}
+	}
+}

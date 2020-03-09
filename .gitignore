@@ -1,0 +1,19 @@
+.dub
+docs.json
+__dummy.html
+docs/
+/serpent-demo-paddle
+serpent-demo-paddle.so
+serpent-demo-paddle.dylib
+serpent-demo-paddle.dll
+serpent-demo-paddle.a
+serpent-demo-paddle.lib
+serpent-demo-paddle-test-*
+*.exe
+*.o
+*.obj
+*.lst
+dub.selections.json
+
+# Caused by autoformat
+*.d.orig
