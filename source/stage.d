@@ -25,6 +25,8 @@ module stage;
 import gfm.math;
 import serpent;
 
+import physics;
+
 /**
  * The Stage is basically our game layout. It is divided as such that
  * it has bounding boxes for collisions.
@@ -81,12 +83,21 @@ public:
     {
         /* ball */
         auto entBall = view.createEntity();
+
+        /* Set up sprite texture */
         auto spriteBall = SpriteComponent();
         spriteBall.texture = ballTexture;
+
+        /* Set up transform (position) */
         auto transBall = TransformComponent();
         transBall.position.y = (height / 2.0f) - (ballTexture.height / 2.0f);
         transBall.position.x = (width / 2.0f) - (ballTexture.width / 2.0f);
+
+        /* Set up basic physics */
+        auto velBall = VelocityComponent(0.0f, 0.0f);
+
         view.addComponent(entBall, spriteBall);
         view.addComponent(entBall, transBall);
+        view.addComponent(entBall, velBall);
     }
 }

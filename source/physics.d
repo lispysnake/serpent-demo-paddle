@@ -32,7 +32,7 @@ final @serpentComponent struct VelocityComponent
     /**
      * Construct a new VelocityComponent with the given X + Y velocity
      */
-    this(float xVelocity, float yVelocity)
+    this(float xVelocity, float yVelocity) @safe @nogc nothrow
     {
         this.xVelocity = xVelocity;
         this.yVelocity = yVelocity;
