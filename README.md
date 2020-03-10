@@ -5,6 +5,10 @@
 This project is a simple demonstration of [Serpent](https://github.com/lispysnake/serpent) to build a
 paddle-type-game-from-an-older-generation-of-consoles. >_>
 
+The primary mission here is to build the initial Chipmunk2D integration needed for Serpent before pushing
+it backupstream into Serpent as and when ready. Initially any problems encountered with super-basic-game
+development should be rectified.
+
 ### Building
 
 To get the dependencies on Solus, issue the following command:

@@ -27,6 +27,7 @@ import bindbc.sdl;
 
 import stage;
 import physics;
+import physics2D;
 
 /* Simple no-op app */
 class MyApp : serpent.App
@@ -103,6 +104,9 @@ void main()
     context.display.title = "#serpent Paddle Demo";
 
     context.systemGroup.add(new PhysicsProcessor());
+
+    /* Handle all physics through chipmunk */
+    context.systemGroup.add(new Physics2DProcessor());
 
     /* TODO: Remove need for casts! */
     import serpent.graphics.pipeline.bgfx;
