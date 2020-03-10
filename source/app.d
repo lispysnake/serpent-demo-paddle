@@ -26,7 +26,6 @@ import serpent.graphics.sprite;
 import bindbc.sdl;
 
 import stage;
-import physics;
 import physics2D;
 
 /* Simple no-op app */
@@ -88,8 +87,6 @@ public:
         /* Spawn first play ball */
         arena.spawnBall(view);
 
-        arena.spawnEdges(view);
-
         return true;
     }
 }
@@ -102,8 +99,6 @@ void main()
     context.display.size(1366, 768);
     context.display.logicalSize(1366, 768);
     context.display.title = "#serpent Paddle Demo";
-
-    context.systemGroup.add(new PhysicsProcessor());
 
     /* Handle all physics through chipmunk */
     context.systemGroup.add(new Physics2DProcessor());
