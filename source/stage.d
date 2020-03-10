@@ -24,6 +24,7 @@ module stage;
 
 import gfm.math;
 import serpent;
+import std.path : buildPath;
 
 import physics;
 
@@ -65,10 +66,11 @@ public:
         /* 10 meters wide */
         meterSize = width / 10.0f;
 
-        ballTexture = new Texture("assets/ball.png");
 
-        paddleTextureTeam1 = new Texture("assets/paddleBlue.png");
-        paddleTextureTeam2 = new Texture("assets/paddleRed.png");
+        ballTexture = new Texture(buildPath("assets", "ball.png"));
+
+        paddleTextureTeam1 = new Texture(buildPath("assets", "paddleBlue.png"));
+        paddleTextureTeam2 = new Texture(buildPath("assets", "paddleRed.png"));
     }
 
     /**
