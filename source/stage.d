@@ -66,7 +66,6 @@ public:
         /* 10 meters wide */
         meterSize = width / 10.0f;
 
-
         ballTexture = new Texture(buildPath("assets", "ball.png"));
 
         paddleTextureTeam1 = new Texture(buildPath("assets", "paddleBlue.png"));
