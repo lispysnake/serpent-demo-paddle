@@ -18,7 +18,7 @@ function buildProject()
 if [[ "$MODE" == "release" ]]; then
     COMPILER="ldc2"
     buildProject
-    strip ./serpent-demo-paddle
+    strip bin/serpent-demo-paddle
 elif [[ "$MODE" == "optimized" ]]; then
     MODE="release"
     buildProject

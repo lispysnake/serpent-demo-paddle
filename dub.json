@@ -6,6 +6,7 @@
 	"description": "Serpent Demo (Paddle Theme)",
 	"license": "ZLib",
 	"name": "serpent-demo-paddle",
+	"targetPath": "bin",
 	"dependencies": {
 		"serpent": {
 			"path": "serpent",
