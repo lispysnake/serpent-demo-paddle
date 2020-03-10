@@ -2,7 +2,7 @@
 set -e
 set -x
 
-MODE="debug"
+MODE="release"
 # COMPILER="dmd"
 COMPILER="ldc2"
 
