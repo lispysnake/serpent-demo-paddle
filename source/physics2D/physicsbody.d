@@ -20,7 +20,32 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-module physics2D;
+module physics2D.physicsbody;
 
-public import physics2D.processor;
-public import physics2D.physicsbody;
+import chipmunk;
+import serpent;
+
+/**
+ * Ensrre that a cpBody is correctly removed from the space and that
+ * resources are returned to the OS
+ */
+final static void freeComponent(void* v)
+{
+    Physics2DBodyComponent* comp = cast(Physics2DBodyComponent*) v;
+    if (comp.body is null)
+    {
+        return;
+    }
+
+    cpSpaceRemoveBody(comp.body.space, comp.body);
+    cpBodyFree(comp.body);
+    comp.body = null;
+}
+
+/**
+ * Encapsulates a Chipmunk2D cpBody
+ */
+final @serpentComponent(&freeComponent) struct Physics2DBodyComponent
+{
+    cpBody* body;
+}

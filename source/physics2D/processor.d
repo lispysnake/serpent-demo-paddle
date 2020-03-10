@@ -24,6 +24,7 @@ module physics2D.processor;
 
 import chipmunk;
 import serpent;
+import physics2D.physicsbody;
 
 /**
  * The Physics2DProcessor should be added to a serpent Context when support
@@ -48,6 +49,7 @@ public:
      */
     final override void bootstrap(View!ReadWrite view)
     {
+        context.entity.tryRegisterComponent!Physics2DBodyComponent;
         _space = cpSpaceNew();
     }
 
