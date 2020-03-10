@@ -96,6 +96,15 @@ public:
 
         view.addComponent(entBall, spriteBall);
         view.addComponent(entBall, transBall);
+
+        /* HACKS: Lets integrate physics */
+        import chipmunk;
+        import physics2D;
+
+        auto bd = cpBodyNew(1.0, 1.0);
+        auto comp = Physics2DBodyComponent();
+        comp.body = bd;
+        view.addComponent(entBall, comp);
     }
 
     final void spawnPaddle(View!ReadWrite view, bool leftEdge)

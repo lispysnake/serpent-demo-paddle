@@ -37,8 +37,13 @@ final static void freeComponent(void* v)
         return;
     }
 
-    cpSpaceRemoveBody(comp.body.space, comp.body);
+    /* Remove from parent space */
+    if (comp.body.space !is null)
+    {
+        cpSpaceRemoveBody(comp.body.space, comp.body);
+    }
     cpBodyFree(comp.body);
+
     comp.body = null;
 }
 
