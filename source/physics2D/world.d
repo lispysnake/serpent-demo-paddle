@@ -35,7 +35,7 @@ final class World2D
 
 private:
 
-    cpSpace* _space = null;
+    __gshared cpSpace* _space = null;
 
 public:
 
@@ -64,10 +64,6 @@ public:
         cpBody* bod = cpBodyNew(mass, moment);
         import std.stdio;
 
-        if (bod is null)
-        {
-            writeln("?????");
-        }
         cpSpaceAddBody(_space, bod);
 
         return cast(Physics2DBody*) bod;
