@@ -24,3 +24,4 @@ module physics2D;
 
 public import physics2D.processor;
 public import physics2D.physicsbody;
+public import physics2D.world;

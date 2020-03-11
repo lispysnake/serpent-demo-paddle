@@ -20,46 +20,44 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-module physics2D.processor;
+module physics2D.world;
 
-import serpent;
-import physics2D.physicsbody;
-import physics2D.world;
+import chipmunk;
 
 /**
- * The Physics2DProcessor should be added to a serpent Context when support
- * for 2D physics is required.
- *
- * It is internally powered by the Chipmunk library.
+ * The World class is reponsible for the integration of physics into the
+ * game world. As such, physics data must be created *through* the World
+ * to ensure it is correctly tracked.
  */
-final class Physics2DProcessor : Processor!ReadWrite
+final class World2D
 {
 
 private:
 
-    World2D _world = null;
+    cpSpace* _space = null;
 
 public:
 
-    this(World2D world)
+    /**
+     * Construct a new World2D instance.
+     */
+    this()
     {
-        assert(world !is null, "Must have a valid world instance");
-        _world = world;
+        _space = cpSpaceNew();
     }
 
     /**
-     * Initialise Chipmunk
+     * Destroy the World2D instance.
      */
-    final override void bootstrap(View!ReadWrite view)
+    ~this()
     {
-        context.entity.tryRegisterComponent!Physics2DBodyComponent;
+        cpSpaceFree(_space);
     }
 
-    /**
-     * Update for the current frame step
-     */
-    final override void run(View!ReadWrite view)
+package:
+
+    final void step(double dt)
     {
-        _world.step(context.frameTime);
+        cpSpaceStep(_space, dt);
     }
 }
