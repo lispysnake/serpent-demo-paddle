@@ -60,6 +60,6 @@ public:
      */
     final override void run(View!ReadWrite view)
     {
-        _world.step(context.frameTime);
+        _world.step(view, context.frameTime);
     }
 }

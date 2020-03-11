@@ -24,6 +24,7 @@ module physics2D.world;
 
 import chipmunk;
 import physics2D.physicsbody;
+import serpent;
 
 /**
  * The World class is reponsible for the integration of physics into the
@@ -65,14 +66,25 @@ public:
         import std.stdio;
 
         cpSpaceAddBody(_space, bod);
+        bod.userData = null;
 
         return cast(Physics2DBody*) bod;
     }
 
 package:
 
-    final void step(double dt)
+    extern (C) static final void updateBody(cpBody* _body, void* userdata)
+    {
+        import std.stdio;
+
+        auto view = cast(View!ReadWrite*) userdata;
+        writeln("Body update");
+        writeln(view);
+    }
+
+    final void step(View!ReadWrite view, double dt)
     {
         cpSpaceStep(_space, dt);
+        cpSpaceEachBody(_space, &updateBody, cast(void*)&view);
     }
 }
