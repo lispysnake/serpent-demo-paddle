@@ -46,6 +46,7 @@ public:
     this()
     {
         _space = cpSpaceNew();
+        _space.gravity = cpVect(0, 0.0001);
     }
 
     /**
@@ -60,12 +61,12 @@ public:
     /**
      * Create a new Physics2DBody parented to this world
      */
-    Physics2DBody* createDynamicBody(double mass, double moment)
+    Physics2DBody* createDynamicBody(EntityID id, double mass, double moment)
     {
         cpBody* bod = cpBodyNew(mass, moment);
 
         cpSpaceAddBody(_space, bod);
-        bod.userData = null;
+        bod.userData = cast(void*) id;
 
         return cast(Physics2DBody*) bod;
     }
@@ -74,11 +75,11 @@ package:
 
     extern (C) static final void updateBody(cpBody* _body, void* userdata)
     {
-        import std.stdio;
-
         auto view = cast(View!ReadWrite*) userdata;
-        writeln("Body update");
-        writeln(view);
+        auto entity = cast(EntityID) _body.userData;
+        auto transform = view.data!TransformComponent(entity);
+        transform.position.x = _body.p.x;
+        transform.position.y = _body.p.y;
     }
 
     final void step(View!ReadWrite view, double dt)

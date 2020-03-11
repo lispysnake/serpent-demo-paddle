@@ -105,7 +105,7 @@ public:
         import chipmunk;
         import physics2D;
 
-        auto bd = world.createDynamicBody(1.0, 1.0);
+        auto bd = world.createDynamicBody(entBall, 100, INFINITY);
         auto comp = Physics2DBodyComponent();
         comp.body = bd;
         view.addComponent(entBall, comp);
