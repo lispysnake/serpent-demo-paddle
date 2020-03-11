@@ -63,7 +63,6 @@ public:
     Physics2DBody* createDynamicBody(double mass, double moment)
     {
         cpBody* bod = cpBodyNew(mass, moment);
-        import std.stdio;
 
         cpSpaceAddBody(_space, bod);
         bod.userData = null;
