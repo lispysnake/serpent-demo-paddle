@@ -23,6 +23,7 @@
 module physics2D.world;
 
 import chipmunk;
+import physics2D.physicsbody;
 
 /**
  * The World class is reponsible for the integration of physics into the
@@ -52,6 +53,24 @@ public:
     ~this()
     {
         cpSpaceFree(_space);
+        _space = null;
+    }
+
+    /**
+     * Create a new Physics2DBody parented to this world
+     */
+    Physics2DBody* createDynamicBody(double mass, double moment)
+    {
+        cpBody* bod = cpBodyNew(mass, moment);
+        import std.stdio;
+
+        if (bod is null)
+        {
+            writeln("?????");
+        }
+        cpSpaceAddBody(_space, bod);
+
+        return cast(Physics2DBody*) bod;
     }
 
 package:

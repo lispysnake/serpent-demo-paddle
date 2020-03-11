@@ -26,6 +26,8 @@ import gfm.math;
 import serpent;
 import std.path : buildPath;
 
+import physics2D;
+
 /**
  * The Stage is basically our game layout. It is divided as such that
  * it has bounding boxes for collisions.
@@ -43,6 +45,8 @@ private:
     float _width = 0;
     float _height = 0;
 
+    World2D world;
+
 public:
 
     @disable this();
@@ -50,7 +54,7 @@ public:
     /**
      * Construct a new Stage with the given width and height
      */
-    this(float width, float height)
+    this(World2D world, float width, float height)
     {
         this._width = width;
         this._height = height;
@@ -101,7 +105,7 @@ public:
         import chipmunk;
         import physics2D;
 
-        auto bd = cpBodyNew(1.0, 1.0);
+        auto bd = world.createDynamicBody(1.0, 1.0);
         auto comp = Physics2DBodyComponent();
         comp.body = bd;
         view.addComponent(entBall, comp);

@@ -37,12 +37,14 @@ final static void freeComponent(void* v)
         return;
     }
 
+    auto chipBody = cast(cpBody*) comp.body;
+
     /* Remove from parent space */
-    if (comp.body.space !is null)
+    if (chipBody.space !is null)
     {
-        cpSpaceRemoveBody(comp.body.space, comp.body);
+        cpSpaceRemoveBody(chipBody.space, chipBody);
     }
-    cpBodyFree(comp.body);
+    cpBodyFree(chipBody);
 
     comp.body = null;
 }
@@ -52,5 +54,20 @@ final static void freeComponent(void* v)
  */
 final @serpentComponent(&freeComponent) struct Physics2DBodyComponent
 {
-    cpBody* body;
+    Physics2DBody* body;
+}
+
+/**
+ * Physics2DBody is a lightweight wrapper around cpBody which provides
+ * simpler management APIs.
+ */
+extern (C) final struct Physics2DBody
+{
+
+private:
+    cpBody pt;
+    alias pt this;
+
+public:
+
 }

@@ -35,6 +35,7 @@ class MyApp : serpent.App
 private:
     Scene scene;
     Stage arena;
+    World2D world;
 
     final void keyPressed(KeyboardEvent e)
     {
@@ -68,10 +69,16 @@ private:
 
 public:
 
+    this(World2D world)
+    {
+        this.world = world;
+    }
+
     final override bool bootstrap(View!ReadWrite view)
     {
         /* Construct the play arena */
-        arena = new Stage(context.display.logicalWidth(), context.display.logicalHeight());
+        arena = new Stage(this.world, context.display.logicalWidth(),
+                context.display.logicalHeight());
 
         scene = new Scene("default");
         context.display.addScene(scene);
@@ -110,5 +117,5 @@ void main()
     auto pipe = cast(BgfxPipeline) context.display.pipeline;
     pipe.addRenderer(new SpriteRenderer());
 
-    context.run(new MyApp);
+    context.run(new MyApp(world));
 }
