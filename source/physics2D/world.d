@@ -78,8 +78,12 @@ package:
         auto view = cast(View!ReadWrite*) userdata;
         auto entity = cast(EntityID) _body.userData;
         auto transform = view.data!TransformComponent(entity);
-        transform.position.x = _body.p.x;
-        transform.position.y = _body.p.y;
+
+        import std.stdio;
+
+        writefln("Moving entity %d to %d %d", entity, cast(int) _body.p.x, cast(int) _body.p.y);
+        transform.position.x = cast(float) _body.p.x;
+        transform.position.y = cast(float) _body.p.y;
     }
 
     final void step(View!ReadWrite view, double dt)

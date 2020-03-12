@@ -106,6 +106,7 @@ public:
         import physics2D;
 
         auto bd = world.createDynamicBody(entBall, 100, INFINITY);
+        bd.position = transBall.position;
         auto comp = Physics2DBodyComponent();
         comp.body = bd;
         view.addComponent(entBall, comp);
@@ -136,5 +137,15 @@ public:
 
         view.addComponent(entPaddle, spritePaddle);
         view.addComponent(entPaddle, transPaddle);
+
+        /* HACKS: Lets integrate physics */
+        import chipmunk;
+        import physics2D;
+
+        auto bd = world.createDynamicBody(entPaddle, 100, INFINITY);
+        bd.position = transPaddle.position;
+        auto comp = Physics2DBodyComponent();
+        comp.body = bd;
+        view.addComponent(entPaddle, comp);
     }
 }

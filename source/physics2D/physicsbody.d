@@ -70,4 +70,12 @@ private:
 
 public:
 
+    /**
+     * Update position from a vec3f
+     */
+    final @property void position(vec3f position)
+    {
+        pt.p.x = cast(double) position.x;
+        pt.p.y = cast(double) position.y;
+    }
 }
