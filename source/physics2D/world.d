@@ -46,7 +46,7 @@ public:
     this()
     {
         _space = cpSpaceNew();
-        _space.gravity = cpVect(0, 0.0001);
+        _space.gravity = cpVect(0, 0);
     }
 
     /**
@@ -69,6 +69,11 @@ public:
         bod.userData = cast(void*) id;
 
         return cast(Physics2DBody*) bod;
+    }
+
+    final @property void gravity(vec2f gravity) @trusted @nogc nothrow
+    {
+        _space.gravity = cpVect(cast(double) gravity.x, cast(double) gravity.y);
     }
 
 package:

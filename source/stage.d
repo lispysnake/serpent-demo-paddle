@@ -97,6 +97,7 @@ public:
         auto transBall = TransformComponent();
         transBall.position.y = (height / 2.0f) - (ballTexture.height / 2.0f);
         transBall.position.x = (width / 2.0f) - (ballTexture.width / 2.0f);
+        transBall.position.y -= 100;
 
         view.addComponent(entBall, spriteBall);
         view.addComponent(entBall, transBall);
@@ -109,6 +110,7 @@ public:
         bd.position = transBall.position;
         auto comp = Physics2DBodyComponent();
         comp.body = bd;
+        bd.velocity = vec2f(-0.5f, 0.0f);
         view.addComponent(entBall, comp);
     }
 

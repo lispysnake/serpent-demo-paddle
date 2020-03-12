@@ -78,4 +78,9 @@ public:
         pt.p.x = cast(double) position.x;
         pt.p.y = cast(double) position.y;
     }
+
+    final @property void velocity(vec2f velocity)
+    {
+        pt.v = cpVect(cast(double) velocity.x, cast(double) velocity.y);
+    }
 }
