@@ -106,7 +106,9 @@ public:
         import chipmunk;
         import physics2D;
 
-        auto bd = world.createDynamicBody(entBall, 100, INFINITY);
+        auto moment = cpMomentForCircle(100, ballTexture.width / 2.0, 0, cpVect(0, 0));
+
+        auto bd = world.createDynamicBody(entBall, 100, moment);
         bd.position = transBall.position;
         auto comp = Physics2DBodyComponent();
         comp.body = bd;
