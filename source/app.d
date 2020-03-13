@@ -94,10 +94,13 @@ public:
         if (keyUp)
         {
             phys.body.velocity = vec2f(0.0f, -0.3f);
-        } else if (keyDown)
+        }
+        else if (keyDown)
         {
             phys.body.velocity = vec2f(0.0f, 0.3f);
-        } else {
+        }
+        else
+        {
             phys.body.velocity = vec2f(0.0f, 0.0f);
         }
     }

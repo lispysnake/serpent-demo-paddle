@@ -111,7 +111,7 @@ public:
         bd.position = transBall.position;
         auto comp = Physics2DBodyComponent();
         comp.body = bd;
-        bd.velocity = vec2f(-0.9f, 0.0f);
+        bd.velocity = vec2f(-0.9f, 0.01f);
 
         auto shape = cpCircleShapeNew(cast(cpBody*) bd, ballTexture.width / 2.0, cpVect(0, 0));
         cpShapeSetElasticity(shape, 0.9);
@@ -136,7 +136,6 @@ public:
         if (leftEdge)
         {
             transPaddle.position.x = 25.0f;
-            transPaddle.position.y += 12.0f;
         }
         else
         {
