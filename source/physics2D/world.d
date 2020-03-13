@@ -71,6 +71,19 @@ public:
         return cast(Physics2DBody*) bod;
     }
 
+    /**
+     * Create a new Physics2DBody parented to this world
+     */
+    Physics2DBody* createKinematicBody(EntityID id)
+    {
+        cpBody* bod = cpBodyNewKinematic();
+
+        cpSpaceAddBody(_space, bod);
+        bod.userData = cast(void*) id;
+
+        return cast(Physics2DBody*) bod;
+    }
+
     final @property void gravity(vec2f gravity) @trusted @nogc nothrow
     {
         _space.gravity = cpVect(cast(double) gravity.x, cast(double) gravity.y);

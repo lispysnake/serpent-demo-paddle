@@ -97,7 +97,6 @@ public:
         auto transBall = TransformComponent();
         transBall.position.y = (height / 2.0f) - (ballTexture.height / 2.0f);
         transBall.position.x = (width / 2.0f) - (ballTexture.width / 2.0f);
-        transBall.position.y -= 100;
 
         view.addComponent(entBall, spriteBall);
         view.addComponent(entBall, transBall);
@@ -112,7 +111,12 @@ public:
         bd.position = transBall.position;
         auto comp = Physics2DBodyComponent();
         comp.body = bd;
-        bd.velocity = vec2f(-0.5f, 0.0f);
+        bd.velocity = vec2f(-0.9f, 0.0f);
+
+        auto shape = cpCircleShapeNew(cast(cpBody*) bd, ballTexture.width / 2.0, cpVect(0, 0));
+        cpShapeSetElasticity(shape, 0.9);
+        cpSpaceAddShape((cast(cpBody*) bd).space, shape);
+
         view.addComponent(entBall, comp);
     }
 
@@ -127,17 +131,17 @@ public:
 
         /* Transform */
         auto transPaddle = TransformComponent();
+        transPaddle.position.y = (height / 2.0f) - (spritePaddle.texture.height / 2.0f);
+
         if (leftEdge)
         {
             transPaddle.position.x = 25.0f;
+            transPaddle.position.y += 12.0f;
         }
         else
         {
             transPaddle.position.x = width - spritePaddle.texture.width - 25.0f;
         }
-
-        transPaddle.position.y = (height / 2.0f) - (spritePaddle.texture.height / 2.0f);
-        transPaddle.position.y -= 135.0f;
 
         view.addComponent(entPaddle, spritePaddle);
         view.addComponent(entPaddle, transPaddle);
@@ -146,10 +150,18 @@ public:
         import chipmunk;
         import physics2D;
 
-        auto bd = world.createDynamicBody(entPaddle, 100, INFINITY);
+        auto moment = cpMomentForBox(1000, spritePaddle.texture.width,
+                spritePaddle.texture.height);
+        auto bd = world.createKinematicBody(entPaddle);
         bd.position = transPaddle.position;
         auto comp = Physics2DBodyComponent();
         comp.body = bd;
         view.addComponent(entPaddle, comp);
+
+        auto shape = cpBoxShapeNew(cast(cpBody*) bd, spritePaddle.texture.width,
+                spritePaddle.texture.height, spritePaddle.texture.width / 2.0);
+        cpShapeSetFriction(shape, 0.0);
+        cpShapeSetElasticity(shape, 1.0);
+        cpSpaceAddShape((cast(cpBody*) bd).space, shape);
     }
 }
