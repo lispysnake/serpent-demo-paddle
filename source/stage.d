@@ -150,8 +150,6 @@ public:
         import chipmunk;
         import physics2D;
 
-        auto moment = cpMomentForBox(1000, spritePaddle.texture.width,
-                spritePaddle.texture.height);
         auto bd = world.createKinematicBody(entPaddle);
         bd.position = transPaddle.position;
         auto comp = Physics2DBodyComponent();
