@@ -120,7 +120,7 @@ public:
         view.addComponent(entBall, comp);
     }
 
-    final void spawnPaddle(View!ReadWrite view, bool leftEdge)
+    final EntityID spawnPaddle(View!ReadWrite view, bool leftEdge)
     {
         /* CPU paddle */
         auto entPaddle = view.createEntity();
@@ -161,7 +161,9 @@ public:
         auto shape = cpBoxShapeNew(cast(cpBody*) bd, spritePaddle.texture.width,
                 spritePaddle.texture.height, spritePaddle.texture.width / 2.0);
         cpShapeSetFriction(shape, 0.0);
-        cpShapeSetElasticity(shape, 1.0);
+        cpShapeSetElasticity(shape, 0.9);
         cpSpaceAddShape((cast(cpBody*) bd).space, shape);
+
+        return entPaddle;
     }
 }

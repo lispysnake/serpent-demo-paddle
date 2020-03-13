@@ -36,14 +36,19 @@ private:
     Scene scene;
     Stage arena;
     World2D world;
+    EntityID player;
+    bool keyUp = false;
+    bool keyDown = false;
 
     final void keyPressed(KeyboardEvent e)
     {
         switch (e.scancode())
         {
         case SDL_SCANCODE_UP:
+            keyUp = true;
             break;
         case SDL_SCANCODE_DOWN:
+            keyDown = true;
             break;
         case SDL_SCANCODE_SPACE:
             break;
@@ -56,6 +61,12 @@ private:
     {
         switch (e.scancode)
         {
+        case SDL_SCANCODE_UP:
+            keyUp = false;
+            break;
+        case SDL_SCANCODE_DOWN:
+            keyDown = false;
+            break;
         case SDL_SCANCODE_F:
             context.display.fullscreen = !context.display.fullscreen;
             break;
@@ -74,6 +85,23 @@ public:
         this.world = world;
     }
 
+    /**
+     * Apply physics to player
+     */
+    final override void update(View!ReadWrite view)
+    {
+        auto phys = view.data!Physics2DBodyComponent(player);
+        if (keyUp)
+        {
+            phys.body.velocity = vec2f(0.0f, -0.3f);
+        } else if (keyDown)
+        {
+            phys.body.velocity = vec2f(0.0f, 0.3f);
+        } else {
+            phys.body.velocity = vec2f(0.0f, 0.0f);
+        }
+    }
+
     final override bool bootstrap(View!ReadWrite view)
     {
         /* Construct the play arena */
@@ -88,7 +116,7 @@ public:
         context.input.keyReleased.connect(&keyReleased);
 
         /* Spawn the paddles */
-        arena.spawnPaddle(view, true);
+        player = arena.spawnPaddle(view, true);
         arena.spawnPaddle(view, false);
 
         /* Spawn first play ball */
