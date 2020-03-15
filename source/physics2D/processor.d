@@ -41,10 +41,9 @@ private:
 
 public:
 
-    this(World2D world)
+    this()
     {
-        assert(world !is null, "Must have a valid world instance");
-        _world = world;
+        _world = new World2D();
     }
 
     /**
@@ -61,5 +60,10 @@ public:
     final override void run(View!ReadWrite view)
     {
         _world.step(view, context.frameTime);
+    }
+
+    pure final @property World2D world() @safe @nogc nothrow
+    {
+        return _world;
     }
 }

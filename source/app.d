@@ -139,8 +139,9 @@ void main()
     context.display.title = "#serpent Paddle Demo";
 
     /* Handle all physics through chipmunk */
-    auto world = new World2D();
-    context.systemGroup.add(new Physics2DProcessor(world));
+    auto phys = new Physics2DProcessor();
+    auto world = phys.world;
+    context.systemGroup.add(new Physics2DProcessor());
 
     /* TODO: Remove need for casts! */
     import serpent.graphics.pipeline.bgfx;
