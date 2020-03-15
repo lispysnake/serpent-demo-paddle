@@ -38,7 +38,7 @@ private:
 
     __gshared cpSpace* _space = null;
 
-public:
+package:
 
     /**
      * Construct a new World2D instance.
@@ -57,6 +57,8 @@ public:
         cpSpaceFree(_space);
         _space = null;
     }
+
+public:
 
     /**
      * Create a new Physics2DBody parented to this world
