@@ -134,6 +134,15 @@ public:
 
         view.addComponent(entPaddle, spritePaddle);
         view.addComponent(entPaddle, transPaddle);
+
+        auto physPaddle = PhysicsComponent();
+        auto physBody = new KinematicBody();
+        physPaddle.body = physBody;
+
+        auto physShape = new BoxShape(spritePaddle.texture.width, spritePaddle.texture.height);
+        physBody.add(physShape);
+
+        view.addComponent(entPaddle, physPaddle);
         return entPaddle;
     }
 }
