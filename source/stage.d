@@ -100,6 +100,14 @@ public:
 
         view.addComponent(entBall, spriteBall);
         view.addComponent(entBall, transBall);
+
+        auto physBall = PhysicsComponent();
+        auto physBody = new DynamicBody();
+        physBall.body = physBody;
+        auto physShape = new CircleShape(ballTexture.width / 2.0, vec2f(0.0f, 0.0f));
+        physBody.add(physShape);
+
+        view.addComponent(entBall, physBall);
     }
 
     final EntityID spawnPaddle(View!ReadWrite view, bool leftEdge)
