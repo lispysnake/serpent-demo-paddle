@@ -26,7 +26,7 @@ import gfm.math;
 import serpent;
 import std.path : buildPath;
 
-import physics2D;
+import serpent.physics2d;
 
 /**
  * The Stage is basically our game layout. It is divided as such that
@@ -45,7 +45,7 @@ private:
     float _width = 0;
     float _height = 0;
 
-    World2D world;
+    AbstractWorld world;
 
 public:
 
@@ -54,7 +54,7 @@ public:
     /**
      * Construct a new Stage with the given width and height
      */
-    this(World2D world, float width, float height)
+    this(AbstractWorld world, float width, float height)
     {
         this._width = width;
         this._height = height;
@@ -100,24 +100,6 @@ public:
 
         view.addComponent(entBall, spriteBall);
         view.addComponent(entBall, transBall);
-
-        /* HACKS: Lets integrate physics */
-        import chipmunk;
-        import physics2D;
-
-        auto moment = cpMomentForCircle(100, ballTexture.width / 2.0, 0, cpVect(0, 0));
-
-        auto bd = world.createDynamicBody(entBall, 100, moment);
-        bd.position = transBall.position;
-        auto comp = Physics2DBodyComponent();
-        comp.body = bd;
-        bd.velocity = vec2f(-0.9f, 0.01f);
-
-        auto shape = cpCircleShapeNew(cast(cpBody*) bd, ballTexture.width / 2.0, cpVect(0, 0));
-        cpShapeSetElasticity(shape, 0.9);
-        cpSpaceAddShape((cast(cpBody*) bd).space, shape);
-
-        view.addComponent(entBall, comp);
     }
 
     final EntityID spawnPaddle(View!ReadWrite view, bool leftEdge)
@@ -144,23 +126,6 @@ public:
 
         view.addComponent(entPaddle, spritePaddle);
         view.addComponent(entPaddle, transPaddle);
-
-        /* HACKS: Lets integrate physics */
-        import chipmunk;
-        import physics2D;
-
-        auto bd = world.createKinematicBody(entPaddle);
-        bd.position = transPaddle.position;
-        auto comp = Physics2DBodyComponent();
-        comp.body = bd;
-        view.addComponent(entPaddle, comp);
-
-        auto shape = cpBoxShapeNew(cast(cpBody*) bd, spritePaddle.texture.width,
-                spritePaddle.texture.height, spritePaddle.texture.width / 2.0);
-        cpShapeSetFriction(shape, 0.0);
-        cpShapeSetElasticity(shape, 0.9);
-        cpSpaceAddShape((cast(cpBody*) bd).space, shape);
-
         return entPaddle;
     }
 }

@@ -26,7 +26,7 @@ import serpent.graphics.sprite;
 import bindbc.sdl;
 
 import stage;
-import physics2D;
+import serpent.physics2d;
 
 /* Simple no-op app */
 class MyApp : serpent.App
@@ -35,7 +35,7 @@ class MyApp : serpent.App
 private:
     Scene scene;
     Stage arena;
-    World2D world;
+    AbstractWorld world;
     EntityID player;
     bool keyUp = false;
     bool keyDown = false;
@@ -80,17 +80,17 @@ private:
 
 public:
 
-    this(World2D world)
+    this(AbstractWorld world)
     {
         this.world = world;
     }
 
     /**
      * Apply physics to player
-     */
+     
     final override void update(View!ReadWrite view)
     {
-        auto phys = view.data!Physics2DBodyComponent(player);
+        auto phys = view.data!PhysicsComponent(player);
         if (keyUp)
         {
             phys.body.velocity = vec2f(0.0f, -0.3f);
@@ -103,7 +103,7 @@ public:
         {
             phys.body.velocity = vec2f(0.0f, 0.0f);
         }
-    }
+    }*/
 
     final override bool bootstrap(View!ReadWrite view)
     {
@@ -139,9 +139,9 @@ void main()
     context.display.title = "#serpent Paddle Demo";
 
     /* Handle all physics through chipmunk */
-    auto phys = new Physics2DProcessor();
+    auto phys = new PhysicsProcessor();
     auto world = phys.world;
-    context.systemGroup.add(new Physics2DProcessor());
+    context.systemGroup.add(phys);
 
     /* TODO: Remove need for casts! */
     import serpent.graphics.pipeline.bgfx;
