@@ -87,7 +87,7 @@ public:
 
     /**
      * Apply physics to player
-     
+     */
     final override void update(View!ReadWrite view)
     {
         auto phys = view.data!PhysicsComponent(player);
@@ -103,7 +103,7 @@ public:
         {
             phys.body.velocity = vec2f(0.0f, 0.0f);
         }
-    }*/
+    }
 
     final override bool bootstrap(View!ReadWrite view)
     {
