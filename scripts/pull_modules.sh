@@ -2,4 +2,4 @@
 
 echo "Pulling latest submodules..."
 
-git submodule update --recursive --remote --merge
+git submodule update --remote --merge
