@@ -61,5 +61,8 @@ final class AIProcessor : Processor!ReadWrite
      */
     final override void run(View!ReadWrite view)
     {
+        foreach (entity, enemy, transform; view.withComponents!(AIComponent, TransformComponent))
+        {
+        }
     }
 }
