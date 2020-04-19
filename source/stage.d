@@ -108,7 +108,7 @@ public:
         physShape.mass = 0.1f;
         physShape.elasticity = 1.0f;
         physShape.friction = 0.0f;
-        physBody.velocity = vec2f(-0.5f, 0.0f);
+        physBody.velocity = vec2f(-0.5f, -0.2f);
         physBody.add(physShape);
 
         view.addComponent(entBall, physBall);
@@ -150,5 +150,44 @@ public:
 
         view.addComponent(entPaddle, physPaddle);
         return entPaddle;
+    }
+
+    final EntityID createWall(View!ReadWrite view, box2f position)
+    {
+        auto entityID = view.createEntity();
+        auto trans = TransformComponent();
+        trans.position.x = position.min.x;
+        trans.position.y = position.min.y;
+        auto body = new KinematicBody();
+        auto width = position.max.x - position.min.x;
+        auto height = position.max.y - position.min.y;
+        auto shape = new BoxShape(width, height);
+        shape.elasticity = 1.0f;
+        shape.friction = 0.0f;
+        body.add(shape);
+        auto phys = PhysicsComponent();
+        phys.body = body;
+
+        view.addComponent(entityID, phys);
+        view.addComponent(entityID, trans);
+
+        return entityID;
+    }
+
+    /**
+     * Spawn walls
+     */
+    final EntityID[] spawnWalls(View!ReadWrite view)
+    {
+        EntityID[] ret = [
+            createWall(view, rectanglef(0.0f, 0.0f, 1.0f, 768.0f)), /* left */
+            createWall(view, rectanglef(1366.0f - 1.0f,
+                    0.0f, 1.0f, 768.0f)), /* right */
+            createWall(view, rectanglef(0.0f, 0.0f, 1366.0f,
+                    1.0f)), /* top */
+            createWall(view, rectanglef(0.0f, 768.0f - 1.0f, 1366.0f, 1.0f)), /* bottom */
+        ];
+
+        return ret;
     }
 }

@@ -125,6 +125,8 @@ public:
         /* Spawn first play ball */
         arena.spawnBall(view);
 
+        arena.spawnWalls(view);
+
         return true;
     }
 }
