@@ -22,6 +22,7 @@
 
 module stage;
 
+import ai;
 import gfm.math;
 import serpent;
 import std.path : buildPath;
@@ -149,6 +150,17 @@ public:
         physBody.add(physShape);
 
         view.addComponent(entPaddle, physPaddle);
+
+        /**
+         * Mark this as an AI paddle on the right edge
+         */
+        if (!leftEdge)
+        {
+            auto comp = AIComponent();
+            comp.constraint = AIConstraint.Vertical;
+            view.addComponent(entPaddle, comp);
+        }
+
         return entPaddle;
     }
 
