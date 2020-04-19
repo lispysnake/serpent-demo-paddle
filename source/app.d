@@ -28,6 +28,8 @@ import bindbc.sdl;
 import stage;
 import serpent.physics2d;
 
+import ai;
+
 /* Simple no-op app */
 class MyApp : serpent.App
 {
@@ -144,6 +146,7 @@ void main()
     auto phys = new PhysicsProcessor();
     auto world = phys.world;
     context.systemGroup.add(phys);
+    context.systemGroup.add(new AIProcessor());
 
     /* TODO: Remove need for casts! */
     import serpent.graphics.pipeline.bgfx;
