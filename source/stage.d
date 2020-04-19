@@ -23,6 +23,8 @@
 module stage;
 
 import ai;
+import ball;
+
 import gfm.math;
 import serpent;
 import std.path : buildPath;
@@ -111,6 +113,10 @@ public:
         physShape.friction = 0.0f;
         physBody.velocity = vec2f(-0.5f, -0.2f);
         physBody.add(physShape);
+
+        auto comp = BallComponent();
+        comp.type = BallType.Standard;
+        view.addComponent(entBall, comp);
 
         view.addComponent(entBall, physBall);
     }

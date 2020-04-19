@@ -20,52 +20,23 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-module ai;
+module ball;
 
 import serpent;
 
-import ball;
-
 /**
- * A Paddle can either go vertically or horizontally, not both
+ * Eventually we'll have special parameters for balls. For now they can
+ * be a trivial single component.
  */
-final enum AIConstraint
+final enum BallType
 {
-    Vertical = 0,
-    Horizontal,
+    Standard = 0,
 }
 
 /**
- * AI Component is added to 'enemy' paddles
+ * Basic ball component
  */
-final @serpentComponent struct AIComponent
+final @serpentComponent struct BallComponent
 {
-    AIConstraint constraint;
-}
-
-/**
- * AI Processor manages the response of each 'enemy' paddle
- * currently in play.
- */
-final class AIProcessor : Processor!ReadWrite
-{
-
-    /**
-     * Register the AI Component with the system
-     */
-    final override void bootstrap(View!ReadWrite)
-    {
-        context.entity.tryRegisterComponent!AIComponent;
-        context.entity.tryRegisterComponent!BallComponent;
-    }
-
-    /**
-     * Manage AI response
-     */
-    final override void run(View!ReadWrite view)
-    {
-        foreach (entity, enemy, transform; view.withComponents!(AIComponent, TransformComponent))
-        {
-        }
-    }
+    BallType type;
 }
