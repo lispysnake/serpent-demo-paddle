@@ -25,6 +25,7 @@ module ai;
 import serpent;
 
 import ball;
+import serpent.physics2d;
 
 /**
  * A Paddle can either go vertically or horizontally, not both
@@ -64,8 +65,50 @@ final class AIProcessor : Processor!ReadWrite
      */
     final override void run(View!ReadWrite view)
     {
-        foreach (entity, enemy, transform; view.withComponents!(AIComponent, TransformComponent))
+        auto balls = view.withComponents!(BallComponent, TransformComponent);
+        if (balls.empty())
         {
+            return;
+        }
+
+        /* Eventually we'll support more than one ball */
+        auto primaryBall = balls.front();
+        auto ballTransform = primaryBall[2];
+
+        foreach (entity, enemy, transform, physics; view.withComponents!(AIComponent,
+                TransformComponent, PhysicsComponent))
+        {
+            final switch (enemy.constraint)
+            {
+            case AIConstraint.Vertical:
+                if (ballTransform.position.y < transform.position.y)
+                {
+                    physics.body.velocity = vec2f(0.0, -0.3f);
+                }
+                else if (ballTransform.position.y > transform.position.y)
+                {
+                    physics.body.velocity = vec2f(0.0f, 0.3f);
+                }
+                else
+                {
+                    physics.body.velocity = vec2f(0.0f, 0.0f);
+                }
+                break;
+            case AIConstraint.Horizontal:
+                if (ballTransform.position.x < transform.position.x)
+                {
+                    physics.body.velocity = vec2f(-0.3, 0.0f);
+                }
+                else if (ballTransform.position.x > transform.position.x)
+                {
+                    physics.body.velocity = vec2f(0.3, 0.0f);
+                }
+                else
+                {
+                    physics.body.velocity = vec2f(0.0f, 0.0f);
+                }
+                break;
+            }
         }
     }
 }
