@@ -84,20 +84,21 @@ public:
         auto ballTransform = primaryBall[2];
         auto ballPhysics = primaryBall[3];
 
-        foreach (entity, enemy, transform, physics; view.withComponents!(AIComponent,
-                TransformComponent, PhysicsComponent))
+        foreach (entity, enemy, transform, physics, sprite; view.withComponents!(AIComponent,
+                TransformComponent, PhysicsComponent, SpriteComponent))
         {
             final switch (enemy.constraint)
             {
             case AIConstraint.Vertical:
-                int targetY = cast(int) ballTransform.position.y;
+                int targetY = cast(int)(ballTransform.position.y - (sprite.texture.height / 2.0f));
                 int positionY = cast(int) transform.position.y;
 
                 /* Ball heading away from us? TODO: Work out our potential position */
                 if (ballPhysics.body.velocity.x < 0.0f)
                 {
                     /* TODO: Deduct sprite height */
-                    targetY = cast(int)(context.display.logicalHeight / 2.0f);
+                    targetY = cast(int)((context.display.logicalHeight / 2.0f) - (
+                            sprite.texture.height / 2.0f));
                 }
 
                 auto diff = positionY - targetY;
@@ -120,13 +121,14 @@ public:
                 }
                 break;
             case AIConstraint.Horizontal:
-                int targetX = cast(int) ballTransform.position.x;
+                int targetX = cast(int)(ballTransform.position.x - (sprite.texture.width / 2.0f));
                 int positionX = cast(int) transform.position.x;
 
                 /* Ball heading away from us? */
                 if (ballPhysics.body.velocity.y < 0.0f)
                 {
-                    targetX = cast(int)(context.display.logicalHeight / 2.0f);
+                    targetX = cast(int)((context.display.logicalWidth / 2.0f) - (
+                            sprite.texture.width / 2.0f));
                 }
 
                 auto diff = positionX - targetX;
