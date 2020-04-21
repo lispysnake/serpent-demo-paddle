@@ -65,7 +65,7 @@ final class AIProcessor : Processor!ReadWrite
      */
     final override void run(View!ReadWrite view)
     {
-        auto balls = view.withComponents!(BallComponent, TransformComponent);
+        auto balls = view.withComponents!(BallComponent, TransformComponent, PhysicsComponent);
         if (balls.empty())
         {
             return;
@@ -74,6 +74,7 @@ final class AIProcessor : Processor!ReadWrite
         /* Eventually we'll support more than one ball */
         auto primaryBall = balls.front();
         auto ballTransform = primaryBall[2];
+        auto ballPhysics = primaryBall[3];
 
         foreach (entity, enemy, transform, physics; view.withComponents!(AIComponent,
                 TransformComponent, PhysicsComponent))
@@ -81,11 +82,20 @@ final class AIProcessor : Processor!ReadWrite
             final switch (enemy.constraint)
             {
             case AIConstraint.Vertical:
-                if (ballTransform.position.y < transform.position.y)
+                float targetY = ballTransform.position.y;
+
+                /* Ball heading away from us? TODO: Work out our potential position */
+                if (ballPhysics.body.velocity.x < 0.0f)
+                {
+                    /* TODO: Deduct sprite height */
+                    targetY = (context.display.logicalHeight / 2.0f);
+                }
+
+                if (cast(int) targetY < cast(int) transform.position.y)
                 {
                     physics.body.velocity = vec2f(0.0, -0.3f);
                 }
-                else if (ballTransform.position.y > transform.position.y)
+                else if (cast(int) targetY > cast(int) transform.position.y)
                 {
                     physics.body.velocity = vec2f(0.0f, 0.3f);
                 }
@@ -95,11 +105,19 @@ final class AIProcessor : Processor!ReadWrite
                 }
                 break;
             case AIConstraint.Horizontal:
-                if (ballTransform.position.x < transform.position.x)
+                float targetX = ballTransform.position.x;
+
+                /* Ball heading away from us? */
+                if (ballPhysics.body.velocity.y < 0.0f)
+                {
+                    targetX = (context.display.logicalHeight / 2.0f);
+                }
+
+                if (cast(int) targetX < cast(int) transform.position.x)
                 {
                     physics.body.velocity = vec2f(-0.3, 0.0f);
                 }
-                else if (ballTransform.position.x > transform.position.x)
+                else if (cast(int) targetX > cast(int) transform.position.x)
                 {
                     physics.body.velocity = vec2f(0.3, 0.0f);
                 }
