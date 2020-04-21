@@ -51,6 +51,14 @@ final @serpentComponent struct AIComponent
 final class AIProcessor : Processor!ReadWrite
 {
 
+private:
+
+    /* Prevent jitter physics */
+    const int zoneTolerance = 5;
+    const float paddleSpeed = 0.3f;
+
+public:
+
     /**
      * Register the AI Component with the system
      */
@@ -82,48 +90,61 @@ final class AIProcessor : Processor!ReadWrite
             final switch (enemy.constraint)
             {
             case AIConstraint.Vertical:
-                float targetY = ballTransform.position.y;
+                int targetY = cast(int) ballTransform.position.y;
+                int positionY = cast(int) transform.position.y;
 
                 /* Ball heading away from us? TODO: Work out our potential position */
                 if (ballPhysics.body.velocity.x < 0.0f)
                 {
                     /* TODO: Deduct sprite height */
-                    targetY = (context.display.logicalHeight / 2.0f);
+                    targetY = cast(int)(context.display.logicalHeight / 2.0f);
                 }
 
-                if (cast(int) targetY < cast(int) transform.position.y)
+                auto diff = positionY - targetY;
+                if (diff < 0)
                 {
-                    physics.body.velocity = vec2f(0.0, -0.3f);
+                    diff = -diff;
                 }
-                else if (cast(int) targetY > cast(int) transform.position.y)
-                {
-                    physics.body.velocity = vec2f(0.0f, 0.3f);
-                }
-                else
+
+                if (diff <= zoneTolerance)
                 {
                     physics.body.velocity = vec2f(0.0f, 0.0f);
                 }
+                else if (targetY < positionY)
+                {
+                    physics.body.velocity = vec2f(0.0f, -paddleSpeed);
+                }
+                else
+                {
+                    physics.body.velocity = vec2f(0.0f, paddleSpeed);
+                }
                 break;
             case AIConstraint.Horizontal:
-                float targetX = ballTransform.position.x;
+                int targetX = cast(int) ballTransform.position.x;
+                int positionX = cast(int) transform.position.x;
 
                 /* Ball heading away from us? */
                 if (ballPhysics.body.velocity.y < 0.0f)
                 {
-                    targetX = (context.display.logicalHeight / 2.0f);
+                    targetX = cast(int)(context.display.logicalHeight / 2.0f);
                 }
 
-                if (cast(int) targetX < cast(int) transform.position.x)
+                auto diff = positionX - targetX;
+                if (diff < 0)
                 {
-                    physics.body.velocity = vec2f(-0.3, 0.0f);
+                    diff = -diff;
                 }
-                else if (cast(int) targetX > cast(int) transform.position.x)
+                if (diff <= zoneTolerance)
                 {
-                    physics.body.velocity = vec2f(0.3, 0.0f);
+                    physics.body.velocity = vec2f(0.0f, 0.0f);
+                }
+                else if (targetX < positionX)
+                {
+                    physics.body.velocity = vec2f(-paddleSpeed, 0.0f);
                 }
                 else
                 {
-                    physics.body.velocity = vec2f(0.0f, 0.0f);
+                    physics.body.velocity = vec2f(paddleSpeed, 0.0f);
                 }
                 break;
             }
