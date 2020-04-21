@@ -41,6 +41,7 @@ private:
     EntityID player;
     bool keyUp = false;
     bool keyDown = false;
+    bool gravity = false;
 
     final void keyPressed(KeyboardEvent e)
     {
@@ -74,6 +75,17 @@ private:
             break;
         case SDL_SCANCODE_Q:
             context.quit();
+            break;
+        case SDL_SCANCODE_G:
+            gravity = !gravity;
+            if (gravity)
+            {
+                world.gravity = vec2f(0.0f, 0.003f);
+            }
+            else
+            {
+                world.gravity = vec2f(0.0f, 0.0f);
+            }
             break;
         default:
             break;

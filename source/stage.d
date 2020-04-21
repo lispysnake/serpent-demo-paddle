@@ -176,12 +176,14 @@ public:
         auto trans = TransformComponent();
         trans.position.x = position.min.x;
         trans.position.y = position.min.y;
-        auto body = new KinematicBody();
+        auto body = new StaticBody();
         auto width = position.max.x - position.min.x;
         auto height = position.max.y - position.min.y;
-        auto shape = new BoxShape(width, height);
+        auto shape = new BoxShape(width, height, 3.0f);
         shape.elasticity = 1.0f;
         shape.friction = 0.0f;
+        shape.mass = 1.0f;
+        shape.density = 1.0f;
         body.add(shape);
         auto phys = PhysicsComponent();
         phys.body = body;
@@ -201,9 +203,9 @@ public:
             createWall(view, rectanglef(0.0f, 0.0f, 1.0f, 768.0f)), /* left */
             createWall(view, rectanglef(1366.0f - 1.0f,
                     0.0f, 1.0f, 768.0f)), /* right */
-            createWall(view, rectanglef(0.0f, 0.0f, 1366.0f,
-                    1.0f)), /* top */
-            createWall(view, rectanglef(0.0f, 768.0f - 1.0f, 1366.0f, 1.0f)), /* bottom */
+            createWall(view, rectanglef(0.0f, -30.0f, 1366.0f,
+                    30.0f)), /* top */
+            createWall(view, rectanglef(0.0f, 768.0f + 30.0f, 1366.0f, 30.0f)), /* bottom */
         ];
 
         return ret;
