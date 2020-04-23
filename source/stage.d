@@ -181,7 +181,7 @@ public:
         auto height = position.max.y - position.min.y;
         auto shape = new BoxShape(width, height, 3.0f);
         shape.elasticity = 1.0f;
-        shape.friction = 0.0f;
+        shape.friction = 1.0f;
         shape.mass = 1.0f;
         shape.density = 1.0f;
         body.add(shape);
