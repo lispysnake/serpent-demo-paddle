@@ -22,11 +22,13 @@
 
 import serpent;
 import serpent.graphics.sprite;
+import serpent.physics2d;
 
 import bindbc.sdl;
+import std.getopt;
+import std.stdio;
 
 import stage;
-import serpent.physics2d;
 
 import ai;
 
@@ -146,15 +148,67 @@ public:
 }
 
 /* Main entry */
-void main()
+int main(string[] args)
 {
-    auto context = new serpent.Context();
-    context.display.pipeline.driverType = DriverType.Vulkan;
-    context.display.size(1366, 768);
-    context.display.logicalSize(1366, 768);
-    context.display.title = "#serpent Paddle Demo";
+    bool vulkan = false;
+    bool fullscreen = false;
+    bool debugMode = false;
+    bool disableVsync = false;
+    auto argp = getopt(args, std.getopt.config.bundling, "v|vulkan",
+            "Use Vulkan instead of OpenGL", &vulkan, "f|fullscreen",
+            "Start in fullscreen mode", &fullscreen, "d|debug", "Enable debug mode",
+            &debugMode, "n|no-vsync", "Disable VSync", &disableVsync);
 
-    /* Handle all physics through chipmunk */
+    if (argp.helpWanted)
+    {
+        defaultGetoptPrinter("serpent demonstration\n", argp.options);
+        return 0;
+    }
+
+    /* Context is essential to *all* Serpent usage. */
+    auto context = new Context();
+    context.display.title("#serpent Paddle Demo").size(1366, 768);
+    context.display.logicalSize(1366, 768);
+
+    if (vulkan)
+    {
+        context.display.title = context.display.title ~ " [Vulkan]";
+    }
+    else
+    {
+        context.display.title = context.display.title ~ " [OpenGL]";
+    }
+
+    /* We want OpenGL or Vulkan? */
+    if (vulkan)
+    {
+        writeln("Requesting Vulkan display mode");
+        context.display.pipeline.driverType = DriverType.Vulkan;
+    }
+    else
+    {
+        writeln("Requesting OpenGL display mode");
+        context.display.pipeline.driverType = DriverType.OpenGL;
+    }
+
+    if (fullscreen)
+    {
+        writeln("Starting in fullscreen mode");
+        context.display.fullscreen = true;
+    }
+
+    if (debugMode)
+    {
+        writeln("Starting in debug mode");
+        context.display.pipeline.debugMode = true;
+    }
+
+    if (disableVsync)
+    {
+        writeln("Disabling vsync");
+        context.display.pipeline.verticalSync = false;
+    }
+
     auto phys = new PhysicsProcessor();
     auto world = phys.world;
     context.systemGroup.add(phys);
@@ -166,5 +220,5 @@ void main()
     auto pipe = cast(BgfxPipeline) context.display.pipeline;
     pipe.addRenderer(new SpriteRenderer());
 
-    context.run(new MyApp(world));
+    return context.run(new MyApp(world));
 }
