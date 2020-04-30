@@ -31,6 +31,18 @@ import std.path : buildPath;
 
 import serpent.physics2d;
 
+final enum PaddleOwner
+{
+    PlayerOne = 0,
+    PlayerTwo,
+}
+
+final enum PaddleType
+{
+    Human = 0,
+    Computer
+}
+
 /**
  * The Stage is basically our game layout. It is divided as such that
  * it has bounding boxes for collisions.
@@ -122,20 +134,28 @@ public:
         view.addComponent(entBall, physBall);
     }
 
-    final EntityID spawnPaddle(View!ReadWrite view, bool leftEdge)
+    final EntityID spawnPaddle(View!ReadWrite view, PaddleOwner owner, PaddleType type)
     {
         /* CPU paddle */
         auto entPaddle = view.createEntity();
 
         /* Sprite */
         auto spritePaddle = SpriteComponent();
-        spritePaddle.texture = leftEdge ? paddleTextureTeam1 : paddleTextureTeam2;
+        final switch (owner)
+        {
+        case PaddleOwner.PlayerOne:
+            spritePaddle.texture = paddleTextureTeam1;
+            break;
+        case PaddleOwner.PlayerTwo:
+            spritePaddle.texture = paddleTextureTeam2;
+            break;
+        }
 
         /* Transform */
         auto transPaddle = TransformComponent();
         transPaddle.position.y = (height / 2.0f) - (spritePaddle.texture.height / 2.0f);
 
-        if (leftEdge)
+        if (owner == PaddleOwner.PlayerOne)
         {
             transPaddle.position.x = 25.0f;
         }
@@ -161,7 +181,7 @@ public:
         /**
          * Mark this as an AI paddle on the right edge
          */
-        if (!leftEdge)
+        if (type == PaddleType.Computer)
         {
             auto comp = AIComponent();
             comp.constraint = AIConstraint.Vertical;
