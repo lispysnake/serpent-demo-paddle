@@ -35,6 +35,7 @@ final enum PaddleOwner
 {
     PlayerOne = 0,
     PlayerTwo,
+    Obstacle,
 }
 
 final enum PaddleType
@@ -56,6 +57,7 @@ private:
     Texture ballTexture;
     Texture paddleTextureTeam1;
     Texture paddleTextureTeam2;
+    Texture paddleTextureObstacle;
 
     float _width = 0;
     float _height = 0;
@@ -79,6 +81,9 @@ public:
         paddleTextureTeam1 = new Texture(buildPath("assets", "paddleBlue.png"),
                 TextureFilter.Linear);
         paddleTextureTeam2 = new Texture(buildPath("assets", "paddleRed.png"), TextureFilter.Linear);
+
+        paddleTextureObstacle = new Texture(buildPath("assets",
+                "paddleInert.png"), TextureFilter.Linear);
     }
 
     /**
@@ -149,19 +154,25 @@ public:
         case PaddleOwner.PlayerTwo:
             spritePaddle.texture = paddleTextureTeam2;
             break;
+        case PaddleOwner.Obstacle:
+            spritePaddle.texture = paddleTextureObstacle;
         }
 
         /* Transform */
         auto transPaddle = TransformComponent();
         transPaddle.position.y = (height / 2.0f) - (spritePaddle.texture.height / 2.0f);
 
-        if (owner == PaddleOwner.PlayerOne)
+        final switch (owner)
         {
+        case PaddleOwner.PlayerOne:
             transPaddle.position.x = 25.0f;
-        }
-        else
-        {
+            break;
+        case PaddleOwner.PlayerTwo:
             transPaddle.position.x = width - spritePaddle.texture.width - 25.0f;
+            break;
+        case PaddleOwner.Obstacle:
+            transPaddle.position.x = (width / 2.0f) - (spritePaddle.texture.width / 2.0f);
+            break;
         }
 
         view.addComponent(entPaddle, spritePaddle);
@@ -192,6 +203,9 @@ public:
                 break;
             case PaddleOwner.PlayerTwo:
                 comp.edge = AIEdge.Right;
+                break;
+            case PaddleOwner.Obstacle:
+                comp.edge = AIEdge.None;
                 break;
             }
             view.addComponent(entPaddle, comp);

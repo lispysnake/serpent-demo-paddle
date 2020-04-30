@@ -41,7 +41,8 @@ final enum AIConstraint
  */
 final enum AIEdge
 {
-    Left = 0,
+    None = 0,
+    Left,
     Right,
 }
 
