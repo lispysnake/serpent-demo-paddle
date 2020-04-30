@@ -12,5 +12,5 @@ Weekly TODO
  - [ ] Potentially add powerups (multiple ball spawn)
  - [ ] Add SegmentShape to physics2d
  - [ ] Add sprite rotation so ball rotates with physics correctly
- - [ ] Restore accumulator for now in physics2d
+ - [x] Restore accumulator for now in physics2d
  - [ ] Add drawing code to chipmunk (primitives) so we can *visualise* the physics, man.
