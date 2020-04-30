@@ -62,10 +62,11 @@ public:
         this._width = width;
         this._height = height;
 
-        ballTexture = new Texture(buildPath("assets", "ball.png"));
+        ballTexture = new Texture(buildPath("assets", "ball.png"), TextureFilter.Linear);
 
-        paddleTextureTeam1 = new Texture(buildPath("assets", "paddleBlue.png"));
-        paddleTextureTeam2 = new Texture(buildPath("assets", "paddleRed.png"));
+        paddleTextureTeam1 = new Texture(buildPath("assets", "paddleBlue.png"),
+                TextureFilter.Linear);
+        paddleTextureTeam2 = new Texture(buildPath("assets", "paddleRed.png"), TextureFilter.Linear);
     }
 
     /**
