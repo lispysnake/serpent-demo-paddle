@@ -4,11 +4,11 @@ Weekly TODO
  - [ ] Convert left/right walls into sensors
  - [ ] Add callbacks to know who 'scored'
  - [ ] Display scores on screen
- - [ ] Make computer able to control both players for demo function
+ - [x] Make computer able to control both players for demo function
  - [ ] Add start screen utilising demo
  - [x] Fix texture scaling as it is ugly in full screen
  - [ ] Add some kind of world decoration to make less boring
- - [ ] Add obstacles
+ - [x] Add obstacles
  - [ ] Potentially add powerups (multiple ball spawn)
  - [ ] Add SegmentShape to physics2d
  - [ ] Add sprite rotation so ball rotates with physics correctly
