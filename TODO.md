@@ -10,3 +10,4 @@ Weekly TODO
 - Add some kind of world decoration to make less boring
 - Add obstacles
 - Potentially add powerups (multiple ball spawn)
+- Add SegmentShape to physics2d
