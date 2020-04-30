@@ -205,7 +205,7 @@ public:
                     0.0f, 1.0f, 768.0f)), /* right */
             createWall(view, rectanglef(0.0f, -30.0f, 1366.0f,
                     30.0f)), /* top */
-            createWall(view, rectanglef(0.0f, 768.0f + 30.0f, 1366.0f, 30.0f)), /* bottom */
+            createWall(view, rectanglef(0.0f, 768.0f - 30.0f, 1366.0f, 30.0f)), /* bottom */
         ];
 
         return ret;
