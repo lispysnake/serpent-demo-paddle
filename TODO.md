@@ -11,3 +11,4 @@ Weekly TODO
 - Add obstacles
 - Potentially add powerups (multiple ball spawn)
 - Add SegmentShape to physics2d
+- Add sprite rotation so ball rotates with physics correctly
