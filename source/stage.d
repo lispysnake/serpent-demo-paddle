@@ -59,6 +59,7 @@ private:
     Texture paddleTextureTeam1;
     Texture paddleTextureTeam2;
     Texture paddleTextureObstacle;
+    Texture texSplash;
 
     float _width = 0;
     float _height = 0;
@@ -85,6 +86,8 @@ public:
 
         paddleTextureObstacle = new Texture(buildPath("assets",
                 "paddleInert.png"), TextureFilter.Linear);
+
+        texSplash = new Texture(buildPath("assets", "paddle.png"), TextureFilter.Linear);
     }
 
     /**
@@ -101,6 +104,20 @@ public:
     pure final const @property float height() @safe @nogc nothrow
     {
         return _height;
+    }
+
+    /**
+     * Spawn the splash screen
+     */
+    final void spawnSplash(View!ReadWrite view) @system
+    {
+        auto ent = view.createEntity();
+        auto sprite = SpriteComponent();
+        sprite.texture = texSplash;
+        view.addComponent(ent, sprite);
+        auto trans = TransformComponent();
+        trans.position.z = 0.3f;
+        view.addComponent(ent, trans);
     }
 
     /**

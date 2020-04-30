@@ -135,6 +135,7 @@ public:
         context.input.keyReleased.connect(&keyReleased);
 
         /* Spawn the paddles */
+        arena.spawnSplash(view);
         player = arena.spawnPaddle(view, PaddleOwner.PlayerOne, PaddleType.Computer);
         arena.spawnPaddle(view, PaddleOwner.PlayerTwo, PaddleType.Computer);
         arena.spawnPaddle(view, PaddleOwner.ObstacleOne, PaddleType.Computer);
