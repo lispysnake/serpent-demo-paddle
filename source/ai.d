@@ -37,11 +37,21 @@ final enum AIConstraint
 }
 
 /**
+ * AI can follow an edge
+ */
+final enum AIEdge
+{
+    Left = 0,
+    Right,
+}
+
+/**
  * AI Component is added to 'enemy' paddles
  */
 final @serpentComponent struct AIComponent
 {
     AIConstraint constraint;
+    AIEdge edge;
 }
 
 /**
@@ -94,7 +104,8 @@ public:
                 int positionY = cast(int) transform.position.y;
 
                 /* Ball heading away from us? TODO: Work out our potential position */
-                if (ballPhysics.body.velocity.x < 0.0f)
+                if ((enemy.edge == AIEdge.Right && ballPhysics.body.velocity.x < 0.0f)
+                        || (enemy.edge == AIEdge.Left && ballPhysics.body.velocity.x > 0.0f))
                 {
                     /* TODO: Deduct sprite height */
                     targetY = cast(int)((context.display.logicalHeight / 2.0f) - (

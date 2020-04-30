@@ -103,7 +103,7 @@ public:
 
     /**
      * Apply physics to player
-     */
+     *
     final override void update(View!ReadWrite view)
     {
         auto phys = view.data!PhysicsComponent(player);
@@ -119,7 +119,7 @@ public:
         {
             phys.body.velocity = vec2f(0.0f, 0.0f);
         }
-    }
+    }*/
 
     final override bool bootstrap(View!ReadWrite view)
     {
@@ -135,7 +135,7 @@ public:
         context.input.keyReleased.connect(&keyReleased);
 
         /* Spawn the paddles */
-        player = arena.spawnPaddle(view, PaddleOwner.PlayerOne, PaddleType.Human);
+        player = arena.spawnPaddle(view, PaddleOwner.PlayerOne, PaddleType.Computer);
         arena.spawnPaddle(view, PaddleOwner.PlayerTwo, PaddleType.Computer);
 
         /* Spawn first play ball */

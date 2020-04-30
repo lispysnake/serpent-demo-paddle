@@ -179,12 +179,21 @@ public:
         view.addComponent(entPaddle, physPaddle);
 
         /**
-         * Mark this as an AI paddle on the right edge
+         * Mark this as an AI paddle on the correct edge
          */
         if (type == PaddleType.Computer)
         {
             auto comp = AIComponent();
             comp.constraint = AIConstraint.Vertical;
+            final switch (owner)
+            {
+            case PaddleOwner.PlayerOne:
+                comp.edge = AIEdge.Left;
+                break;
+            case PaddleOwner.PlayerTwo:
+                comp.edge = AIEdge.Right;
+                break;
+            }
             view.addComponent(entPaddle, comp);
         }
 
