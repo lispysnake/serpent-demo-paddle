@@ -67,6 +67,7 @@ private:
     /* Prevent jitter physics */
     const int zoneTolerance = 5;
     const float paddleSpeed = 0.3f;
+    const float obstacleSpeed = 0.2f;
 
 public:
 
@@ -103,6 +104,29 @@ public:
             case AIConstraint.Vertical:
                 int targetY = cast(int)(ballTransform.position.y - (sprite.texture.height / 2.0f));
                 int positionY = cast(int) transform.position.y;
+
+                /* Special case obstacle */
+                if (enemy.edge == AIEdge.None)
+                {
+                    if (positionY <= zoneTolerance)
+                    {
+                        physics.body.velocity = vec2f(0.0f, obstacleSpeed);
+                    }
+                    else
+                    {
+                        auto diff = positionY - context.display.logicalHeight
+                            + sprite.texture.height;
+                        if (diff < 0)
+                        {
+                            diff = -diff;
+                        }
+                        if (diff <= zoneTolerance)
+                        {
+                            physics.body.velocity = vec2f(0.0f, -obstacleSpeed);
+                        }
+                    }
+                    continue;
+                }
 
                 /* Ball heading away from us? TODO: Work out our potential position */
                 if ((enemy.edge == AIEdge.Right && ballPhysics.body.velocity.x < 0.0f)

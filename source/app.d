@@ -137,7 +137,7 @@ public:
         /* Spawn the paddles */
         player = arena.spawnPaddle(view, PaddleOwner.PlayerOne, PaddleType.Computer);
         arena.spawnPaddle(view, PaddleOwner.PlayerTwo, PaddleType.Computer);
-        arena.spawnPaddle(view, PaddleOwner.Obstacle, PaddleType.Human);
+        arena.spawnPaddle(view, PaddleOwner.Obstacle, PaddleType.Computer);
 
         /* Spawn first play ball */
         arena.spawnBall(view);

@@ -172,6 +172,7 @@ public:
             break;
         case PaddleOwner.Obstacle:
             transPaddle.position.x = (width / 2.0f) - (spritePaddle.texture.width / 2.0f);
+            transPaddle.position.y = 5.0f;
             break;
         }
 
