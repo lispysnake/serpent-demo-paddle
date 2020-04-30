@@ -35,7 +35,8 @@ final enum PaddleOwner
 {
     PlayerOne = 0,
     PlayerTwo,
-    Obstacle,
+    ObstacleOne,
+    ObstacleTwo,
 }
 
 final enum PaddleType
@@ -154,7 +155,8 @@ public:
         case PaddleOwner.PlayerTwo:
             spritePaddle.texture = paddleTextureTeam2;
             break;
-        case PaddleOwner.Obstacle:
+        case PaddleOwner.ObstacleOne:
+        case PaddleOwner.ObstacleTwo:
             spritePaddle.texture = paddleTextureObstacle;
         }
 
@@ -170,9 +172,13 @@ public:
         case PaddleOwner.PlayerTwo:
             transPaddle.position.x = width - spritePaddle.texture.width - 25.0f;
             break;
-        case PaddleOwner.Obstacle:
-            transPaddle.position.x = (width / 2.0f) - (spritePaddle.texture.width / 2.0f);
+        case PaddleOwner.ObstacleOne:
+            transPaddle.position.x = (width / 2.0f) - (spritePaddle.texture.width / 2.0f) - 32.0f;
             transPaddle.position.y = 5.0f;
+            break;
+        case PaddleOwner.ObstacleTwo:
+            transPaddle.position.x = (width / 2.0f) - (spritePaddle.texture.width / 2.0f) + 32.0f;
+            transPaddle.position.y = height - 5.0f - spritePaddle.texture.height;
             break;
         }
 
@@ -205,7 +211,8 @@ public:
             case PaddleOwner.PlayerTwo:
                 comp.edge = AIEdge.Right;
                 break;
-            case PaddleOwner.Obstacle:
+            case PaddleOwner.ObstacleOne:
+            case PaddleOwner.ObstacleTwo:
                 comp.edge = AIEdge.None;
                 break;
             }
