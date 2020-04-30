@@ -5,7 +5,7 @@ Weekly TODO
  - [ ] Add callbacks to know who 'scored'
  - [ ] Display scores on screen
  - [x] Make computer able to control both players for demo function
- - [ ] Add start screen utilising demo
+ - [x] Add start screen utilising demo
  - [x] Fix texture scaling as it is ugly in full screen
  - [ ] Add some kind of world decoration to make less boring
  - [x] Add obstacles
