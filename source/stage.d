@@ -64,6 +64,8 @@ private:
 
     Texture[10] numeralTexture;
 
+    Texture borderTexture;
+
     float _width = 0;
     float _height = 0;
 
@@ -97,6 +99,8 @@ public:
             numeralTexture[i] = new Texture(buildPath("assets",
                     "numeral%d.png".format(i)), TextureFilter.Linear);
         }
+
+        borderTexture = new Texture(buildPath("assets", "wall.png"), TextureFilter.Linear);
     }
 
     /**
@@ -312,5 +316,36 @@ public:
         view.addComponent(entityID, trans);
         view.addComponent(entityID, sprite);
         return entityID;
+    }
+
+    final void spawnBorder(View!ReadWrite view)
+    {
+        auto tileWidth = width / borderTexture.width;
+        foreach (i; 0 .. tileWidth)
+        {
+            {
+                auto ent = view.createEntity();
+                auto sprite = SpriteComponent();
+                sprite.texture = borderTexture;
+                auto trans = TransformComponent();
+                trans.position.x = i * borderTexture.width;
+                trans.position.y = 0;
+
+                view.addComponent(ent, sprite);
+                view.addComponent(ent, trans);
+            }
+
+            {
+                auto ent = view.createEntity();
+                auto sprite = SpriteComponent();
+                sprite.texture = borderTexture;
+                auto trans = TransformComponent();
+                trans.position.x = i * borderTexture.width;
+                trans.position.y = height - borderTexture.height;
+
+                view.addComponent(ent, sprite);
+                view.addComponent(ent, trans);
+            }
+        }
     }
 }

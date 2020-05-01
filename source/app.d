@@ -120,6 +120,7 @@ private:
         obstacle2 = arena.spawnPaddle(view, PaddleOwner.ObstacleTwo, PaddleType.Computer);
         ballID = arena.spawnBall(view);
         arena.spawnWalls(view);
+        arena.spawnBorder(view);
     }
 
     /**
