@@ -43,6 +43,9 @@ private:
     EntityID player;
     EntityID splash;
     EntityID ballID;
+    EntityID enemyPaddle;
+    EntityID obstacle1;
+    EntityID obstacle2;
     bool keyUp = false;
     bool keyDown = false;
     bool gravity = false;
@@ -107,9 +110,9 @@ private:
     {
         splash = arena.spawnSplash(view);
         player = arena.spawnPaddle(view, PaddleOwner.PlayerOne, PaddleType.Computer);
-        arena.spawnPaddle(view, PaddleOwner.PlayerTwo, PaddleType.Computer);
-        arena.spawnPaddle(view, PaddleOwner.ObstacleOne, PaddleType.Computer);
-        arena.spawnPaddle(view, PaddleOwner.ObstacleTwo, PaddleType.Computer);
+        enemyPaddle = arena.spawnPaddle(view, PaddleOwner.PlayerTwo, PaddleType.Computer);
+        obstacle1 = arena.spawnPaddle(view, PaddleOwner.ObstacleOne, PaddleType.Computer);
+        obstacle2 = arena.spawnPaddle(view, PaddleOwner.ObstacleTwo, PaddleType.Computer);
         ballID = arena.spawnBall(view);
         arena.spawnWalls(view);
     }
@@ -120,9 +123,16 @@ private:
     final void spawnLevel(View!ReadWrite view)
     {
         view.killEntity(player);
-        player = arena.spawnPaddle(view, PaddleOwner.PlayerOne, PaddleType.Human);
         view.killEntity(splash);
         view.killEntity(ballID);
+        view.killEntity(enemyPaddle);
+        view.killEntity(obstacle1);
+        view.killEntity(obstacle2);
+
+        player = arena.spawnPaddle(view, PaddleOwner.PlayerOne, PaddleType.Human);
+        enemyPaddle = arena.spawnPaddle(view, PaddleOwner.PlayerTwo, PaddleType.Computer);
+        obstacle1 = arena.spawnPaddle(view, PaddleOwner.ObstacleOne, PaddleType.Computer);
+        obstacle2 = arena.spawnPaddle(view, PaddleOwner.ObstacleTwo, PaddleType.Computer);
         ballID = arena.spawnBall(view);
     }
 
