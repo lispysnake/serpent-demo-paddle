@@ -65,6 +65,7 @@ private:
     Texture[10] numeralTexture;
 
     Texture borderTexture;
+    Texture borderTexture2;
 
     float _width = 0;
     float _height = 0;
@@ -101,6 +102,7 @@ public:
         }
 
         borderTexture = new Texture(buildPath("assets", "wall.png"), TextureFilter.Linear);
+        borderTexture2 = new Texture(buildPath("assets", "wall2.png"), TextureFilter.Linear);
     }
 
     /**
@@ -338,10 +340,10 @@ public:
             {
                 auto ent = view.createEntity();
                 auto sprite = SpriteComponent();
-                sprite.texture = borderTexture;
+                sprite.texture = borderTexture2;
                 auto trans = TransformComponent();
-                trans.position.x = i * borderTexture.width;
-                trans.position.y = height - borderTexture.height;
+                trans.position.x = i * borderTexture2.width;
+                trans.position.y = height - borderTexture2.height;
 
                 view.addComponent(ent, sprite);
                 view.addComponent(ent, trans);
