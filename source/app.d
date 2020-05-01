@@ -44,6 +44,8 @@ private:
     bool keyUp = false;
     bool keyDown = false;
     bool gravity = false;
+    bool demoMode = true;
+    bool levelSpawn = false;
 
     final void keyPressed(KeyboardEvent e)
     {
@@ -64,6 +66,8 @@ private:
 
     final void keyReleased(KeyboardEvent e)
     {
+        demoMode = false;
+
         switch (e.scancode)
         {
         case SDL_SCANCODE_UP:
@@ -130,9 +134,22 @@ public:
 
     /**
      * Apply physics to player
-     *
+     */
     final override void update(View!ReadWrite view)
     {
+        if (demoMode)
+        {
+            return;
+        }
+        if (!levelSpawn)
+        {
+            context.entity.clear();
+            context.entity.build();
+            spawnLevel(view);
+            levelSpawn = true;
+            return;
+        }
+
         auto phys = view.data!PhysicsComponent(player);
         if (keyUp)
         {
@@ -146,7 +163,7 @@ public:
         {
             phys.body.velocity = vec2f(0.0f, 0.0f);
         }
-    }*/
+    }
 
     final override bool bootstrap(View!ReadWrite view)
     {
