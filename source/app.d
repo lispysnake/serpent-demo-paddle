@@ -51,6 +51,8 @@ private:
 
     final void keyPressed(KeyboardEvent e)
     {
+        demoMode = false;
+
         switch (e.scancode())
         {
         case SDL_SCANCODE_UP:
@@ -68,8 +70,6 @@ private:
 
     final void keyReleased(KeyboardEvent e)
     {
-        demoMode = false;
-
         switch (e.scancode)
         {
         case SDL_SCANCODE_UP:
