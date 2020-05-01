@@ -288,11 +288,11 @@ public:
     {
         EntityID[] ret = [
             createWall(view, rectanglef(0.0f, 0.0f, 1.0f, 768.0f)), /* left */
-            createWall(view, rectanglef(1366.0f - 1.0f,
-                    0.0f, 1.0f, 768.0f)), /* right */
-            createWall(view, rectanglef(0.0f, -30.0f, 1366.0f,
-                    30.0f)), /* top */
-            createWall(view, rectanglef(0.0f, 768.0f - 30.0f, 1366.0f, 30.0f)), /* bottom */
+            createWall(view,
+                    rectanglef(1366.0f - 1.0f, 0.0f, 1.0f, 768.0f)), /* right */
+            createWall(view, rectanglef(0.0f, -1.0f, 1366.0f,
+                    1.0f)), /* top */
+            createWall(view, rectanglef(0.0f, 768.0f, 1366.0f, 1.0f)), /* bottom */
         ];
 
         return ret;
@@ -333,8 +333,19 @@ public:
                 trans.position.x = i * borderTexture.width;
                 trans.position.y = 0;
 
+                auto body = new StaticBody();
+                auto shape = new BoxShape(borderTexture.width, borderTexture.height, 3.0f);
+                shape.elasticity = 1.0f;
+                shape.friction = 1.0f;
+                shape.mass = 1.0f;
+                shape.density = 1.0f;
+                body.add(shape);
+                auto phys = PhysicsComponent();
+                phys.body = body;
+
                 view.addComponent(ent, sprite);
                 view.addComponent(ent, trans);
+                view.addComponent(ent, phys);
             }
 
             {
@@ -345,8 +356,19 @@ public:
                 trans.position.x = i * borderTexture2.width;
                 trans.position.y = height - borderTexture2.height;
 
+                auto body = new StaticBody();
+                auto shape = new BoxShape(borderTexture.width, borderTexture.height, 3.0f);
+                shape.elasticity = 1.0f;
+                shape.friction = 1.0f;
+                shape.mass = 1.0f;
+                shape.density = 1.0f;
+                body.add(shape);
+                auto phys = PhysicsComponent();
+                phys.body = body;
+
                 view.addComponent(ent, sprite);
                 view.addComponent(ent, trans);
+                view.addComponent(ent, phys);
             }
         }
     }
