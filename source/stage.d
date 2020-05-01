@@ -307,7 +307,7 @@ public:
         auto trans = TransformComponent();
         auto sprite = SpriteComponent();
 
-        trans.position.y = 32.0f;
+        trans.position.y = 48.0f;
         trans.position.x = owner == PaddleOwner.PlayerOne ? 32.0f : width - 64.0f;
         trans.scale.x = 2.0f;
         trans.scale.y = 2.0f;
