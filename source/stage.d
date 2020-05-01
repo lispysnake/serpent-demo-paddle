@@ -305,6 +305,7 @@ public:
         trans.position.x = owner == PaddleOwner.PlayerOne ? 32.0f : width - 64.0f;
         trans.scale.x = 2.0f;
         trans.scale.y = 2.0f;
+        trans.position.z = 0.4f;
 
         sprite.texture = numeralTexture[3];
 
