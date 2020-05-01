@@ -120,7 +120,6 @@ private:
         obstacle2 = arena.spawnPaddle(view, PaddleOwner.ObstacleTwo, PaddleType.Computer);
         ballID = arena.spawnBall(view);
         arena.spawnWalls(view);
-        arena.spawnBorder(view);
     }
 
     /**
@@ -143,6 +142,8 @@ private:
 
         scoreHuman = arena.spawnScore(view, PaddleOwner.PlayerOne);
         scoreEnemy = arena.spawnScore(view, PaddleOwner.PlayerTwo);
+
+        arena.spawnBorder(view);
     }
 
 public:
