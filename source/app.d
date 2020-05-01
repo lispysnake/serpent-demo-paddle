@@ -94,6 +94,33 @@ private:
         }
     }
 
+    /**
+     * Spawn world in demo configuration
+     */
+    final void spawnDemo(View!ReadWrite view)
+    {
+        arena.spawnSplash(view);
+        player = arena.spawnPaddle(view, PaddleOwner.PlayerOne, PaddleType.Computer);
+        arena.spawnPaddle(view, PaddleOwner.PlayerTwo, PaddleType.Computer);
+        arena.spawnPaddle(view, PaddleOwner.ObstacleOne, PaddleType.Computer);
+        arena.spawnPaddle(view, PaddleOwner.ObstacleTwo, PaddleType.Computer);
+        arena.spawnBall(view);
+        arena.spawnWalls(view);
+    }
+
+    /**
+     * Spawn world in the level configuration
+     */
+    final void spawnLevel(View!ReadWrite view)
+    {
+        player = arena.spawnPaddle(view, PaddleOwner.PlayerOne, PaddleType.Human);
+        arena.spawnPaddle(view, PaddleOwner.PlayerTwo, PaddleType.Computer);
+        arena.spawnPaddle(view, PaddleOwner.ObstacleOne, PaddleType.Computer);
+        arena.spawnPaddle(view, PaddleOwner.ObstacleTwo, PaddleType.Computer);
+        arena.spawnBall(view);
+        arena.spawnWalls(view);
+    }
+
 public:
 
     this(AbstractWorld world)
@@ -134,17 +161,7 @@ public:
         context.input.keyPressed.connect(&keyPressed);
         context.input.keyReleased.connect(&keyReleased);
 
-        /* Spawn the paddles */
-        arena.spawnSplash(view);
-        player = arena.spawnPaddle(view, PaddleOwner.PlayerOne, PaddleType.Computer);
-        arena.spawnPaddle(view, PaddleOwner.PlayerTwo, PaddleType.Computer);
-        arena.spawnPaddle(view, PaddleOwner.ObstacleOne, PaddleType.Computer);
-        arena.spawnPaddle(view, PaddleOwner.ObstacleTwo, PaddleType.Computer);
-
-        /* Spawn first play ball */
-        arena.spawnBall(view);
-
-        arena.spawnWalls(view);
+        spawnDemo(view);
 
         return true;
     }
