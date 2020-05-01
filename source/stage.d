@@ -307,7 +307,7 @@ public:
         trans.scale.y = 2.0f;
         trans.position.z = 0.4f;
 
-        sprite.texture = numeralTexture[3];
+        sprite.texture = owner == PaddleOwner.PlayerOne ? numeralTexture[6] : numeralTexture[5];
 
         view.addComponent(entityID, trans);
         view.addComponent(entityID, sprite);
