@@ -41,6 +41,8 @@ private:
     Stage arena;
     AbstractWorld world;
     EntityID player;
+    EntityID splash;
+    EntityID ballID;
     bool keyUp = false;
     bool keyDown = false;
     bool gravity = false;
@@ -103,12 +105,12 @@ private:
      */
     final void spawnDemo(View!ReadWrite view)
     {
-        arena.spawnSplash(view);
+        splash = arena.spawnSplash(view);
         player = arena.spawnPaddle(view, PaddleOwner.PlayerOne, PaddleType.Computer);
         arena.spawnPaddle(view, PaddleOwner.PlayerTwo, PaddleType.Computer);
         arena.spawnPaddle(view, PaddleOwner.ObstacleOne, PaddleType.Computer);
         arena.spawnPaddle(view, PaddleOwner.ObstacleTwo, PaddleType.Computer);
-        arena.spawnBall(view);
+        ballID = arena.spawnBall(view);
         arena.spawnWalls(view);
     }
 
@@ -117,12 +119,11 @@ private:
      */
     final void spawnLevel(View!ReadWrite view)
     {
+        view.killEntity(player);
         player = arena.spawnPaddle(view, PaddleOwner.PlayerOne, PaddleType.Human);
-        arena.spawnPaddle(view, PaddleOwner.PlayerTwo, PaddleType.Computer);
-        arena.spawnPaddle(view, PaddleOwner.ObstacleOne, PaddleType.Computer);
-        arena.spawnPaddle(view, PaddleOwner.ObstacleTwo, PaddleType.Computer);
-        arena.spawnBall(view);
-        arena.spawnWalls(view);
+        view.killEntity(splash);
+        view.killEntity(ballID);
+        ballID = arena.spawnBall(view);
     }
 
 public:
@@ -143,8 +144,6 @@ public:
         }
         if (!levelSpawn)
         {
-            context.entity.clear();
-            context.entity.build();
             spawnLevel(view);
             levelSpawn = true;
             return;

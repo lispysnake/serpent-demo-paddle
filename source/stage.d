@@ -109,7 +109,7 @@ public:
     /**
      * Spawn the splash screen
      */
-    final void spawnSplash(View!ReadWrite view) @system
+    final EntityID spawnSplash(View!ReadWrite view) @system
     {
         auto ent = view.createEntity();
         auto sprite = SpriteComponent();
@@ -118,12 +118,13 @@ public:
         auto trans = TransformComponent();
         trans.position.z = 0.3f;
         view.addComponent(ent, trans);
+        return ent;
     }
 
     /**
      * Spawn a new ball into play
      */
-    final void spawnBall(View!ReadWrite view) @system
+    final EntityID spawnBall(View!ReadWrite view) @system
     {
         /* ball */
         auto entBall = view.createEntity();
@@ -155,6 +156,8 @@ public:
         view.addComponent(entBall, comp);
 
         view.addComponent(entBall, physBall);
+
+        return entBall;
     }
 
     final EntityID spawnPaddle(View!ReadWrite view, PaddleOwner owner, PaddleType type)
