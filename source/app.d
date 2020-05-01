@@ -51,6 +51,7 @@ private:
     bool gravity = false;
     bool demoMode = true;
     bool levelSpawn = false;
+    bool moarBalls = false;
 
     final void keyPressed(KeyboardEvent e)
     {
@@ -65,6 +66,7 @@ private:
             keyDown = true;
             break;
         case SDL_SCANCODE_SPACE:
+            moarBalls = true;
             break;
         default:
             break;
@@ -157,6 +159,12 @@ public:
             spawnLevel(view);
             levelSpawn = true;
             return;
+        }
+
+        if (moarBalls)
+        {
+            arena.spawnBall(view);
+            moarBalls = false;
         }
 
         auto phys = view.data!PhysicsComponent(player);
