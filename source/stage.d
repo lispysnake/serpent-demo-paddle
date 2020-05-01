@@ -57,6 +57,7 @@ final class Stage
 private:
 
     Texture ballTexture;
+    Texture ballTextureAlt;
     Texture paddleTextureTeam1;
     Texture paddleTextureTeam2;
     Texture paddleTextureObstacle;
@@ -85,6 +86,7 @@ public:
         this._height = height;
 
         ballTexture = new Texture(buildPath("assets", "ball.png"), TextureFilter.Linear);
+        ballTextureAlt = new Texture(buildPath("assets", "ballAlt.png"), TextureFilter.Linear);
 
         paddleTextureTeam1 = new Texture(buildPath("assets", "paddleBlue.png"),
                 TextureFilter.Linear);
@@ -146,7 +148,16 @@ public:
 
         /* Set up sprite texture */
         auto spriteBall = SpriteComponent();
-        spriteBall.texture = ballTexture;
+        import std.random : uniform;
+
+        if (uniform(0, 2) >= 1)
+        {
+            spriteBall.texture = ballTexture;
+        }
+        else
+        {
+            spriteBall.texture = ballTextureAlt;
+        }
 
         /* Set up transform (position) */
         auto transBall = TransformComponent();
