@@ -53,6 +53,9 @@ private:
     bool levelSpawn = false;
     bool moarBalls = false;
 
+    EntityID scoreHuman;
+    EntityID scoreEnemy;
+
     final void keyPressed(KeyboardEvent e)
     {
         demoMode = false;
@@ -136,6 +139,9 @@ private:
         obstacle1 = arena.spawnPaddle(view, PaddleOwner.ObstacleOne, PaddleType.Computer);
         obstacle2 = arena.spawnPaddle(view, PaddleOwner.ObstacleTwo, PaddleType.Computer);
         ballID = arena.spawnBall(view);
+
+        scoreHuman = arena.spawnScore(view, PaddleOwner.PlayerOne);
+        scoreEnemy = arena.spawnScore(view, PaddleOwner.PlayerTwo);
     }
 
 public:

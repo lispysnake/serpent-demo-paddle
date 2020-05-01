@@ -291,4 +291,25 @@ public:
 
         return ret;
     }
+
+    /**
+     * Return the scoreboard entity
+     */
+    final EntityID spawnScore(View!ReadWrite view, PaddleOwner owner)
+    {
+        auto entityID = view.createEntity();
+        auto trans = TransformComponent();
+        auto sprite = SpriteComponent();
+
+        trans.position.y = 32.0f;
+        trans.position.x = owner == PaddleOwner.PlayerOne ? 32.0f : width - 64.0f;
+        trans.scale.x = 2.0f;
+        trans.scale.y = 2.0f;
+
+        sprite.texture = numeralTexture[3];
+
+        view.addComponent(entityID, trans);
+        view.addComponent(entityID, sprite);
+        return entityID;
+    }
 }
