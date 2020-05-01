@@ -28,6 +28,7 @@ import ball;
 import gfm.math;
 import serpent;
 import std.path : buildPath;
+import std.string : format;
 
 import serpent.physics2d;
 
@@ -61,6 +62,8 @@ private:
     Texture paddleTextureObstacle;
     Texture texSplash;
 
+    Texture[10] numeralTexture;
+
     float _width = 0;
     float _height = 0;
 
@@ -88,6 +91,12 @@ public:
                 "paddleInert.png"), TextureFilter.Linear);
 
         texSplash = new Texture(buildPath("assets", "paddle.png"), TextureFilter.Linear);
+
+        foreach (i; 0 .. 10)
+        {
+            numeralTexture[i] = new Texture(buildPath("assets",
+                    "numeral%d.png".format(i)), TextureFilter.Linear);
+        }
     }
 
     /**
