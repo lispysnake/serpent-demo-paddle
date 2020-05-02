@@ -171,7 +171,7 @@ public:
         auto physBody = new DynamicBody();
         physBall.body = physBody;
         auto physShape = new CircleShape(ballTexture.width / 2.0, vec2f(0.0f, 0.0f));
-        physShape.mass = 0.1f;
+        physShape.mass = 100.0f;
         physShape.elasticity = 1.0f;
         physShape.friction = 0.0f;
         physBody.velocity = vec2f(-0.3f, -0.1f);
@@ -238,6 +238,7 @@ public:
         auto physShape = new BoxShape(spritePaddle.texture.width, spritePaddle.texture.height);
         physShape.elasticity = 1.0f;
         physShape.friction = 0.0f;
+        physShape.mass = 1.0f;
         physBody.add(physShape);
 
         view.addComponent(entPaddle, physPaddle);
@@ -280,8 +281,7 @@ public:
         auto shape = new BoxShape(width, height, 3.0f);
         shape.elasticity = 1.0f;
         shape.friction = 1.0f;
-        shape.mass = 1.0f;
-        shape.density = 1.0f;
+        shape.mass = 300.0f;
         body.add(shape);
         auto phys = PhysicsComponent();
         phys.body = body;
