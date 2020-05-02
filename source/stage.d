@@ -299,11 +299,12 @@ public:
     {
         EntityID[] ret = [
             createWall(view, rectanglef(0.0f, 0.0f, 1.0f, 768.0f)), /* left */
-            createWall(view,
-                    rectanglef(1366.0f - 1.0f, 0.0f, 1.0f, 768.0f)), /* right */
-            createWall(view, rectanglef(0.0f, -1.0f, 1366.0f,
-                    1.0f)), /* top */
-            createWall(view, rectanglef(0.0f, 768.0f, 1366.0f, 1.0f)), /* bottom */
+            createWall(view, rectanglef(1366.0f - 1.0f,
+                    0.0f, 1.0f, 768.0f)), /* right */
+            createWall(view, rectanglef(0.0f, 0.0f, 1366.0f,
+                    borderTexture.height)), /* top */
+            createWall(view, rectanglef(0.0f,
+                    768.0f - borderTexture.height, 1366.0f, borderTexture.height)), /* bottom */
         ];
 
         return ret;
