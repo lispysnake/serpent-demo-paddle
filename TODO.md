@@ -1,6 +1,6 @@
 Weekly TODO
 
- - [ ] Fix bottom wall to be within stage bounds
+ - [x] Fix bottom wall to be within stage bounds
  - [ ] Convert left/right walls into sensors
  - [ ] Add callbacks to know who 'scored'
  - [x] Display scores on screen
@@ -10,7 +10,7 @@ Weekly TODO
  - [x] Add some kind of world decoration to make less boring
  - [x] Add obstacles
  - [ ] Potentially add powerups (multiple ball spawn)
- - [ ] Add SegmentShape to physics2d
+ - [x] Add SegmentShape to physics2d
  - [ ] Add sprite rotation so ball rotates with physics correctly
  - [x] Restore accumulator for now in physics2d
  - [ ] Add drawing code to chipmunk (primitives) so we can *visualise* the physics, man.
