@@ -274,6 +274,7 @@ int main(string[] args)
 
     auto phys = new PhysicsProcessor();
     auto world = phys.world;
+    world.iterations = 10;
     context.systemGroup.add(phys);
     context.systemGroup.add(new AIProcessor());
 
