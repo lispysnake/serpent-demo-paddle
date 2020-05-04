@@ -108,7 +108,7 @@ public:
                 /* Special case obstacle */
                 if (enemy.edge == AIEdge.None)
                 {
-                    if (positionY <= zoneTolerance)
+                    if (positionY <= (zoneTolerance + 50.0f))
                     {
                         physics.body.velocity = vec2f(0.0f, obstacleSpeed);
                     }
@@ -120,7 +120,7 @@ public:
                         {
                             diff = -diff;
                         }
-                        if (diff <= zoneTolerance)
+                        if (diff <= (zoneTolerance + 50.0f))
                         {
                             physics.body.velocity = vec2f(0.0f, -obstacleSpeed);
                         }
@@ -132,7 +132,6 @@ public:
                 if ((enemy.edge == AIEdge.Right && ballPhysics.body.velocity.x < 0.0f)
                         || (enemy.edge == AIEdge.Left && ballPhysics.body.velocity.x > 0.0f))
                 {
-                    /* TODO: Deduct sprite height */
                     targetY = cast(int)((context.display.logicalHeight / 2.0f) - (
                             sprite.texture.height / 2.0f));
                 }

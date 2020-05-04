@@ -220,11 +220,11 @@ public:
             break;
         case PaddleOwner.ObstacleOne:
             transPaddle.position.x = (width / 2.0f) - (spritePaddle.texture.width / 2.0f) - 32.0f;
-            transPaddle.position.y = 5.0f;
+            transPaddle.position.y = 35.0f;
             break;
         case PaddleOwner.ObstacleTwo:
             transPaddle.position.x = (width / 2.0f) - (spritePaddle.texture.width / 2.0f) + 32.0f;
-            transPaddle.position.y = height - 5.0f - spritePaddle.texture.height;
+            transPaddle.position.y = height - 35.0f - spritePaddle.texture.height;
             break;
         }
 
