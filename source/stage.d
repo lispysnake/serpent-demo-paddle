@@ -269,16 +269,20 @@ public:
         return entPaddle;
     }
 
-    final EntityID createWall(View!ReadWrite view, box2f position)
+    final EntityID createBarrier(View!ReadWrite view, vec2f pointA, vec2f pointB)
     {
         auto entityID = view.createEntity();
         auto trans = TransformComponent();
-        trans.position.x = position.min.x;
-        trans.position.y = position.min.y;
+        trans.position.x = pointA.x;
+        trans.position.y = pointA.y;
+
+        pointB.x -= pointA.x;
+        pointB.y -= pointA.y;
+        pointA.x = 0.0f;
+        pointA.y = 0.0f;
+
         auto body = new StaticBody();
-        auto width = position.max.x - position.min.x;
-        auto height = position.max.y - position.min.y;
-        auto shape = new BoxShape(width, height, 3.0f);
+        auto shape = new SegmentShape(pointA, pointB, 26.0f);
         shape.elasticity = 1.0f;
         shape.friction = 1.0f;
         shape.mass = 300.0f;
@@ -297,14 +301,17 @@ public:
      */
     final EntityID[] spawnWalls(View!ReadWrite view)
     {
+        /* Ensure pixel perfect bounds with extremely thick (26px) segment barriers */
         EntityID[] ret = [
-            createWall(view, rectanglef(0.0f, 0.0f, 1.0f, 768.0f)), /* left */
-            createWall(view, rectanglef(1366.0f - 1.0f,
-                    0.0f, 1.0f, 768.0f)), /* right */
-            createWall(view, rectanglef(0.0f, 0.0f, 1366.0f,
-                    borderTexture.height)), /* top */
-            createWall(view, rectanglef(0.0f,
-                    768.0f - borderTexture.height, 1366.0f, borderTexture.height)), /* bottom */
+            createBarrier(view, vec2f(0.0f, borderTexture.height - 26.0f - 13.0f),
+                    vec2f(width, borderTexture.height - 26.0f - 13.0f)), /* top */
+            createBarrier(view, vec2f(0.0f,
+                    height - borderTexture.height + 13.0f), vec2f(width,
+                    height - borderTexture.height + 13.0f)), /* bottom */
+            createBarrier(view, vec2f(width + 13.0f,
+                    0.0f), vec2f(width + 13.0f, height)), /* right */
+            createBarrier(view,
+                    vec2f(0.0f - 26.0f - 13.0f, 0.0f), vec2f(0.0f - 26.0f - 13.0f, height)), /* left */
         ];
 
         return ret;
