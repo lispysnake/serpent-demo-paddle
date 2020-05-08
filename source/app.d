@@ -56,6 +56,8 @@ private:
     EntityID scoreHuman;
     EntityID scoreEnemy;
 
+    EntityID ballKill = 0;
+
     final void keyPressed(KeyboardEvent e)
     {
         demoMode = false;
@@ -158,6 +160,15 @@ public:
      */
     final override void update(View!ReadWrite view)
     {
+        if (ballKill != 0)
+        {
+            view.killEntity(ballKill);
+            import std.stdio;
+
+            writefln("Killed ball %d", ballKill);
+            ballKill = 0;
+        }
+
         if (demoMode)
         {
             return;
@@ -215,6 +226,7 @@ public:
         import std.stdio;
 
         writefln("Wall %d hit by ball %d", wallID, ballID);
+        ballKill = ballID;
     }
 }
 
