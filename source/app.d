@@ -196,6 +196,8 @@ public:
         arena = new Stage(this.world, context.display.logicalWidth(),
                 context.display.logicalHeight());
 
+        arena.scoreEvent.connect(&onScored);
+
         scene = new Scene("default");
         context.display.addScene(scene);
         scene.addCamera(new OrthographicCamera());
@@ -206,6 +208,13 @@ public:
         spawnDemo(view);
 
         return true;
+    }
+
+    final void onScored(EntityID wallID, EntityID ballID)
+    {
+        import std.stdio;
+
+        writefln("Wall %d hit by ball %d", wallID, ballID);
     }
 }
 

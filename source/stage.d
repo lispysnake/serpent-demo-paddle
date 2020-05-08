@@ -32,6 +32,8 @@ import std.string : format;
 
 import serpent.physics2d;
 
+public import std.signals;
+
 final enum PaddleOwner
 {
     PlayerOne = 0,
@@ -77,6 +79,10 @@ public:
 
     @disable this();
 
+    /**
+     * Emitted with the barrier ID, and the ball ID
+     */
+    mixin Signal!(EntityID, EntityID) scoreEvent;
     /**
      * Construct a new Stage with the given width and height
      */
@@ -293,10 +299,23 @@ public:
         auto phys = PhysicsComponent();
         phys.body = body;
 
+        if (sensorNode)
+        {
+            body.sensorActivated.connect(&barrierActivated);
+        }
+
         view.addComponent(entityID, phys);
         view.addComponent(entityID, trans);
 
         return entityID;
+    }
+
+    /**
+     * Dispatch the event that a ball was used to score
+     */
+    final void barrierActivated(Shape ourShape, Shape theirShape)
+    {
+        scoreEvent.emit(ourShape.chipBody.entity, theirShape.chipBody.entity);
     }
 
     /**
