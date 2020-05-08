@@ -270,7 +270,8 @@ public:
         return entPaddle;
     }
 
-    final EntityID createBarrier(View!ReadWrite view, vec2f pointA, vec2f pointB)
+    final EntityID createBarrier(View!ReadWrite view, vec2f pointA, vec2f pointB,
+            bool sensorNode = false)
     {
         auto entityID = view.createEntity();
         auto trans = TransformComponent();
@@ -287,6 +288,7 @@ public:
         shape.elasticity = 1.0f;
         shape.friction = 1.0f;
         shape.mass = 300.0f;
+        shape.sensor = sensorNode;
         body.add(shape);
         auto phys = PhysicsComponent();
         phys.body = body;
@@ -310,9 +312,9 @@ public:
                     height - borderTexture.height + 13.0f), vec2f(width,
                     height - borderTexture.height + 13.0f)), /* bottom */
             createBarrier(view, vec2f(width + 13.0f,
-                    0.0f), vec2f(width + 13.0f, height)), /* right */
+                    0.0f), vec2f(width + 13.0f, height), true), /* right */
             createBarrier(view,
-                    vec2f(0.0f - 26.0f - 13.0f, 0.0f), vec2f(0.0f - 26.0f - 13.0f, height)), /* left */
+                    vec2f(0.0f - 26.0f - 13.0f, 0.0f), vec2f(0.0f - 26.0f - 13.0f, height), true), /* left */
         ];
 
         return ret;
