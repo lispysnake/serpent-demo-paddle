@@ -354,11 +354,17 @@ public:
         trans.scale.y = 2.0f;
         trans.position.z = 0.4f;
 
-        sprite.texture = owner == PaddleOwner.PlayerOne ? numeralTexture[6] : numeralTexture[5];
+        sprite.texture = numeralTexture[0];
 
         view.addComponent(entityID, trans);
         view.addComponent(entityID, sprite);
         return entityID;
+    }
+
+    final void setScore(View!ReadWrite view, EntityID id, int score)
+    {
+        auto sprite = view.data!SpriteComponent(id);
+        sprite.texture = numeralTexture[score < 9 ? score : 9];
     }
 
     final void spawnBorder(View!ReadWrite view)

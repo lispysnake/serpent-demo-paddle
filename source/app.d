@@ -54,9 +54,13 @@ private:
     bool moarBalls = false;
 
     EntityID scoreHuman;
+    int scoreHumanNumeric = 0;
     EntityID scoreEnemy;
+    int scoreEnemyNumeric = 0;
 
     EntityID ballKill = 0;
+
+    EntityID[] walls;
 
     final void keyPressed(KeyboardEvent e)
     {
@@ -121,7 +125,7 @@ private:
         obstacle1 = arena.spawnPaddle(view, PaddleOwner.ObstacleOne, PaddleType.Computer);
         obstacle2 = arena.spawnPaddle(view, PaddleOwner.ObstacleTwo, PaddleType.Computer);
         ballID = arena.spawnBall(view);
-        arena.spawnWalls(view);
+        walls = arena.spawnWalls(view);
     }
 
     /**
@@ -180,6 +184,9 @@ public:
             return;
         }
 
+        arena.setScore(view, scoreEnemy, scoreEnemyNumeric);
+        arena.setScore(view, scoreHuman, scoreHumanNumeric);
+
         if (moarBalls)
         {
             arena.spawnBall(view);
@@ -224,6 +231,21 @@ public:
     final void onScored(EntityID wallID, EntityID ballID)
     {
         import std.stdio;
+
+        if (wallID == walls[2])
+        {
+            ++scoreHumanNumeric;
+            writeln("Player One Scored");
+        }
+        else if (wallID == walls[3])
+        {
+            writeln("Player Two Scored");
+            ++scoreEnemyNumeric;
+        }
+        else
+        {
+            writeln("Wtf.");
+        }
 
         writefln("Wall %d hit by ball %d", wallID, ballID);
         ballKill = ballID;
