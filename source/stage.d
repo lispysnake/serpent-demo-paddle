@@ -174,7 +174,8 @@ public:
         physShape.mass = 100.0f;
         physShape.elasticity = 1.0f;
         physShape.friction = 0.0f;
-        physBody.velocity = vec2f(-0.3f, -0.1f);
+        physBody.velocity = vec2f(-0.45f, -0.1f);
+        physBody.maxVelocity = vec2f(0.65f, 0.6f);
         physBody.add(physShape);
 
         auto comp = BallComponent();
