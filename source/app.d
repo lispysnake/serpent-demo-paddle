@@ -236,6 +236,7 @@ public:
                 context.display.logicalHeight());
 
         arena.scoreEvent.connect(&onScored);
+        arena.impactEvent.connect(&onImpact);
 
         scene = new Scene("default");
         context.display.addScene(scene);
@@ -270,6 +271,14 @@ public:
 
         writefln("Wall %d hit by ball %d", wallID, ballID);
         ballKill = ballID;
+    }
+
+    final void onImpact(EntityID oneID, EntityID twoID)
+    {
+        import std.random : uniform;
+
+        auto idx = uniform(0, impactClips.length);
+        audioManager.play(impactClips[idx]);
     }
 }
 

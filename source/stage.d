@@ -83,6 +83,12 @@ public:
      * Emitted with the barrier ID, and the ball ID
      */
     mixin Signal!(EntityID, EntityID) scoreEvent;
+
+    /**
+     * Let main context know an impact event occured
+     */
+    mixin Signal!(EntityID, EntityID) impactEvent;
+
     /**
      * Construct a new Stage with the given width and height
      */
@@ -240,6 +246,8 @@ public:
 
         auto physPaddle = PhysicsComponent();
         auto physBody = new KinematicBody();
+        physBody.collision.connect(&ballHitted);
+
         physPaddle.body = physBody;
 
         auto physShape = new BoxShape(spritePaddle.texture.width, spritePaddle.texture.height);
@@ -303,6 +311,10 @@ public:
         {
             body.sensorActivated.connect(&barrierActivated);
         }
+        else
+        {
+            body.collision.connect(&ballHitted);
+        }
 
         view.addComponent(entityID, phys);
         view.addComponent(entityID, trans);
@@ -316,6 +328,11 @@ public:
     final void barrierActivated(Shape ourShape, Shape theirShape)
     {
         scoreEvent.emit(ourShape.chipBody.entity, theirShape.chipBody.entity);
+    }
+
+    final void ballHitted(Shape ourShape, Shape theirShape)
+    {
+        impactEvent.emit(ourShape.chipBody.entity, theirShape.chipBody.entity);
     }
 
     /**
