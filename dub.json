@@ -11,6 +11,9 @@
 		"serpent": {
 			"path": "serpent",
 		},
+		"serpent-audio": {
+			"path": "serpent-audio",
+		},
 		"serpent-physics2d": {
 			"path": "serpent-physics2d",
 		},
