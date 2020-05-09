@@ -30,6 +30,9 @@ import bindbc.sdl;
 import std.getopt;
 import std.stdio;
 
+import std.path : buildPath;
+import std.format;
+
 import stage;
 
 import ai;
@@ -41,6 +44,7 @@ class MyApp : serpent.App
 private:
     AudioManager audioManager;
     Track mainTrack;
+    Clip[5] impactClips;
 
     Scene scene;
     Stage arena;
@@ -217,7 +221,15 @@ public:
     {
         audioManager = new AudioManager();
         audioManager.trackVolume = 0.1f;
-        mainTrack = new Track("assets/audio/MainLoop.ogg");
+        mainTrack = new Track(buildPath("assets", "audio", "MainLoop.ogg"));
+
+        foreach (i; 0 .. 5)
+        {
+            impactClips[i] = new Clip(buildPath("assets", "audio",
+                    "impactGeneric_light_00%d.ogg".format(i)));
+        }
+
+        audioManager.play(mainTrack);
 
         /* Construct the play arena */
         arena = new Stage(this.world, context.display.logicalWidth(),
