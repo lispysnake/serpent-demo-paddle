@@ -39,6 +39,9 @@ class MyApp : serpent.App
 {
 
 private:
+    AudioManager audioManager;
+    Track mainTrack;
+
     Scene scene;
     Stage arena;
     AbstractWorld world;
@@ -212,6 +215,10 @@ public:
 
     final override bool bootstrap(View!ReadWrite view)
     {
+        audioManager = new AudioManager();
+        audioManager.trackVolume = 0.1f;
+        mainTrack = new Track("assets/audio/MainLoop.ogg");
+
         /* Construct the play arena */
         arena = new Stage(this.world, context.display.logicalWidth(),
                 context.display.logicalHeight());
@@ -322,8 +329,6 @@ int main(string[] args)
     world.iterations = 10;
     context.systemGroup.add(phys);
     context.systemGroup.add(new AIProcessor());
-
-    context.renderGroup.add(new AudioProcessor());
 
     /* TODO: Remove need for casts! */
     import serpent.graphics.pipeline.bgfx;
