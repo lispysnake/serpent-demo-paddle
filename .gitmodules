@@ -4,3 +4,6 @@
 [submodule "serpent-physics2d"]
 	path = serpent-physics2d
 	url = https://github.com/lispysnake/serpent-physics2d.git
+[submodule "serpent-audio"]
+	path = serpent-audio
+	url = https://github.com/lispysnake/serpent-audio.git
