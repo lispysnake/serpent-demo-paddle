@@ -22,6 +22,8 @@
 
 import serpent;
 import serpent.graphics.sprite;
+
+import serpent.audio;
 import serpent.physics2d;
 
 import bindbc.sdl;
@@ -320,6 +322,8 @@ int main(string[] args)
     world.iterations = 10;
     context.systemGroup.add(phys);
     context.systemGroup.add(new AIProcessor());
+
+    context.renderGroup.add(new AudioProcessor());
 
     /* TODO: Remove need for casts! */
     import serpent.graphics.pipeline.bgfx;
