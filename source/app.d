@@ -273,8 +273,16 @@ public:
         ballKill = ballID;
     }
 
+    /**
+     * For any given impact, play a sound when not in demo
+     * mode
+     */
     final void onImpact(EntityID oneID, EntityID twoID)
     {
+        if (demoMode)
+        {
+            return;
+        }
         import std.random : uniform;
 
         auto idx = uniform(0, impactClips.length);
