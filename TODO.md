@@ -14,6 +14,6 @@ Weekly TODO
  - [ ] Add sprite rotation so ball rotates with physics correctly
  - [x] Restore accumulator for now in physics2d
  - [ ] Add drawing code to chipmunk (primitives) so we can *visualise* the physics, man.
- - [ ] Add background music (`serpent-audio`)
- - [ ] Add impact SFX for walls and paddles (`serpent-audio`)
+ - [x] Add background music (`serpent-audio`)
+ - [x] Add impact SFX for walls and paddles (`serpent-audio`)
  - [ ] Huge cleanup to make it feel more game-like
