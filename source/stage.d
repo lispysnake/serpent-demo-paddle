@@ -375,6 +375,18 @@ public:
 
         view.addComponent(entityID, trans);
         view.addComponent(entityID, sprite);
+
+        auto col = ColorComponent();
+        if (owner == PaddleOwner.PlayerOne)
+        {
+            col.rgba = vec4f(0.3f, 0.8f, 0.3f, 1.0f);
+
+        }
+        else
+        {
+            col.rgba = vec4f(0.8f, 0.3f, 0.3, 1.0f);
+        }
+        view.addComponent(entityID, col);
         return entityID;
     }
 
