@@ -250,10 +250,10 @@ public:
 
         physPaddle.body = physBody;
 
-        auto physShape = new BoxShape(spritePaddle.texture.width, spritePaddle.texture.height);
+        auto physShape = new BoxShape(rectanglef(-6.0f, -6.0f,
+                spritePaddle.texture.width + 6.0f, spritePaddle.texture.height + 6.0f), 0.0f);
         physShape.elasticity = 1.0f;
         physShape.friction = 0.0f;
-        physShape.mass = 1.0f;
         physBody.add(physShape);
 
         view.addComponent(entPaddle, physPaddle);
