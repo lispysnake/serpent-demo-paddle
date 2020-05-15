@@ -17,6 +17,7 @@ Weekly TODO
  - [x] Add impact SFX for walls and paddles (`serpent-audio`)
  - [ ] Fix collision shape on paddles (no slop overlap or offset)
  - [ ] Huge cleanup to make it feel more game-like
+ - [ ] Fix/cleanup AI logic to stop Obstacle paddles going for lunch
 
 ### Could Be Nice
 
