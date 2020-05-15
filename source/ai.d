@@ -28,15 +28,6 @@ import ball;
 import serpent.physics2d;
 
 /**
- * A Paddle can either go vertically or horizontally, not both
- */
-final enum AIConstraint
-{
-    Vertical = 0,
-    Horizontal,
-}
-
-/**
  * AI can follow an edge
  */
 final enum AIEdge
@@ -51,7 +42,6 @@ final enum AIEdge
  */
 final @serpentComponent struct AIComponent
 {
-    AIConstraint constraint;
     AIEdge edge;
 }
 
@@ -68,6 +58,36 @@ private:
     const int zoneTolerance = 5;
     const float paddleSpeed = 0.3f;
     const float obstacleSpeed = 0.2f;
+
+private:
+
+    /**
+     * Handle the special case obstacles
+     *
+     * They have no set 'edge' and will go up and down in a loop
+     */
+    final void handleObstacle(TransformComponent* transform,
+            SpriteComponent* sprite, PhysicsComponent* physics)
+    {
+        int positionY = cast(int) transform.position.y;
+
+        if (positionY <= (zoneTolerance + 50.0f))
+        {
+            physics.body.velocity = vec2f(0.0f, obstacleSpeed);
+        }
+        else
+        {
+            auto diff = positionY - context.display.logicalHeight + sprite.texture.height;
+            if (diff < 0)
+            {
+                diff = -diff;
+            }
+            if (diff <= (zoneTolerance + 50.0f))
+            {
+                physics.body.velocity = vec2f(0.0f, -obstacleSpeed);
+            }
+        }
+    }
 
 public:
 
@@ -99,91 +119,40 @@ public:
         foreach (entity, enemy, transform, physics, sprite; view.withComponents!(AIComponent,
                 TransformComponent, PhysicsComponent, SpriteComponent))
         {
-            final switch (enemy.constraint)
+            if (enemy.edge == AIEdge.None)
             {
-            case AIConstraint.Vertical:
-                int targetY = cast(int)(ballTransform.position.y - (sprite.texture.height / 2.0f));
-                int positionY = cast(int) transform.position.y;
+                handleObstacle(transform, sprite, physics);
+                continue;
+            }
 
-                /* Special case obstacle */
-                if (enemy.edge == AIEdge.None)
-                {
-                    if (positionY <= (zoneTolerance + 50.0f))
-                    {
-                        physics.body.velocity = vec2f(0.0f, obstacleSpeed);
-                    }
-                    else
-                    {
-                        auto diff = positionY - context.display.logicalHeight
-                            + sprite.texture.height;
-                        if (diff < 0)
-                        {
-                            diff = -diff;
-                        }
-                        if (diff <= (zoneTolerance + 50.0f))
-                        {
-                            physics.body.velocity = vec2f(0.0f, -obstacleSpeed);
-                        }
-                    }
-                    continue;
-                }
+            int targetY = cast(int)(ballTransform.position.y - (sprite.texture.height / 2.0f));
+            int positionY = cast(int) transform.position.y;
 
-                /* Ball heading away from us? TODO: Work out our potential position */
-                if ((enemy.edge == AIEdge.Right && ballPhysics.body.velocity.x < 0.0f)
-                        || (enemy.edge == AIEdge.Left && ballPhysics.body.velocity.x > 0.0f))
-                {
-                    targetY = cast(int)((context.display.logicalHeight / 2.0f) - (
-                            sprite.texture.height / 2.0f));
-                }
+            /* Ball heading away from us? TODO: Work out our potential position */
+            if ((enemy.edge == AIEdge.Right && ballPhysics.body.velocity.x < 0.0f)
+                    || (enemy.edge == AIEdge.Left && ballPhysics.body.velocity.x > 0.0f))
+            {
+                targetY = cast(int)((context.display.logicalHeight / 2.0f) - (
+                        sprite.texture.height / 2.0f));
+            }
 
-                auto diff = positionY - targetY;
-                if (diff < 0)
-                {
-                    diff = -diff;
-                }
+            auto diff = positionY - targetY;
+            if (diff < 0)
+            {
+                diff = -diff;
+            }
 
-                if (diff <= zoneTolerance)
-                {
-                    physics.body.velocity = vec2f(0.0f, 0.0f);
-                }
-                else if (targetY < positionY)
-                {
-                    physics.body.velocity = vec2f(0.0f, -paddleSpeed);
-                }
-                else
-                {
-                    physics.body.velocity = vec2f(0.0f, paddleSpeed);
-                }
-                break;
-            case AIConstraint.Horizontal:
-                int targetX = cast(int)(ballTransform.position.x - (sprite.texture.width / 2.0f));
-                int positionX = cast(int) transform.position.x;
-
-                /* Ball heading away from us? */
-                if (ballPhysics.body.velocity.y < 0.0f)
-                {
-                    targetX = cast(int)((context.display.logicalWidth / 2.0f) - (
-                            sprite.texture.width / 2.0f));
-                }
-
-                auto diff = positionX - targetX;
-                if (diff < 0)
-                {
-                    diff = -diff;
-                }
-                if (diff <= zoneTolerance)
-                {
-                    physics.body.velocity = vec2f(0.0f, 0.0f);
-                }
-                else if (targetX < positionX)
-                {
-                    physics.body.velocity = vec2f(-paddleSpeed, 0.0f);
-                }
-                else
-                {
-                    physics.body.velocity = vec2f(paddleSpeed, 0.0f);
-                }
-                break;
+            if (diff <= zoneTolerance)
+            {
+                physics.body.velocity = vec2f(0.0f, 0.0f);
+            }
+            else if (targetY < positionY)
+            {
+                physics.body.velocity = vec2f(0.0f, -paddleSpeed);
+            }
+            else
+            {
+                physics.body.velocity = vec2f(0.0f, paddleSpeed);
             }
         }
     }

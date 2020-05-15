@@ -264,7 +264,6 @@ public:
         if (type == PaddleType.Computer)
         {
             auto comp = AIComponent();
-            comp.constraint = AIConstraint.Vertical;
             final switch (owner)
             {
             case PaddleOwner.PlayerOne:
