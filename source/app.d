@@ -220,7 +220,8 @@ public:
     final override bool bootstrap(View!ReadWrite view)
     {
         audioManager = new AudioManager();
-        audioManager.trackVolume = 0.1f;
+        audioManager.trackVolume = 0.25f;
+        audioManager.effectVolume = 0.1f;
         mainTrack = new Track(buildPath("assets", "audio", "MainLoop.ogg"));
 
         foreach (i; 0 .. 5)
