@@ -38,6 +38,7 @@ import stage;
 
 import ai;
 import idle;
+import ball : BallComponent;
 
 /* Simple no-op app */
 class MyApp : serpent.App
@@ -135,9 +136,10 @@ private:
      */
     final void spawnDemo(View!ReadWrite view)
     {
+        arena.spawnBall(view);
         splash = arena.spawnSplash(view);
         walls = arena.spawnWalls(view);
-        player = arena.spawnPaddle(view, PaddleOwner.PlayerOne, PaddleType.Human);
+        player = arena.spawnPaddle(view, PaddleOwner.PlayerOne, PaddleType.Computer);
         enemyPaddle = arena.spawnPaddle(view, PaddleOwner.PlayerTwo, PaddleType.Computer);
         obstacle1 = arena.spawnPaddle(view, PaddleOwner.ObstacleOne, PaddleType.Computer);
         obstacle2 = arena.spawnPaddle(view, PaddleOwner.ObstacleTwo, PaddleType.Computer);
@@ -151,9 +153,36 @@ private:
      */
     final void spawnLevel(View!ReadWrite view)
     {
-        view.killEntity(splash);
-        arena.spawnBall(view);
+        /*
+         * kill all balls.
+         */
+        foreach (entityID, ballComp; view.withComponents!BallComponent)
+        {
+            view.killEntity(entityID.id);
+        }
+
+        /*
+         * Kill all CPU players
+         */
+        foreach (entityID, cpu; view.withComponents!AIComponent)
+        {
+            if (cpu.edge != AIEdge.None)
+            {
+                view.killEntity(entityID.id);
+            }
+        }
+
+        player = arena.spawnPaddle(view, PaddleOwner.PlayerOne, PaddleType.Human);
+        enemyPaddle = arena.spawnPaddle(view, PaddleOwner.PlayerTwo, PaddleType.Computer);
         audioManager.play(mainTrack);
+
+        /* Reset scores now */
+        scoreEnemyNumeric = 0;
+        scoreHumanNumeric = 0;
+        arena.setScore(view, scoreHuman, 0);
+        arena.setScore(view, scoreEnemy, 0);
+
+        arena.spawnBall(view);
     }
 
 public:
@@ -206,6 +235,7 @@ public:
             {
                 endDemoMode = false;
                 demoMode = false;
+                view.killEntity(splash);
             }
         }
 
@@ -295,6 +325,12 @@ public:
         writefln("Wall %d hit by ball %d", wallID, ballID);
 
         idleProc.schedule((view) => view.killEntity(ballID));
+
+        /* Auto spawn new ball for demo mode */
+        if (demoMode)
+        {
+            idleProc.schedule((view) => arena.spawnBall(view));
+        }
     }
 
     /**
