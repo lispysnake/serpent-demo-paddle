@@ -140,6 +140,7 @@ private:
         enemyPaddle = arena.spawnPaddle(view, PaddleOwner.PlayerTwo, PaddleType.Computer);
         obstacle1 = arena.spawnPaddle(view, PaddleOwner.ObstacleOne, PaddleType.Computer);
         obstacle2 = arena.spawnPaddle(view, PaddleOwner.ObstacleTwo, PaddleType.Computer);
+        arena.spawnBorder(view);
     }
 
     /**
@@ -152,8 +153,6 @@ private:
 
         scoreHuman = arena.spawnScore(view, PaddleOwner.PlayerOne);
         scoreEnemy = arena.spawnScore(view, PaddleOwner.PlayerTwo);
-
-        arena.spawnBorder(view);
 
         audioManager.play(mainTrack);
     }
