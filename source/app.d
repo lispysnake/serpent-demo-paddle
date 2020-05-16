@@ -336,7 +336,7 @@ int main(string[] args)
     auto context = new Context();
     context.display.title("#serpent Paddle Demo").size(1366, 768);
     context.display.logicalSize(1366, 768);
-    context.display.backgroundColor = 0x2d3436ff;
+    context.display.backgroundColor = 0xffffffff;
 
     if (vulkan)
     {
