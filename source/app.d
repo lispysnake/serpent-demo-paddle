@@ -32,6 +32,7 @@ import std.stdio;
 
 import std.path : buildPath;
 import std.format;
+import std.datetime;
 
 import stage;
 
@@ -60,6 +61,7 @@ private:
     bool keyDown = false;
     bool gravity = false;
     bool demoMode = true;
+    bool endDemoMode = false;
     bool levelSpawn = false;
     bool moarBalls = false;
 
@@ -72,9 +74,12 @@ private:
 
     EntityID[] walls;
 
+    Duration tweenSplash;
+    Duration tweenSplashLength = dur!"msecs"(1000);
+
     final void keyPressed(KeyboardEvent e)
     {
-        demoMode = false;
+        endDemoMode = true;
 
         switch (e.scancode())
         {
@@ -130,12 +135,11 @@ private:
     final void spawnDemo(View!ReadWrite view)
     {
         splash = arena.spawnSplash(view);
-        player = arena.spawnPaddle(view, PaddleOwner.PlayerOne, PaddleType.Computer);
+        walls = arena.spawnWalls(view);
+        player = arena.spawnPaddle(view, PaddleOwner.PlayerOne, PaddleType.Human);
         enemyPaddle = arena.spawnPaddle(view, PaddleOwner.PlayerTwo, PaddleType.Computer);
         obstacle1 = arena.spawnPaddle(view, PaddleOwner.ObstacleOne, PaddleType.Computer);
         obstacle2 = arena.spawnPaddle(view, PaddleOwner.ObstacleTwo, PaddleType.Computer);
-        ballID = arena.spawnBall(view);
-        walls = arena.spawnWalls(view);
     }
 
     /**
@@ -143,17 +147,7 @@ private:
      */
     final void spawnLevel(View!ReadWrite view)
     {
-        view.killEntity(player);
         view.killEntity(splash);
-        view.killEntity(ballID);
-        view.killEntity(enemyPaddle);
-        view.killEntity(obstacle1);
-        view.killEntity(obstacle2);
-
-        player = arena.spawnPaddle(view, PaddleOwner.PlayerOne, PaddleType.Human);
-        enemyPaddle = arena.spawnPaddle(view, PaddleOwner.PlayerTwo, PaddleType.Computer);
-        obstacle1 = arena.spawnPaddle(view, PaddleOwner.ObstacleOne, PaddleType.Computer);
-        obstacle2 = arena.spawnPaddle(view, PaddleOwner.ObstacleTwo, PaddleType.Computer);
         ballID = arena.spawnBall(view);
 
         scoreHuman = arena.spawnScore(view, PaddleOwner.PlayerOne);
@@ -183,6 +177,36 @@ public:
 
             writefln("Killed ball %d", ballKill);
             ballKill = 0;
+        }
+
+        if (endDemoMode && demoMode)
+        {
+            tweenSplash += context.deltaTime();
+
+            long timeNS;
+            tweenSplash.split!("nsecs")(timeNS);
+            auto tweenSplashMS = timeNS / 1_000_000.0f;
+            tweenSplashLength.split!("nsecs")(timeNS);
+            auto tweenSplashLengthMS = timeNS / 1_000_000.0f;
+
+            auto factor = (cast(float) tweenSplashMS / cast(float) tweenSplashLengthMS).clamp(0.0f,
+                    1.0f);
+
+            auto oldValue = 1.0f;
+            auto newValue = 0.0f;
+            auto delta = (newValue - oldValue) * factor;
+            auto setValue = oldValue + delta;
+
+            auto color = view.data!ColorComponent(splash);
+            color.rgba.a = setValue;
+
+            writeln(setValue);
+
+            if (tweenSplash >= tweenSplashLength)
+            {
+                endDemoMode = false;
+                demoMode = false;
+            }
         }
 
         if (demoMode)

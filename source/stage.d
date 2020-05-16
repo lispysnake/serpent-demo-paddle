@@ -147,6 +147,9 @@ public:
         auto trans = TransformComponent();
         trans.position.z = 0.3f;
         view.addComponent(ent, trans);
+        auto col = ColorComponent();
+        col.rgba = vec4f(1.0f, 1.0f, 1.0f, 1.0f);
+        view.addComponent(ent, col);
         return ent;
     }
 
