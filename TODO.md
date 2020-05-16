@@ -17,7 +17,7 @@ Weekly TODO
  - [x] Add impact SFX for walls and paddles (`serpent-audio`)
  - [x] Add intro music, crossfade to main loop on 'start'
  - [x] Fade out the splash (quickly) when starting
- - [ ] Fix collision shape on paddles (no slop overlap or offset)
+ - [x] Fix collision shape on paddles (no slop overlap or offset)
  - [ ] Huge cleanup to make it feel more game-like
  - [ ] Fix/cleanup AI logic to stop Obstacle paddles going for lunch
        Easiest method is to stop AI Controller being responsible for
