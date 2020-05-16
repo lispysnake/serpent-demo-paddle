@@ -15,6 +15,8 @@ Weekly TODO
  - [x] Restore accumulator for now in physics2d
  - [x] Add background music (`serpent-audio`)
  - [x] Add impact SFX for walls and paddles (`serpent-audio`)
+ - [ ] Add intro music, crossfade to main loop on 'start'
+ - [ ] Fade out the splash (quickly) when starting
  - [ ] Fix collision shape on paddles (no slop overlap or offset)
  - [ ] Huge cleanup to make it feel more game-like
  - [ ] Fix/cleanup AI logic to stop Obstacle paddles going for lunch
