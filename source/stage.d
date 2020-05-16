@@ -386,6 +386,9 @@ public:
         {
             col.rgba = vec4f(0.8f, 0.3f, 0.3, 1.0f);
         }
+
+        /* See-through score at first */
+        col.rgba.a = 0.0f;
         view.addComponent(entityID, col);
         return entityID;
     }

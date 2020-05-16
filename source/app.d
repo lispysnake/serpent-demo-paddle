@@ -142,6 +142,8 @@ private:
         obstacle1 = arena.spawnPaddle(view, PaddleOwner.ObstacleOne, PaddleType.Computer);
         obstacle2 = arena.spawnPaddle(view, PaddleOwner.ObstacleTwo, PaddleType.Computer);
         arena.spawnBorder(view);
+        scoreHuman = arena.spawnScore(view, PaddleOwner.PlayerOne);
+        scoreEnemy = arena.spawnScore(view, PaddleOwner.PlayerTwo);
     }
 
     /**
@@ -151,10 +153,6 @@ private:
     {
         view.killEntity(splash);
         arena.spawnBall(view);
-
-        scoreHuman = arena.spawnScore(view, PaddleOwner.PlayerOne);
-        scoreEnemy = arena.spawnScore(view, PaddleOwner.PlayerTwo);
-
         audioManager.play(mainTrack);
     }
 
@@ -185,16 +183,24 @@ public:
 
             auto factor = (cast(float) tweenSplashMS / cast(float) tweenSplashLengthMS).clamp(0.0f,
                     1.0f);
+            if (tweenSplashLengthMS < tweenSplashMS)
+            {
+                factor = 1.0f;
+            }
 
-            auto oldValue = 1.0f;
-            auto newValue = 0.0f;
-            auto delta = (newValue - oldValue) * factor;
-            auto setValue = oldValue + delta;
+            /**
+             * Simple helper to tween the value (linear)
+             */
+            void tweenValue(EntityID id, float oldValue, float newValue)
+            {
+                auto delta = (newValue - oldValue) * factor;
+                auto color = view.data!ColorComponent(id);
+                color.rgba.a = oldValue + delta;
+            }
 
-            auto color = view.data!ColorComponent(splash);
-            color.rgba.a = setValue;
-
-            writeln(setValue);
+            tweenValue(splash, 1.0f, 0.0f);
+            tweenValue(scoreEnemy, 0.0f, 1.0f);
+            tweenValue(scoreHuman, 0.0f, 1.0f);
 
             if (tweenSplash >= tweenSplashLength)
             {
