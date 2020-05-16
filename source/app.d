@@ -160,6 +160,8 @@ private:
         scoreEnemy = arena.spawnScore(view, PaddleOwner.PlayerTwo);
 
         arena.spawnBorder(view);
+
+        audioManager.play(mainTrack);
     }
 
 public:
