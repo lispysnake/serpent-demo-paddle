@@ -44,6 +44,7 @@ class MyApp : serpent.App
 private:
     AudioManager audioManager;
     Track mainTrack;
+    Track introTrack;
     Clip[5] impactClips;
 
     Scene scene;
@@ -223,6 +224,7 @@ public:
         audioManager.trackVolume = 0.25f;
         audioManager.effectVolume = 0.1f;
         mainTrack = new Track(buildPath("assets", "audio", "MainLoop.ogg"));
+        introTrack = new Track(buildPath("assets", "audio", "Intro.ogg"));
 
         foreach (i; 0 .. 5)
         {
@@ -230,7 +232,7 @@ public:
                     "impactGeneric_light_00%d.ogg".format(i)));
         }
 
-        audioManager.play(mainTrack);
+        audioManager.play(introTrack);
 
         /* Construct the play arena */
         arena = new Stage(this.world, context.display.logicalWidth(),
