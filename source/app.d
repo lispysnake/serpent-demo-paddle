@@ -90,7 +90,10 @@ private:
             keyDown = true;
             break;
         case SDL_SCANCODE_SPACE:
-            moarBalls = true;
+            if (!demoMode)
+            {
+                moarBalls = true;
+            }
             break;
         default:
             break;
