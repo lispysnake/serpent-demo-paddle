@@ -37,6 +37,7 @@ import std.datetime;
 import stage;
 
 import ai;
+import idle;
 
 /* Simple no-op app */
 class MyApp : serpent.App
@@ -44,6 +45,7 @@ class MyApp : serpent.App
 
 private:
     AudioManager audioManager;
+    IdleProcessor idleProc;
     Track mainTrack;
     Track introTrack;
     Clip[5] impactClips;
@@ -69,8 +71,6 @@ private:
     int scoreHumanNumeric = 0;
     EntityID scoreEnemy;
     int scoreEnemyNumeric = 0;
-
-    EntityID ballKill = 0;
 
     EntityID[] walls;
 
@@ -162,9 +162,10 @@ private:
 
 public:
 
-    this(AbstractWorld world)
+    this(AbstractWorld world, IdleProcessor idleProc)
     {
         this.world = world;
+        this.idleProc = idleProc;
     }
 
     /**
@@ -173,14 +174,6 @@ public:
     final override void update(View!ReadWrite view)
     {
         audioManager.update();
-        if (ballKill != 0)
-        {
-            view.killEntity(ballKill);
-            import std.stdio;
-
-            writefln("Killed ball %d", ballKill);
-            ballKill = 0;
-        }
 
         if (endDemoMode && demoMode)
         {
@@ -303,7 +296,13 @@ public:
         }
 
         writefln("Wall %d hit by ball %d", wallID, ballID);
-        ballKill = ballID;
+
+        idleProc.schedule((view) {
+            import std.stdio;
+
+            writeln("Killing: ", ballID);
+            view.killEntity(ballID);
+        });
     }
 
     /**
@@ -398,5 +397,8 @@ int main(string[] args)
     auto pipe = cast(BgfxPipeline) context.display.pipeline;
     pipe.addRenderer(new SpriteRenderer());
 
-    return context.run(new MyApp(world));
+    auto idleProc = new IdleProcessor();
+    context.systemGroup.add(new IdleProcessor());
+
+    return context.run(new MyApp(world, idleProc));
 }
