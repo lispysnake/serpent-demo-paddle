@@ -55,7 +55,6 @@ private:
     AbstractWorld world;
     EntityID player;
     EntityID splash;
-    EntityID ballID;
     EntityID enemyPaddle;
     EntityID obstacle1;
     EntityID obstacle2;
@@ -65,7 +64,6 @@ private:
     bool demoMode = true;
     bool endDemoMode = false;
     bool levelSpawn = false;
-    bool moarBalls = false;
 
     EntityID scoreHuman;
     int scoreHumanNumeric = 0;
@@ -92,7 +90,7 @@ private:
         case SDL_SCANCODE_SPACE:
             if (!demoMode)
             {
-                moarBalls = true;
+                idleProc.schedule((view) => arena.spawnBall(view));
             }
             break;
         default:
@@ -152,7 +150,7 @@ private:
     final void spawnLevel(View!ReadWrite view)
     {
         view.killEntity(splash);
-        ballID = arena.spawnBall(view);
+        arena.spawnBall(view);
 
         scoreHuman = arena.spawnScore(view, PaddleOwner.PlayerOne);
         scoreEnemy = arena.spawnScore(view, PaddleOwner.PlayerTwo);
@@ -216,15 +214,6 @@ public:
             return;
         }
 
-        arena.setScore(view, scoreEnemy, scoreEnemyNumeric);
-        arena.setScore(view, scoreHuman, scoreHumanNumeric);
-
-        if (moarBalls)
-        {
-            arena.spawnBall(view);
-            moarBalls = false;
-        }
-
         auto phys = view.data!PhysicsComponent(player);
         if (keyUp)
         {
@@ -284,11 +273,13 @@ public:
         {
             ++scoreHumanNumeric;
             writeln("Player One Scored");
+            idleProc.schedule((view) => arena.setScore(view, scoreHuman, scoreHumanNumeric));
         }
         else if (wallID == walls[3])
         {
             writeln("Player Two Scored");
             ++scoreEnemyNumeric;
+            idleProc.schedule((view) => arena.setScore(view, scoreEnemy, scoreEnemyNumeric));
         }
         else
         {

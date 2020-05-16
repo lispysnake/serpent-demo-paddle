@@ -156,7 +156,7 @@ public:
     /**
      * Spawn a new ball into play
      */
-    final EntityID spawnBall(View!ReadWrite view) @system
+    final void spawnBall(View!ReadWrite view) @system
     {
         /* ball */
         auto entBall = view.createEntity();
@@ -198,8 +198,6 @@ public:
         view.addComponent(entBall, comp);
 
         view.addComponent(entBall, physBall);
-
-        return entBall;
     }
 
     final EntityID spawnPaddle(View!ReadWrite view, PaddleOwner owner, PaddleType type)
