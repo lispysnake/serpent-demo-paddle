@@ -75,7 +75,7 @@ private:
     EntityID[] walls;
 
     Duration tweenSplash;
-    Duration tweenSplashLength = dur!"msecs"(1000);
+    Duration tweenSplashLength = dur!"msecs"(500);
 
     final void keyPressed(KeyboardEvent e)
     {
