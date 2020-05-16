@@ -169,6 +169,7 @@ public:
      */
     final override void update(View!ReadWrite view)
     {
+        audioManager.update();
         if (ballKill != 0)
         {
             view.killEntity(ballKill);
@@ -246,6 +247,7 @@ public:
     final override bool bootstrap(View!ReadWrite view)
     {
         audioManager = new AudioManager();
+        audioManager.crossFadeTime = 1000;
         audioManager.trackVolume = 0.25f;
         audioManager.effectVolume = 0.1f;
         mainTrack = new Track(buildPath("assets", "audio", "MainLoop.ogg"));
