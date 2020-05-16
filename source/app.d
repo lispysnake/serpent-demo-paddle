@@ -297,12 +297,7 @@ public:
 
         writefln("Wall %d hit by ball %d", wallID, ballID);
 
-        idleProc.schedule((view) {
-            import std.stdio;
-
-            writeln("Killing: ", ballID);
-            view.killEntity(ballID);
-        });
+        idleProc.schedule((view) => view.killEntity(ballID));
     }
 
     /**
