@@ -251,7 +251,8 @@ public:
 
         physPaddle.body = physBody;
 
-        auto physShape = new BoxShape(spritePaddle.texture.width, spritePaddle.texture.height);
+        auto physShape = new BoxShape(rectanglef(0.0f, 0.0f,
+                spritePaddle.texture.width - 4.0f, spritePaddle.texture.height), 0.0f);
         physShape.elasticity = 1.0f;
         physShape.friction = 0.0f;
         physBody.add(physShape);
