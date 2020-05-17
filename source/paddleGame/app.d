@@ -40,16 +40,6 @@ import paddleGame.idle;
 import paddleGame.fadeManager;
 import paddleGame.ball : BallComponent;
 
-/**
- * Allow tracking our basic game status
- */
-final enum GameStatus
-{
-    Stopped = 0,
-    FadeToPlay,
-    FadeToSplash,
-}
-
 /* Simple no-op app */
 final class PaddleGame : serpent.App
 {
@@ -66,11 +56,6 @@ private:
     Clip loseClip;
     Clip humanScoreClip;
     Clip enemyScoreClip;
-
-    /**
-     * Allow us to trivially track transitions
-     */
-    GameStatus status = GameStatus.Stopped;
 
     Scene scene;
     Stage arena;
@@ -101,13 +86,14 @@ private:
      */
     final void keyPressed(KeyboardEvent e)
     {
-        if (status == GameStatus.Stopped)
+        if (demoMode && !endDemoMode)
         {
-            status = GameStatus.FadeToSplash;
+            endDemoMode = true;
             idleProc.schedule((view) {
                 fadeManager.add(view, splash, false, ((view) => spawnLevel(view)));
                 fadeManager.add(view, scoreEnemy, true);
                 fadeManager.add(view, scoreHuman, true);
+                demoMode = false;
             });
         }
 
@@ -174,6 +160,7 @@ private:
     {
         walls = arena.spawnWalls(view);
         arena.spawnBorder(view);
+        splash = arena.spawnSplash(view);
         scoreHuman = arena.spawnScore(view, PaddleOwner.PlayerOne);
         scoreEnemy = arena.spawnScore(view, PaddleOwner.PlayerTwo);
 
@@ -223,9 +210,10 @@ private:
     final void spawnDemo(View!ReadWrite view)
     {
         resetPlayArea(view);
+        demoMode = true;
+        endDemoMode = false;
 
         /* Respawn entities */
-        splash = arena.spawnSplash(view);
         player = arena.spawnPaddle(view, PaddleOwner.PlayerOne, PaddleType.Computer);
         enemyPaddle = arena.spawnPaddle(view, PaddleOwner.PlayerTwo, PaddleType.Computer);
 
@@ -247,22 +235,6 @@ private:
 
         audioManager.play(mainTrack);
         arena.spawnBall(view);
-    }
-
-    /**
-     * Handle gameplay transitions
-     */
-    final void handleGameState(View!ReadWrite view)
-    {
-        final switch (status)
-        {
-        case GameStatus.FadeToPlay:
-            break;
-        case GameStatus.FadeToSplash:
-            break;
-        case GameStatus.Stopped:
-            break;
-        }
     }
 
     /**
@@ -288,6 +260,19 @@ private:
         {
             phys.body.velocity = vec2f(0.0f, 0.0f);
         }
+    }
+
+    /**
+     * Start game-over sequence, move back to demo
+     */
+    final void doGameOver()
+    {
+        idleProc.schedule((view) {
+            fadeManager.add(view, splash, true, ((view) => spawnDemo(view)));
+            fadeManager.add(view, scoreEnemy, false);
+            fadeManager.add(view, scoreHuman, false);
+
+        });
     }
 
 public:
@@ -329,8 +314,6 @@ public:
     final override void update(View!ReadWrite view)
     {
         audioManager.update();
-
-        handleGameState(view);
 
         handlePlayerMovement(view);
 
@@ -393,6 +376,7 @@ public:
                 if (scoreHumanNumeric == MaximumScore)
                 {
                     audioManager.play(winClip);
+                    doGameOver();
                 }
                 else
                 {
@@ -409,6 +393,7 @@ public:
                 if (scoreEnemyNumeric == MaximumScore)
                 {
                     audioManager.play(loseClip);
+                    doGameOver();
                 }
                 else
                 {
