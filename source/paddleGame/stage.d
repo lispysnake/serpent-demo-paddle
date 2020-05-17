@@ -228,6 +228,9 @@ public:
         circleBottom.sensor = true;
     }
 
+    /**
+     * If the obstacle hits a sensor, invert the velocity.
+     */
     final void onObstacleSensor(Shape shape1, Shape shape2)
     {
         auto seg = cast(SegmentShape) shape2;
@@ -238,6 +241,9 @@ public:
         invertObstacleEvent.emit(shape1.chipBody.entity);
     }
 
+    /**
+     * Spawn a paddle and handle all the boilerplate.
+     */
     final EntityID spawnPaddle(View!ReadWrite view, PaddleOwner owner, PaddleType type)
     {
         /* CPU paddle */
@@ -324,6 +330,10 @@ public:
         return entPaddle;
     }
 
+    /**
+     * Create a new invisible barrier used for top/bottom collisions.
+     * Left + right are used as sensors only
+     */
     final EntityID createBarrier(View!ReadWrite view, vec2f pointA, vec2f pointB,
             bool sensorNode = false)
     {
@@ -433,12 +443,18 @@ public:
         return entityID;
     }
 
+    /**
+     * Update the score numeral
+     */
     final void setScore(View!ReadWrite view, EntityID id, int score)
     {
         auto sprite = view.data!SpriteComponent(id);
         sprite.texture = numeralTexture[score < 9 ? score : 9];
     }
 
+    /**
+     * Spawn a pretty brick border
+     */
     final void spawnBorder(View!ReadWrite view)
     {
         auto tileWidth = width / borderTexture.width;
