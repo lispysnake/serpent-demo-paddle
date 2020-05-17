@@ -87,5 +87,17 @@ public:
     final void update()
     {
         _timePassed += context.deltaTime();
+
+        long timeNS;
+        _timePassed.split!("nsecs")(timeNS);
+        auto tweenMS = timeNS / 1_000_000.0f;
+        _fadeLength.split!("nsecs")(timeNS);
+        auto tweenLengthMS = timeNS / 1_000_000.0f;
+
+        auto factor = (cast(float) tweenMS / cast(float) tweenLengthMS).clamp(0.0f, 1.0f);
+        if (tweenLengthMS < tweenMS)
+        {
+            factor = 1.0f;
+        }
     }
 }
