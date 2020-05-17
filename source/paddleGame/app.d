@@ -39,6 +39,18 @@ import paddleGame.ai;
 import paddleGame.idle;
 import paddleGame.ball : BallComponent;
 
+/**
+ * Allow tracking our basic game status
+ */
+final enum GameStatus
+{
+    Stopped = 0,
+    FadeToPlay,
+    FadeToSplash,
+    AwaitingServe,
+    Served,
+}
+
 /* Simple no-op app */
 final class PaddleGame : serpent.App
 {
@@ -54,6 +66,11 @@ private:
     Clip loseClip;
     Clip humanScoreClip;
     Clip enemyScoreClip;
+
+    /**
+     * Allow us to trivially track transitions
+     */
+    GameStatus status = GameStatus.FadeToSplash;
 
     Scene scene;
     Stage arena;
@@ -82,6 +99,9 @@ private:
 
     string assetBasePath = "";
 
+    /**
+     * Handle key release events
+     */
     final void keyPressed(KeyboardEvent e)
     {
         endDemoMode = true;
@@ -105,6 +125,9 @@ private:
         }
     }
 
+    /**
+     * Handle key release events
+     */
     final void keyReleased(KeyboardEvent e)
     {
         switch (e.scancode)
@@ -138,20 +161,29 @@ private:
     }
 
     /**
+     * Spawn the initial play area boundaries
+     * All spawned elements are permanently part of the game
+     * whether or not they're visible
+     */
+    final void spawnPlayArea(View!ReadWrite view)
+    {
+        walls = arena.spawnWalls(view);
+        arena.spawnBorder(view);
+        scoreHuman = arena.spawnScore(view, PaddleOwner.PlayerOne);
+        scoreEnemy = arena.spawnScore(view, PaddleOwner.PlayerTwo);
+    }
+
+    /**
      * Spawn world in demo configuration
      */
     final void spawnDemo(View!ReadWrite view)
     {
         arena.spawnBall(view);
         splash = arena.spawnSplash(view);
-        walls = arena.spawnWalls(view);
         player = arena.spawnPaddle(view, PaddleOwner.PlayerOne, PaddleType.Computer);
         enemyPaddle = arena.spawnPaddle(view, PaddleOwner.PlayerTwo, PaddleType.Computer);
         obstacle1 = arena.spawnPaddle(view, PaddleOwner.ObstacleOne, PaddleType.Computer);
         obstacle2 = arena.spawnPaddle(view, PaddleOwner.ObstacleTwo, PaddleType.Computer);
-        arena.spawnBorder(view);
-        scoreHuman = arena.spawnScore(view, PaddleOwner.PlayerOne);
-        scoreEnemy = arena.spawnScore(view, PaddleOwner.PlayerTwo);
     }
 
     /**
@@ -189,6 +221,13 @@ private:
         arena.setScore(view, scoreEnemy, 0);
 
         arena.spawnBall(view);
+    }
+
+    /**
+     * Handle gameplay transitions
+     */
+    final void handleGameState(View!ReadWrite view)
+    {
     }
 
 public:
@@ -230,6 +269,8 @@ public:
     final override void update(View!ReadWrite view)
     {
         audioManager.update();
+
+        handleGameState(view);
 
         if (endDemoMode && demoMode)
         {
@@ -334,6 +375,7 @@ public:
         context.input.keyPressed.connect(&keyPressed);
         context.input.keyReleased.connect(&keyReleased);
 
+        spawnPlayArea(view);
         spawnDemo(view);
 
         return true;
