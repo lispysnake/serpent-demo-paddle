@@ -258,12 +258,25 @@ private:
         }
 
         auto phys = view.data!PhysicsComponent(player);
+        auto trans = view.data!TransformComponent(player);
+        auto sprite = view.data!SpriteComponent(player);
+
         if (keyUp)
         {
+            if (trans.position.y <= 36.0f)
+            {
+                phys.body.velocity = vec2f(0.0f, 0.0f);
+                return;
+            }
             phys.body.velocity = vec2f(0.0f, -0.3f);
         }
         else if (keyDown)
         {
+            if (trans.position.y + sprite.texture.height >= (context.display.logicalHeight - 32.0f))
+            {
+                phys.body.velocity = vec2f(0.0f, 0.0f);
+                return;
+            }
             phys.body.velocity = vec2f(0.0f, 0.3f);
         }
         else
