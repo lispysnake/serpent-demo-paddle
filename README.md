@@ -1,9 +1,13 @@
-# Basic Paddle Demo
+![screenshot](https://github.com/lispysnake/serpent-demo-paddle/raw/master/.github/screenshot.png)
+
+
+### Serpent Paddle Demo
 
 [![License](https://img.shields.io/badge/License-ZLib-blue.svg)](https://opensource.org/licenses/ZLib)
 
-![screenshot](https://github.com/lispysnake/serpent-demo-paddle/raw/master/.github/screenshot.png)
-
+The Serpent Game Framework is a brand new game framework from [Lispy Snake, Ltd](https://lispysnake.com) leveraging
+the latest technologies such as D, OpenGL and Vulkan, to make indie game
+development easier than ever.
 
 This project is a simple demonstration of [Serpent](https://github.com/lispysnake/serpent) to build a
 paddle-type-game-from-an-older-generation-of-consoles. >_>
