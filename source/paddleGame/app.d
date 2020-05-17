@@ -47,8 +47,6 @@ final enum GameStatus
     Stopped = 0,
     FadeToPlay,
     FadeToSplash,
-    AwaitingServe,
-    Served,
 }
 
 /* Simple no-op app */
@@ -248,6 +246,40 @@ private:
      */
     final void handleGameState(View!ReadWrite view)
     {
+        final switch (status)
+        {
+        case GameStatus.FadeToPlay:
+            break;
+        case GameStatus.FadeToSplash:
+            break;
+        case GameStatus.Stopped:
+            break;
+        }
+    }
+
+    /**
+     * Simply handle the player movement, i.e. up or down
+     */
+    final void handlePlayerMovement(View!ReadWrite view)
+    {
+        if (demoMode)
+        {
+            return;
+        }
+
+        auto phys = view.data!PhysicsComponent(player);
+        if (keyUp)
+        {
+            phys.body.velocity = vec2f(0.0f, -0.3f);
+        }
+        else if (keyDown)
+        {
+            phys.body.velocity = vec2f(0.0f, 0.3f);
+        }
+        else
+        {
+            phys.body.velocity = vec2f(0.0f, 0.0f);
+        }
     }
 
 public:
@@ -291,6 +323,8 @@ public:
         audioManager.update();
 
         handleGameState(view);
+
+        handlePlayerMovement(view);
 
         if (endDemoMode && demoMode)
         {
@@ -340,20 +374,6 @@ public:
             spawnLevel(view);
             levelSpawn = true;
             return;
-        }
-
-        auto phys = view.data!PhysicsComponent(player);
-        if (keyUp)
-        {
-            phys.body.velocity = vec2f(0.0f, -0.3f);
-        }
-        else if (keyDown)
-        {
-            phys.body.velocity = vec2f(0.0f, 0.3f);
-        }
-        else
-        {
-            phys.body.velocity = vec2f(0.0f, 0.0f);
         }
     }
 
