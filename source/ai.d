@@ -70,6 +70,41 @@ public:
         context.entity.tryRegisterComponent!BallComponent;
     }
 
+    final void moveEntityToPosition(PhysicsComponent* physics,
+            TransformComponent* transform, int targetY)
+    {
+        int positionY = cast(int) transform.position.y;
+        auto diff = abs(positionY - targetY);
+
+        if (diff <= zoneTolerance)
+        {
+            physics.body.velocity = vec2f(0.0f, 0.0f);
+        }
+        else if (targetY < positionY)
+        {
+            physics.body.velocity = vec2f(0.0f, -paddleSpeed);
+        }
+        else
+        {
+            physics.body.velocity = vec2f(0.0f, paddleSpeed);
+        }
+
+    }
+
+    final void returnPaddlesToHome(View!ReadWrite view)
+    {
+        foreach (entity, enemy, physics, transform, sprite; view.withComponents!(AIComponent,
+                PhysicsComponent, TransformComponent, SpriteComponent))
+        {
+            if (enemy.edge == AIEdge.None)
+            {
+                continue;
+            }
+            int targetY = cast(int)(
+                    (context.display.logicalHeight / 2.0f) - (sprite.texture.height / 2.0f));
+            moveEntityToPosition(physics, transform, targetY);
+        }
+    }
     /**
      * Manage AI response
      */
@@ -78,6 +113,7 @@ public:
         auto balls = view.withComponents!(BallComponent, TransformComponent, PhysicsComponent);
         if (balls.empty())
         {
+            returnPaddlesToHome(view);
             return;
         }
 
@@ -105,20 +141,7 @@ public:
                         sprite.texture.height / 2.0f));
             }
 
-            auto diff = abs(positionY - targetY);
-
-            if (diff <= zoneTolerance)
-            {
-                physics.body.velocity = vec2f(0.0f, 0.0f);
-            }
-            else if (targetY < positionY)
-            {
-                physics.body.velocity = vec2f(0.0f, -paddleSpeed);
-            }
-            else
-            {
-                physics.body.velocity = vec2f(0.0f, paddleSpeed);
-            }
+            moveEntityToPosition(physics, transform, targetY);
         }
     }
 }
