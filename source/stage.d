@@ -219,7 +219,7 @@ public:
         physics.body.sensorActivated.connect(&onObstacleSensor);
 
         auto circleBottom = new CircleShape(sprite.texture.width / 2.0f,
-                vec2f(0.0f, sprite.texture.height));
+                vec2f(0.0f, sprite.texture.height - (sprite.texture.width / 2.0f)));
         physics.body.add(circleBottom);
         circleBottom.sensor = true;
     }
