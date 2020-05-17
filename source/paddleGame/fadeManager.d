@@ -25,6 +25,8 @@ module paddleGame.fadeManager;
 import serpent;
 import std.datetime;
 
+alias void delegate(View!ReadWrite view) fadeCallback;
+
 /**
  * Wrapper to help us track whether we fade-in or fade-out a thing.
  */
@@ -32,11 +34,13 @@ final struct FadeOp
 {
     EntityID id;
     bool fadeIn;
+    fadeCallback cb;
 
-    this(EntityID id, bool fadeIn)
+    this(EntityID id, bool fadeIn, fadeCallback cb)
     {
         this.id = id;
         this.fadeIn = fadeIn;
+        this.cb = cb;
     }
 }
 
@@ -49,7 +53,7 @@ final class FadeManager
 
 private:
 
-    Duration _fadeLength = dur!"msecs"(1000);
+    Duration _fadeLength = dur!"msecs"(500);
     Duration _timePassed;
     Context context;
 
@@ -82,12 +86,14 @@ public:
     /**
      * Add entity to fadelist
      */
-    final void add(View!ReadWrite view, EntityID id, bool fadeIn = true)
+    final void add(View!ReadWrite view, EntityID id, bool fadeIn, fadeCallback cb = null)
     {
         auto col = view.data!ColorComponent(id);
         col.rgba.a = fadeIn ? 0.0f : 1.0f;
 
-        fadeSet[fadeSet.count] = FadeOp(id, fadeIn);
+        fadeSet[fadeSet.count] = FadeOp(id, fadeIn, cb);
+
+        _timePassed = dur!"msecs"(0);
     }
 
     final void update(View!ReadWrite view)
@@ -114,6 +120,11 @@ public:
             auto delta = (newValue - oldValue) * factor;
             auto color = view.data!ColorComponent(f.id);
             color.rgba.a = oldValue + delta;
+
+            if (f.cb !is null && factor == 1.0f)
+            {
+                f.cb(view);
+            }
         }
 
         if (factor == 1.0f)

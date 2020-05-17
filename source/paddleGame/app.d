@@ -70,7 +70,7 @@ private:
     /**
      * Allow us to trivially track transitions
      */
-    GameStatus status = GameStatus.FadeToSplash;
+    GameStatus status = GameStatus.Stopped;
 
     Scene scene;
     Stage arena;
@@ -94,9 +94,6 @@ private:
 
     EntityID[] walls;
 
-    Duration tweenSplash;
-    Duration tweenSplashLength = dur!"msecs"(500);
-
     string assetBasePath = "";
 
     /**
@@ -104,7 +101,15 @@ private:
      */
     final void keyPressed(KeyboardEvent e)
     {
-        endDemoMode = true;
+        if (status == GameStatus.Stopped)
+        {
+            status = GameStatus.FadeToSplash;
+            idleProc.schedule((view) {
+                fadeManager.add(view, splash, false, ((view) => spawnLevel(view)));
+                fadeManager.add(view, scoreEnemy, true);
+                fadeManager.add(view, scoreHuman, true);
+            });
+        }
 
         switch (e.scancode())
         {
@@ -234,6 +239,7 @@ private:
     final void spawnLevel(View!ReadWrite view)
     {
         resetPlayArea(view);
+        demoMode = false;
 
         /* Respawn entities */
         player = arena.spawnPaddle(view, PaddleOwner.PlayerOne, PaddleType.Human);
