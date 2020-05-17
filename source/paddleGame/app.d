@@ -50,6 +50,9 @@ private:
     Track introTrack;
     Clip[5] impactClips;
 
+    Clip winClip;
+    Clip loseClip;
+
     Scene scene;
     Stage arena;
     AbstractWorld world;
@@ -300,6 +303,9 @@ public:
         mainTrack = new Track(buildPath(assetBasePath, "audio", "MainLoop.ogg"));
         introTrack = new Track(buildPath(assetBasePath, "audio", "Intro.ogg"));
 
+        winClip = new Clip(buildPath(assetBasePath, "audio", "you_win.ogg"));
+        loseClip = new Clip(buildPath(assetBasePath, "audio", "you_lose.ogg"));
+
         foreach (i; 0 .. 5)
         {
             impactClips[i] = new Clip(buildPath(assetBasePath, "audio",
@@ -347,6 +353,15 @@ public:
         if (demoMode)
         {
             idleProc.schedule((view) => arena.spawnBall(view));
+        }
+
+        if (scoreHumanNumeric == 9)
+        {
+            audioManager.play(winClip);
+        }
+        else if (scoreEnemyNumeric == 9)
+        {
+            audioManager.play(loseClip);
         }
     }
 
