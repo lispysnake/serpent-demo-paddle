@@ -19,7 +19,7 @@ Weekly TODO
  - [x] Fade out the splash (quickly) when starting
  - [x] Fix collision shape on paddles (no slop overlap or offset)
  - [ ] Huge cleanup to make it feel more game-like
- - [ ] Fix/cleanup AI logic to stop Obstacle paddles going for lunch
+ - [x] Fix/cleanup AI logic to stop Obstacle paddles going for lunch
        Easiest method is to stop AI Controller being responsible for
        Obstacles and add inversion (circle) sensors to obstacle paddles
        to hit static bodies.
