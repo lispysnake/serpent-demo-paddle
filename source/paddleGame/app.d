@@ -52,6 +52,8 @@ private:
 
     Clip winClip;
     Clip loseClip;
+    Clip humanScoreClip;
+    Clip enemyScoreClip;
 
     Scene scene;
     Stage arena;
@@ -306,6 +308,9 @@ public:
         winClip = new Clip(buildPath(assetBasePath, "audio", "you_win.ogg"));
         loseClip = new Clip(buildPath(assetBasePath, "audio", "you_lose.ogg"));
 
+        humanScoreClip = new Clip(buildPath(assetBasePath, "audio", "PlayerScored.ogg"));
+        enemyScoreClip = new Clip(buildPath(assetBasePath, "audio", "EnemyScored.ogg"));
+
         foreach (i; 0 .. 5)
         {
             impactClips[i] = new Clip(buildPath(assetBasePath, "audio",
@@ -336,15 +341,39 @@ public:
 
     final void onScored(EntityID wallID, EntityID ballID)
     {
+        import paddleGame : MaximumScore;
+
         if (wallID == walls[2])
         {
             ++scoreHumanNumeric;
             idleProc.schedule((view) => arena.setScore(view, scoreHuman, scoreHumanNumeric));
+            if (!demoMode)
+            {
+                if (scoreHumanNumeric == MaximumScore)
+                {
+                    audioManager.play(winClip);
+                }
+                else
+                {
+                    audioManager.play(humanScoreClip);
+                }
+            }
         }
         else if (wallID == walls[3])
         {
             ++scoreEnemyNumeric;
             idleProc.schedule((view) => arena.setScore(view, scoreEnemy, scoreEnemyNumeric));
+            if (!demoMode)
+            {
+                if (scoreEnemyNumeric == MaximumScore)
+                {
+                    audioManager.play(loseClip);
+                }
+                else
+                {
+                    audioManager.play(enemyScoreClip);
+                }
+            }
         }
 
         idleProc.schedule((view) => view.killEntity(ballID));
@@ -353,19 +382,6 @@ public:
         if (demoMode)
         {
             idleProc.schedule((view) => arena.spawnBall(view));
-        }
-        else
-        {
-            import paddleGame : MaximumScore;
-
-            if (scoreHumanNumeric == MaximumScore)
-            {
-                audioManager.play(winClip);
-            }
-            else if (scoreEnemyNumeric == MaximumScore)
-            {
-                audioManager.play(loseClip);
-            }
         }
     }
 
