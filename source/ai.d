@@ -58,33 +58,6 @@ private:
     /* Prevent jitter physics */
     const int zoneTolerance = 5;
     const float paddleSpeed = 0.3f;
-    const float obstacleSpeed = 0.2f;
-
-private:
-
-    /**
-     * Handle the special case obstacles
-     *
-     * They have no set 'edge' and will go up and down in a loop
-     */
-    final void handleObstacle(TransformComponent* transform,
-            SpriteComponent* sprite, PhysicsComponent* physics)
-    {
-        int positionY = cast(int) transform.position.y;
-
-        if (positionY <= (zoneTolerance + 50.0f))
-        {
-            physics.body.velocity = vec2f(0.0f, obstacleSpeed);
-        }
-        else
-        {
-            auto diff = abs(positionY - context.display.logicalHeight + sprite.texture.height);
-            if (diff <= (zoneTolerance + 50.0f))
-            {
-                physics.body.velocity = vec2f(0.0f, -obstacleSpeed);
-            }
-        }
-    }
 
 public:
 
@@ -118,7 +91,6 @@ public:
         {
             if (enemy.edge == AIEdge.None)
             {
-                handleObstacle(transform, sprite, physics);
                 continue;
             }
 

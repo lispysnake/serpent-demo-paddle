@@ -74,6 +74,7 @@ private:
     float _height = 0;
 
     AbstractWorld world;
+    const float obstacleSpeed = 0.2f;
 
 public:
 
@@ -88,6 +89,8 @@ public:
      * Let main context know an impact event occured
      */
     mixin Signal!(EntityID, EntityID) impactEvent;
+
+    mixin Signal!(EntityID) invertObstacleEvent;
 
     /**
      * Construct a new Stage with the given width and height
@@ -200,6 +203,37 @@ public:
         view.addComponent(entBall, physBall);
     }
 
+    /**
+     * Add circle shape sensors to the body.
+     *
+     * This helps us detect when we hit on the top or bottom so we know
+     * to change direction of the obstacle paddle
+     */
+    final void addObstacleSensors(SpriteComponent* sprite, PhysicsComponent* physics)
+    {
+        /* Add top sensor */
+        auto circleTop = new CircleShape(sprite.texture.width / 2.0f, vec2f(0.0f, 0.0f));
+        physics.body.add(circleTop);
+        circleTop.sensor = true;
+
+        physics.body.sensorActivated.connect(&onObstacleSensor);
+
+        auto circleBottom = new CircleShape(sprite.texture.width / 2.0f,
+                vec2f(0.0f, sprite.texture.height));
+        physics.body.add(circleBottom);
+        circleBottom.sensor = true;
+    }
+
+    final void onObstacleSensor(Shape shape1, Shape shape2)
+    {
+        auto seg = cast(SegmentShape) shape2;
+        if (seg is null)
+        {
+            return;
+        }
+        invertObstacleEvent.emit(shape1.chipBody.entity);
+    }
+
     final EntityID spawnPaddle(View!ReadWrite view, PaddleOwner owner, PaddleType type)
     {
         /* CPU paddle */
@@ -234,16 +268,11 @@ public:
             break;
         case PaddleOwner.ObstacleOne:
             transPaddle.position.x = (width / 2.0f) - (spritePaddle.texture.width / 2.0f) - 32.0f;
-            transPaddle.position.y = 35.0f;
             break;
         case PaddleOwner.ObstacleTwo:
             transPaddle.position.x = (width / 2.0f) - (spritePaddle.texture.width / 2.0f) + 32.0f;
-            transPaddle.position.y = height - 35.0f - spritePaddle.texture.height;
             break;
         }
-
-        view.addComponent(entPaddle, spritePaddle);
-        view.addComponent(entPaddle, transPaddle);
 
         auto physPaddle = PhysicsComponent();
         auto physBody = new KinematicBody();
@@ -255,8 +284,6 @@ public:
         physShape.elasticity = 1.0f;
         physShape.friction = 0.0f;
         physBody.add(physShape);
-
-        view.addComponent(entPaddle, physPaddle);
 
         /**
          * Mark this as an AI paddle on the correct edge
@@ -273,12 +300,22 @@ public:
                 comp.edge = AIEdge.Right;
                 break;
             case PaddleOwner.ObstacleOne:
+                physBody.velocity = vec2f(0.0f, obstacleSpeed);
+                addObstacleSensors(&spritePaddle, &physPaddle);
+                comp.edge = AIEdge.None;
+                break;
             case PaddleOwner.ObstacleTwo:
+                physBody.velocity = vec2f(0.0f, -obstacleSpeed);
+                addObstacleSensors(&spritePaddle, &physPaddle);
                 comp.edge = AIEdge.None;
                 break;
             }
             view.addComponent(entPaddle, comp);
         }
+
+        view.addComponent(entPaddle, spritePaddle);
+        view.addComponent(entPaddle, transPaddle);
+        view.addComponent(entPaddle, physPaddle);
 
         return entPaddle;
     }

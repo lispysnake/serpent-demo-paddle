@@ -288,6 +288,7 @@ public:
 
         arena.scoreEvent.connect(&onScored);
         arena.impactEvent.connect(&onImpact);
+        arena.invertObstacleEvent.connect(&onInversion);
 
         scene = new Scene("default");
         context.display.addScene(scene);
@@ -347,6 +348,18 @@ public:
 
         auto idx = uniform(0, impactClips.length);
         audioManager.play(impactClips[idx]);
+    }
+
+    /**
+     * Invert direction of paddle
+     */
+    final void onInversion(EntityID id)
+    {
+        idleProc.schedule((view) {
+            auto physics = view.data!PhysicsComponent(id);
+            auto vel = physics.body.velocity;
+            physics.body.velocity = vec2f(0.0f, -vel.y);
+        });
     }
 }
 
