@@ -24,6 +24,7 @@ module paddleGame.fadeManager;
 
 import serpent;
 import std.datetime;
+import core.sync.mutex : Mutex;
 
 alias void delegate(View!ReadWrite view) fadeCallback;
 
@@ -58,6 +59,7 @@ private:
     Context context;
 
     __gshared GreedyArray!FadeOp fadeSet;
+    shared Mutex mtx;
 
 public:
 
@@ -65,6 +67,7 @@ public:
     {
         this.context = context;
         fadeSet = GreedyArray!FadeOp(3, 0);
+        mtx = new shared Mutex();
     }
 
     /**
@@ -88,6 +91,12 @@ public:
      */
     final void add(View!ReadWrite view, EntityID id, bool fadeIn, fadeCallback cb = null)
     {
+        scope (exit)
+        {
+            mtx.unlock_nothrow();
+        }
+        mtx.lock_nothrow();
+
         auto col = view.data!ColorComponent(id);
         col.rgba.a = fadeIn ? 0.0f : 1.0f;
 
@@ -98,6 +107,12 @@ public:
 
     final void update(View!ReadWrite view)
     {
+        scope (exit)
+        {
+            mtx.unlock_nothrow();
+        }
+        mtx.lock_nothrow();
+
         _timePassed += context.deltaTime();
 
         long timeNS;

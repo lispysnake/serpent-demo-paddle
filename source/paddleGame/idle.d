@@ -23,6 +23,7 @@
 module paddleGame.idle;
 
 import serpent;
+import core.sync.mutex : Mutex;
 
 alias void delegate(View!ReadWrite view) idleCallback;
 
@@ -41,12 +42,14 @@ final class IdleProcessor : Processor!ReadWrite
 private:
 
     __gshared GreedyArray!idleCallback _callbacks;
+    shared Mutex mtx;
 
 public:
 
     this()
     {
         _callbacks = GreedyArray!idleCallback(0, 0);
+        mtx = new shared Mutex();
     }
 
     /**
@@ -55,6 +58,11 @@ public:
      */
     final override void run(View!ReadWrite view)
     {
+        scope (exit)
+        {
+            mtx.unlock_nothrow();
+        }
+        mtx.lock_nothrow();
         foreach (ref cb; _callbacks.data)
         {
             cb(view);
@@ -68,6 +76,11 @@ public:
      */
     final void schedule(idleCallback cb)
     {
+        scope (exit)
+        {
+            mtx.unlock_nothrow();
+        }
+        mtx.lock_nothrow();
         _callbacks[_callbacks.count] = cb;
     }
 }
