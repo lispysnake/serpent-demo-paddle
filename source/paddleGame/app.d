@@ -354,16 +354,18 @@ public:
         {
             idleProc.schedule((view) => arena.spawnBall(view));
         }
-
-        import paddleGame : MaximumScore;
-
-        if (scoreHumanNumeric == MaximumScore)
+        else
         {
-            audioManager.play(winClip);
-        }
-        else if (scoreEnemyNumeric == MaximumScore)
-        {
-            audioManager.play(loseClip);
+            import paddleGame : MaximumScore;
+
+            if (scoreHumanNumeric == MaximumScore)
+            {
+                audioManager.play(winClip);
+            }
+            else if (scoreEnemyNumeric == MaximumScore)
+            {
+                audioManager.play(loseClip);
+            }
         }
     }
 
