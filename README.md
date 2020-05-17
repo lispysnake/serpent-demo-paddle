@@ -5,18 +5,19 @@
 
 [![License](https://img.shields.io/badge/License-ZLib-blue.svg)](https://opensource.org/licenses/ZLib)
 
-The Serpent Game Framework is a brand new game framework from [Lispy Snake, Ltd](https://lispysnake.com) leveraging
-the latest technologies such as D, OpenGL and Vulkan, to make indie game
-development easier than ever.
+Demonstration of the [Serpent Game Framework](https://github.com/lispysnake/serpent) from [Lispy Snake, Ltd](https://lispysnake.com)
 
-This project is a simple demonstration of [Serpent](https://github.com/lispysnake/serpent) to build a
-paddle-type-game-from-an-older-generation-of-consoles. >_>
+Our goal is to accelerate development of certain aspects of Serpent, through various demos.
 
-The primary mission here is to build the initial Chipmunk2D integration needed for Serpent before pushing
-it backupstream into Serpent as and when ready. Initially any problems encountered with super-basic-game
-development should be rectified.
+### Demo Goals
 
-### Building
+ - Flesh our physics integration (Chipmunk2D)
+ - Add basic audio support (sdl_mixer)
+ - Make a basic game with Serpent
+ - Test deployment across multiple targets (Windows & Linux)
+ - Huge Serpent core improvements
+
+### Dependencies
 
 To get the dependencies on Solus, issue the following command:
 
@@ -28,6 +29,10 @@ We're going to address this to allow linking to dynamic bgfx, etc, to make this 
 Make sure you have all modules cloned recursively:
 
     git submodule update --init --recursive
+
+### Building
+
+    ./scripts/build.sh release
 
 ## Running
 
