@@ -79,12 +79,18 @@ public:
         _fadeLength = d;
     }
 
-    final void add(EntityID id, bool fadeIn = true)
+    /**
+     * Add entity to fadelist
+     */
+    final void add(View!ReadWrite view, EntityID id, bool fadeIn = true)
     {
+        auto col = view.data!ColorComponent(id);
+        col.rgba.a = fadeIn ? 0.0f : 1.0f;
+
         fadeSet[fadeSet.count] = FadeOp(id, fadeIn);
     }
 
-    final void update()
+    final void update(View!ReadWrite view)
     {
         _timePassed += context.deltaTime();
 
@@ -98,6 +104,21 @@ public:
         if (tweenLengthMS < tweenMS)
         {
             factor = 1.0f;
+        }
+
+        foreach (ref f; fadeSet.data)
+        {
+            auto oldValue = f.fadeIn ? 0.0f : 1.0f;
+            auto newValue = f.fadeIn ? 1.0f : 0.0f;
+
+            auto delta = (newValue - oldValue) * factor;
+            auto color = view.data!ColorComponent(f.id);
+            color.rgba.a = oldValue + delta;
+        }
+
+        if (factor == 1.0f)
+        {
+            fadeSet.reset();
         }
     }
 }

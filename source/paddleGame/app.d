@@ -328,57 +328,7 @@ public:
 
         handlePlayerMovement(view);
 
-        fadeManager.update();
-
-        if (endDemoMode && demoMode)
-        {
-            tweenSplash += context.deltaTime();
-
-            long timeNS;
-            tweenSplash.split!("nsecs")(timeNS);
-            auto tweenSplashMS = timeNS / 1_000_000.0f;
-            tweenSplashLength.split!("nsecs")(timeNS);
-            auto tweenSplashLengthMS = timeNS / 1_000_000.0f;
-
-            auto factor = (cast(float) tweenSplashMS / cast(float) tweenSplashLengthMS).clamp(0.0f,
-                    1.0f);
-            if (tweenSplashLengthMS < tweenSplashMS)
-            {
-                factor = 1.0f;
-            }
-
-            /**
-             * Simple helper to tween the value (linear)
-             */
-            void tweenValue(EntityID id, float oldValue, float newValue)
-            {
-                auto delta = (newValue - oldValue) * factor;
-                auto color = view.data!ColorComponent(id);
-                color.rgba.a = oldValue + delta;
-            }
-
-            tweenValue(splash, 1.0f, 0.0f);
-            tweenValue(scoreEnemy, 0.0f, 1.0f);
-            tweenValue(scoreHuman, 0.0f, 1.0f);
-
-            if (tweenSplash >= tweenSplashLength)
-            {
-                endDemoMode = false;
-                demoMode = false;
-                view.killEntity(splash);
-            }
-        }
-
-        if (demoMode)
-        {
-            return;
-        }
-        if (!levelSpawn)
-        {
-            spawnLevel(view);
-            levelSpawn = true;
-            return;
-        }
+        fadeManager.update(view);
     }
 
     final override bool bootstrap(View!ReadWrite view)
