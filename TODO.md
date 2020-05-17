@@ -23,7 +23,7 @@ Weekly TODO
        Easiest method is to stop AI Controller being responsible for
        Obstacles and add inversion (circle) sensors to obstacle paddles
        to hit static bodies.
- - [ ] Stop player/enemy paddles going through edge walls
+ - [x] Stop player/enemy paddles going through edge walls
  - [x] Only allow spawning of ONE ball in play
  - [x] Automatic countdown serve
  - [x] Have a 'game over' mechanic (restart)
