@@ -23,7 +23,6 @@
 module paddleGame.app;
 
 import serpent;
-import serpent.graphics.sprite;
 
 import serpent.audio;
 import serpent.physics2d;
