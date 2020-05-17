@@ -26,6 +26,7 @@ import serpent;
 
 import ball;
 import serpent.physics2d;
+import std.math : abs;
 
 /**
  * AI can follow an edge
@@ -77,11 +78,7 @@ private:
         }
         else
         {
-            auto diff = positionY - context.display.logicalHeight + sprite.texture.height;
-            if (diff < 0)
-            {
-                diff = -diff;
-            }
+            auto diff = abs(positionY - context.display.logicalHeight + sprite.texture.height);
             if (diff <= (zoneTolerance + 50.0f))
             {
                 physics.body.velocity = vec2f(0.0f, -obstacleSpeed);
@@ -136,11 +133,7 @@ public:
                         sprite.texture.height / 2.0f));
             }
 
-            auto diff = positionY - targetY;
-            if (diff < 0)
-            {
-                diff = -diff;
-            }
+            auto diff = abs(positionY - targetY);
 
             if (diff <= zoneTolerance)
             {
