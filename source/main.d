@@ -36,10 +36,19 @@ int main(string[] args)
     bool fullscreen = false;
     bool debugMode = false;
     bool disableVsync = false;
-    auto argp = getopt(args, std.getopt.config.bundling, "v|vulkan",
-            "Use Vulkan instead of OpenGL", &vulkan, "f|fullscreen",
-            "Start in fullscreen mode", &fullscreen, "d|debug", "Enable debug mode",
-            &debugMode, "n|no-vsync", "Disable VSync", &disableVsync);
+    version (linux)
+    {
+        auto argp = getopt(args, std.getopt.config.bundling, "v|vulkan",
+                "Use Vulkan instead of OpenGL", &vulkan, "f|fullscreen",
+                "Start in fullscreen mode", &fullscreen, "d|debug", "Enable debug mode",
+                &debugMode, "n|no-vsync", "Disable VSync", &disableVsync);
+    }
+    else
+    {
+        auto argp = getopt(args, std.getopt.config.bundling, "f|fullscreen",
+                "Start in fullscreen mode", &fullscreen, "d|debug",
+                "Enable debug mode", &debugMode, "n|no-vsync", "Disable VSync", &disableVsync);
+    }
 
     if (argp.helpWanted)
     {
