@@ -20,11 +20,11 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-module ai;
+module paddleGame.ai;
 
 import serpent;
 
-import ball;
+import paddleGame.ball;
 import serpent.physics2d;
 import std.math : abs;
 

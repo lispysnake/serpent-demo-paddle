@@ -20,54 +20,23 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-module idle;
+module paddleGame.ball;
 
 import serpent;
 
-alias void delegate(View!ReadWrite view) idleCallback;
-
-final struct CallbackWrapper
+/**
+ * Eventually we'll have special parameters for balls. For now they can
+ * be a trivial single component.
+ */
+final enum BallType
 {
-    idleCallback cb;
+    Standard = 0,
 }
 
 /**
- * The IdleProcessor is currently very simple, but will eventually
- * be upstreamed into Serpent to have "do later" functionality.
+ * Basic ball component
  */
-final class IdleProcessor : Processor!ReadWrite
+final @serpentComponent struct BallComponent
 {
-
-private:
-
-    __gshared GreedyArray!idleCallback _callbacks;
-
-public:
-
-    this()
-    {
-        _callbacks = GreedyArray!idleCallback(0, 0);
-    }
-
-    /**
-     * Step through all idle callbacks and run them, removing them
-     * from the stack
-     */
-    final override void run(View!ReadWrite view)
-    {
-        foreach (ref cb; _callbacks.data)
-        {
-            cb(view);
-        }
-        _callbacks.reset();
-    }
-
-    /**
-     * Copy lambda/function to idle processor stack for later
-     * execution
-     */
-    final void schedule(idleCallback cb)
-    {
-        _callbacks[_callbacks.count] = cb;
-    }
+    BallType type;
 }

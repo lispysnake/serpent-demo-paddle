@@ -20,10 +20,10 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-module stage;
+module paddleGame.stage;
 
-import ai;
-import ball;
+import paddleGame.ai;
+import paddleGame.ball;
 
 import gfm.math;
 import serpent;

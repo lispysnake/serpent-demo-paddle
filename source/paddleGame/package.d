@@ -20,23 +20,10 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-module ball;
+module paddleGame;
 
-import serpent;
-
-/**
- * Eventually we'll have special parameters for balls. For now they can
- * be a trivial single component.
- */
-final enum BallType
-{
-    Standard = 0,
-}
-
-/**
- * Basic ball component
- */
-final @serpentComponent struct BallComponent
-{
-    BallType type;
-}
+public import paddleGame.ai;
+public import paddleGame.app;
+public import paddleGame.ball;
+public import paddleGame.idle;
+public import paddleGame.stage;
