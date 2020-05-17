@@ -18,15 +18,15 @@ Weekly TODO
  - [x] Add intro music, crossfade to main loop on 'start'
  - [x] Fade out the splash (quickly) when starting
  - [x] Fix collision shape on paddles (no slop overlap or offset)
- - [ ] Huge cleanup to make it feel more game-like
+ - [x] Huge cleanup to make it feel more game-like
  - [x] Fix/cleanup AI logic to stop Obstacle paddles going for lunch
        Easiest method is to stop AI Controller being responsible for
        Obstacles and add inversion (circle) sensors to obstacle paddles
        to hit static bodies.
  - [ ] Stop player/enemy paddles going through edge walls
- - [ ] Only allow spawning of ONE ball in play
+ - [x] Only allow spawning of ONE ball in play
  - [ ] Prompt player to 'serve' the ball
- - [ ] Have a 'game over' mechanic (restart)
+ - [x] Have a 'game over' mechanic (restart)
 
 ### Could Be Nice
 
