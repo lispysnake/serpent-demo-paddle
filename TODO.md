@@ -25,7 +25,7 @@ Weekly TODO
        to hit static bodies.
  - [ ] Stop player/enemy paddles going through edge walls
  - [x] Only allow spawning of ONE ball in play
- - [ ] Prompt player to 'serve' the ball
+ - [x] Automatic countdown serve
  - [x] Have a 'game over' mechanic (restart)
 
 ### Could Be Nice
