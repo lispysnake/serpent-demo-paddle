@@ -180,10 +180,18 @@ public:
             spriteBall.texture = ballTextureAlt;
         }
 
+        /* Randomly choose launch vector */
+        static vec2f[] potentialVectors = [
+            vec2f(-0.45, -0.1f), vec2f(0.45, 0.1f), vec2f(-0.45, 0.1f),
+            vec2f(-0.6f, 0.6f),
+        ];
+
         /* Set up transform (position) */
         auto transBall = TransformComponent();
         transBall.position.y = (height / 2.0f) - (ballTexture.height / 2.0f);
         transBall.position.x = (width / 2.0f) - (ballTexture.width / 2.0f);
+
+        auto chosenVec = potentialVectors[uniform(0, potentialVectors.length)];
 
         view.addComponent(entBall, spriteBall);
         view.addComponent(entBall, transBall);
@@ -195,7 +203,7 @@ public:
         physShape.mass = 100.0f;
         physShape.elasticity = 1.0f;
         physShape.friction = 0.0f;
-        physBody.velocity = vec2f(-0.45f, -0.1f);
+        physBody.velocity = chosenVec;
         physBody.minVelocity = vec2f(0.4f, 0.1f);
         physBody.maxVelocity = vec2f(0.85f, 0.85f);
         physBody.add(physShape);
