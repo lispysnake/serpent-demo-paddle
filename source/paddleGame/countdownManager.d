@@ -46,6 +46,7 @@ private:
         {
             counting = false;
         }
+        stepped.emit(countDown);
     }
 
 public:
@@ -61,6 +62,7 @@ public:
     {
         _timePassed = dur!"msecs"(0);
         counting = true;
+        countDown = 3;
     }
 
     final void update()
@@ -71,7 +73,7 @@ public:
         }
         _timePassed += context.deltaTime();
         long ms;
-        _timePassed.split!("nsecs")(ms);
+        _timePassed.split!("msecs")(ms);
         if (ms >= 1000)
         {
             countDown--;

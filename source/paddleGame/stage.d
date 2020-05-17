@@ -460,7 +460,7 @@ public:
         trans.position.z = 0.4f;
 
         auto col = ColorComponent();
-        col.rgba = vec4f(1.0f, 1.0f, 1.0f, 1.0f);
+        col.rgba = vec4f(1.0f, 1.0f, 1.0f, 0.0f);
 
         view.addComponent(entityID, col);
         view.addComponent(entityID, trans);

@@ -110,13 +110,6 @@ private:
         case SDL_SCANCODE_DOWN:
             keyDown = true;
             break;
-        case SDL_SCANCODE_SPACE:
-            if (!demoMode && !ballInPlay)
-            {
-                idleProc.schedule((view) => arena.spawnBall(view));
-                ballInPlay = true;
-            }
-            break;
         default:
             break;
         }
@@ -241,6 +234,17 @@ private:
         enemyPaddle = arena.spawnPaddle(view, PaddleOwner.PlayerTwo, PaddleType.Computer);
 
         audioManager.play(mainTrack);
+
+        idleProc.schedule((view) => beginSpawnBall(view));
+    }
+
+    /**
+     * Fade-in the countdown, begin spawning the ball
+     */
+    final void beginSpawnBall(View!ReadWrite view)
+    {
+        arena.setScore(view, countdownID, 3);
+        fadeManager.add(view, countdownID, true, (v) { countManager.start(); });
     }
 
     /**
@@ -283,10 +287,17 @@ private:
 
     final void onCountdown(int step)
     {
-        writeln(step);
         if (step == 0)
         {
-            writeln("Finished");
+            idleProc.schedule((view) {
+                arena.spawnBall(view);
+                fadeManager.add(view, countdownID, false);
+                ballInPlay = true;
+            });
+        }
+        else
+        {
+            idleProc.schedule((view) { arena.setScore(view, countdownID, step); });
         }
     }
 
@@ -333,6 +344,8 @@ public:
         handlePlayerMovement(view);
 
         fadeManager.update(view);
+
+        countManager.update();
     }
 
     final override bool bootstrap(View!ReadWrite view)
@@ -386,6 +399,8 @@ public:
 
         ballInPlay = false;
 
+        idleProc.schedule((view) => view.killEntity(ballID));
+
         if (wallID == walls[2])
         {
             ++scoreHumanNumeric;
@@ -396,6 +411,7 @@ public:
                 {
                     audioManager.play(winClip);
                     doGameOver();
+                    return;
                 }
                 else
                 {
@@ -413,6 +429,7 @@ public:
                 {
                     audioManager.play(loseClip);
                     doGameOver();
+                    return;
                 }
                 else
                 {
@@ -421,13 +438,15 @@ public:
             }
         }
 
-        idleProc.schedule((view) => view.killEntity(ballID));
-
         /* Auto spawn new ball for demo mode */
         if (demoMode)
         {
             ballInPlay = true;
             idleProc.schedule((view) => arena.spawnBall(view));
+        }
+        else
+        {
+            idleProc.schedule((view) => beginSpawnBall(view));
         }
     }
 
