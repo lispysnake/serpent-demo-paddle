@@ -13,7 +13,9 @@ install -m 00755 bin/serpent-demo-paddle paddle-game/.
 install -D -d -m 00755 paddle-game/assets
 install -D -d -m 00755 paddle-game/assets/audio
 install -m 00644 assets/*.png paddle-game/assets/.
+install -m 00644 assets/README.md paddle-game/assets/.
 install -m 00644 assets/audio/*.ogg paddle-game/assets/audio/.
+install -m 00644 assets/audio/README.md paddle-game/assets/audio/.
 
 # Compliance
 install -m 00644 LICENSE paddle-game/.
