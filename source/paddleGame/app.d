@@ -81,6 +81,8 @@ private:
 
     string assetBasePath = "";
 
+    bool ballInPlay = false;
+
     /**
      * Handle key release events
      */
@@ -106,9 +108,10 @@ private:
             keyDown = true;
             break;
         case SDL_SCANCODE_SPACE:
-            if (!demoMode)
+            if (!demoMode && !ballInPlay)
             {
                 idleProc.schedule((view) => arena.spawnBall(view));
+                ballInPlay = true;
             }
             break;
         default:
@@ -234,7 +237,6 @@ private:
         enemyPaddle = arena.spawnPaddle(view, PaddleOwner.PlayerTwo, PaddleType.Computer);
 
         audioManager.play(mainTrack);
-        arena.spawnBall(view);
     }
 
     /**
@@ -367,6 +369,8 @@ public:
     {
         import paddleGame : MaximumScore;
 
+        ballInPlay = false;
+
         if (wallID == walls[2])
         {
             ++scoreHumanNumeric;
@@ -407,6 +411,7 @@ public:
         /* Auto spawn new ball for demo mode */
         if (demoMode)
         {
+            ballInPlay = true;
             idleProc.schedule((view) => arena.spawnBall(view));
         }
     }
