@@ -75,6 +75,7 @@ private:
 
     AbstractWorld world;
     const float obstacleSpeed = 0.2f;
+    string assetBasePath = "";
 
 public:
 
@@ -95,31 +96,33 @@ public:
     /**
      * Construct a new Stage with the given width and height
      */
-    this(AbstractWorld world, float width, float height)
+    this(AbstractWorld world, string assetBasePath, float width, float height)
     {
         this._width = width;
         this._height = height;
+        this.assetBasePath = assetBasePath;
 
-        ballTexture = new Texture(buildPath("assets", "ball.png"), TextureFilter.Linear);
-        ballTextureAlt = new Texture(buildPath("assets", "ballAlt.png"), TextureFilter.Linear);
+        ballTexture = new Texture(buildPath(assetBasePath, "ball.png"), TextureFilter.Linear);
+        ballTextureAlt = new Texture(buildPath(assetBasePath, "ballAlt.png"), TextureFilter.Linear);
 
-        paddleTextureTeam1 = new Texture(buildPath("assets", "paddleBlue.png"),
-                TextureFilter.Linear);
-        paddleTextureTeam2 = new Texture(buildPath("assets", "paddleRed.png"), TextureFilter.Linear);
+        paddleTextureTeam1 = new Texture(buildPath(assetBasePath,
+                "paddleBlue.png"), TextureFilter.Linear);
+        paddleTextureTeam2 = new Texture(buildPath(assetBasePath,
+                "paddleRed.png"), TextureFilter.Linear);
 
-        paddleTextureObstacle = new Texture(buildPath("assets",
+        paddleTextureObstacle = new Texture(buildPath(assetBasePath,
                 "paddleInert.png"), TextureFilter.Linear);
 
-        texSplash = new Texture(buildPath("assets", "paddle.png"), TextureFilter.Linear);
+        texSplash = new Texture(buildPath(assetBasePath, "paddle.png"), TextureFilter.Linear);
 
         foreach (i; 0 .. 10)
         {
-            numeralTexture[i] = new Texture(buildPath("assets",
+            numeralTexture[i] = new Texture(buildPath(assetBasePath,
                     "numeral%d.png".format(i)), TextureFilter.Linear);
         }
 
-        borderTexture = new Texture(buildPath("assets", "wall.png"), TextureFilter.Linear);
-        borderTexture2 = new Texture(buildPath("assets", "wall2.png"), TextureFilter.Linear);
+        borderTexture = new Texture(buildPath(assetBasePath, "wall.png"), TextureFilter.Linear);
+        borderTexture2 = new Texture(buildPath(assetBasePath, "wall2.png"), TextureFilter.Linear);
     }
 
     /**

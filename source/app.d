@@ -76,6 +76,8 @@ private:
     Duration tweenSplash;
     Duration tweenSplashLength = dur!"msecs"(500);
 
+    string assetBasePath = "";
+
     final void keyPressed(KeyboardEvent e)
     {
         endDemoMode = true;
@@ -191,6 +193,31 @@ public:
     {
         this.world = world;
         this.idleProc = idleProc;
+
+        import std.file : thisExePath, exists;
+        import std.path : dirName;
+
+        auto us = thisExePath();
+        auto dirp = dirName(us);
+
+        string[] assetPaths = [buildPath("assets"), buildPath("..", "assets")];
+
+        foreach (p; assetPaths)
+        {
+            auto jr = buildPath(dirp, p);
+            if (!exists(jr))
+            {
+                continue;
+            }
+            assetBasePath = jr;
+        }
+        if (assetBasePath == "")
+        {
+            writeln("CANNOT FIND ASSETS");
+            import core.stdc.stdlib;
+
+            exit(0);
+        }
     }
 
     /**
@@ -271,20 +298,20 @@ public:
         audioManager.crossFadeTime = 1000;
         audioManager.trackVolume = 0.25f;
         audioManager.effectVolume = 0.1f;
-        mainTrack = new Track(buildPath("assets", "audio", "MainLoop.ogg"));
-        introTrack = new Track(buildPath("assets", "audio", "Intro.ogg"));
+        mainTrack = new Track(buildPath(assetBasePath, "audio", "MainLoop.ogg"));
+        introTrack = new Track(buildPath(assetBasePath, "audio", "Intro.ogg"));
 
         foreach (i; 0 .. 5)
         {
-            impactClips[i] = new Clip(buildPath("assets", "audio",
+            impactClips[i] = new Clip(buildPath(assetBasePath, "audio",
                     "impactGeneric_light_00%d.ogg".format(i)));
         }
 
         audioManager.play(introTrack);
 
         /* Construct the play arena */
-        arena = new Stage(this.world, context.display.logicalWidth(),
-                context.display.logicalHeight());
+        arena = new Stage(this.world, this.assetBasePath,
+                context.display.logicalWidth(), context.display.logicalHeight());
 
         arena.scoreEvent.connect(&onScored);
         arena.impactEvent.connect(&onImpact);
