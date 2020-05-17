@@ -25,6 +25,8 @@ module paddleGame;
 public import paddleGame.ai;
 public import paddleGame.app;
 public import paddleGame.ball;
+public import paddleGame.countdownManager;
+public import paddleGame.fadeManager;
 public import paddleGame.idle;
 public import paddleGame.stage;
 

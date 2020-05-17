@@ -36,6 +36,7 @@ import std.datetime;
 
 import paddleGame.stage;
 import paddleGame.ai;
+import paddleGame.countdownManager;
 import paddleGame.idle;
 import paddleGame.fadeManager;
 import paddleGame.ball : BallComponent;
@@ -48,6 +49,7 @@ private:
     AudioManager audioManager;
     FadeManager fadeManager;
     IdleProcessor idleProc;
+    CountdownManager countManager;
     Track mainTrack;
     Track introTrack;
     Clip[5] impactClips;
@@ -277,6 +279,15 @@ private:
         });
     }
 
+    final void onCountdown(int step)
+    {
+        writeln(step);
+        if (step == 0)
+        {
+            writeln("Finished");
+        }
+    }
+
 public:
 
     this(AbstractWorld world, IdleProcessor idleProc)
@@ -324,6 +335,8 @@ public:
 
     final override bool bootstrap(View!ReadWrite view)
     {
+        countManager = new CountdownManager(this.context);
+        countManager.stepped.connect(&onCountdown);
         fadeManager = new FadeManager(this.context);
         audioManager = new AudioManager();
         audioManager.crossFadeTime = 1000;
