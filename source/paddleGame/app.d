@@ -174,25 +174,12 @@ private:
     }
 
     /**
-     * Spawn world in demo configuration
+     * Reset the current play area (prior to demo or playable)
      */
-    final void spawnDemo(View!ReadWrite view)
-    {
-        arena.spawnBall(view);
-        splash = arena.spawnSplash(view);
-        player = arena.spawnPaddle(view, PaddleOwner.PlayerOne, PaddleType.Computer);
-        enemyPaddle = arena.spawnPaddle(view, PaddleOwner.PlayerTwo, PaddleType.Computer);
-        obstacle1 = arena.spawnPaddle(view, PaddleOwner.ObstacleOne, PaddleType.Computer);
-        obstacle2 = arena.spawnPaddle(view, PaddleOwner.ObstacleTwo, PaddleType.Computer);
-    }
-
-    /**
-     * Spawn world in the level configuration
-     */
-    final void spawnLevel(View!ReadWrite view)
+    final void resetPlayArea(View!ReadWrite view)
     {
         /*
-         * kill all balls.
+         * Lill all balls.
          */
         foreach (entityID, ballComp; view.withComponents!BallComponent)
         {
@@ -210,16 +197,43 @@ private:
             }
         }
 
-        player = arena.spawnPaddle(view, PaddleOwner.PlayerOne, PaddleType.Human);
-        enemyPaddle = arena.spawnPaddle(view, PaddleOwner.PlayerTwo, PaddleType.Computer);
-        audioManager.play(mainTrack);
-
         /* Reset scores now */
         scoreEnemyNumeric = 0;
         scoreHumanNumeric = 0;
         arena.setScore(view, scoreHuman, 0);
         arena.setScore(view, scoreEnemy, 0);
 
+        if (player != 0)
+        {
+            view.killEntity(player);
+        }
+    }
+
+    /**
+     * Spawn world in demo configuration
+     */
+    final void spawnDemo(View!ReadWrite view)
+    {
+        resetPlayArea(view);
+
+        arena.spawnBall(view);
+        splash = arena.spawnSplash(view);
+        player = arena.spawnPaddle(view, PaddleOwner.PlayerOne, PaddleType.Computer);
+        enemyPaddle = arena.spawnPaddle(view, PaddleOwner.PlayerTwo, PaddleType.Computer);
+        obstacle1 = arena.spawnPaddle(view, PaddleOwner.ObstacleOne, PaddleType.Computer);
+        obstacle2 = arena.spawnPaddle(view, PaddleOwner.ObstacleTwo, PaddleType.Computer);
+    }
+
+    /**
+     * Spawn world in the level configuration
+     */
+    final void spawnLevel(View!ReadWrite view)
+    {
+        resetPlayArea(view);
+
+        player = arena.spawnPaddle(view, PaddleOwner.PlayerOne, PaddleType.Human);
+        enemyPaddle = arena.spawnPaddle(view, PaddleOwner.PlayerTwo, PaddleType.Computer);
+        audioManager.play(mainTrack);
         arena.spawnBall(view);
     }
 
