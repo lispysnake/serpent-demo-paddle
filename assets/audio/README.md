@@ -7,3 +7,4 @@ Assets
  - impact*.ogg - from [Kenney.nl](https://www.kenney.nl/assets/impact-sounds)
    CC0
  - Intro.ogg: from [Brandon Morris](https://opengameart.org/content/bleeding-out)
+ - you_win/you_loose.ogg - from [Kenney.nl](https://www.kenney.nl/assets/voiceover-pack)
