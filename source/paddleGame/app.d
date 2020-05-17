@@ -330,26 +330,16 @@ public:
 
     final void onScored(EntityID wallID, EntityID ballID)
     {
-        import std.stdio;
-
         if (wallID == walls[2])
         {
             ++scoreHumanNumeric;
-            writeln("Player One Scored");
             idleProc.schedule((view) => arena.setScore(view, scoreHuman, scoreHumanNumeric));
         }
         else if (wallID == walls[3])
         {
-            writeln("Player Two Scored");
             ++scoreEnemyNumeric;
             idleProc.schedule((view) => arena.setScore(view, scoreEnemy, scoreEnemyNumeric));
         }
-        else
-        {
-            writeln("Wtf.");
-        }
-
-        writefln("Wall %d hit by ball %d", wallID, ballID);
 
         idleProc.schedule((view) => view.killEntity(ballID));
 
