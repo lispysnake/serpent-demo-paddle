@@ -116,5 +116,5 @@ int main(string[] args)
     auto idleProc = new IdleProcessor();
     context.systemGroup.add(new IdleProcessor());
 
-    return context.run(new MyApp(world, idleProc));
+    return context.run(new PaddleGame(world, idleProc));
 }

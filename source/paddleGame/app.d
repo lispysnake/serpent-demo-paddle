@@ -40,7 +40,7 @@ import paddleGame.idle;
 import paddleGame.ball : BallComponent;
 
 /* Simple no-op app */
-class MyApp : serpent.App
+final class PaddleGame : serpent.App
 {
 
 private:
