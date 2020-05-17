@@ -23,8 +23,9 @@ To get the dependencies on Solus, issue the following command:
 
     sudo eopkg it -c system.devel sdl2-image-devel sdl2-devel mesalib-devel ldc dub dmd
 
-As with Serpent, you will **currently** need to have `serpent-support` checked out and built locally.
-We're going to address this to allow linking to dynamic bgfx, etc, to make this step much easier.
+As Serpent is currently in prealpha stages, we don't yet distribute an SDK. Thus you
+must have `serpent-support` built in `../serpent-support` to be able to build this
+demo.
 
 Make sure you have all modules cloned recursively:
 
