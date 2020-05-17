@@ -444,6 +444,32 @@ public:
     }
 
     /**
+     * Spawn the countdown timer
+     */
+    final EntityID spawnCountdown(View!ReadWrite view)
+    {
+        auto entityID = view.createEntity();
+        auto trans = TransformComponent();
+        auto sprite = SpriteComponent();
+        sprite.texture = numeralTexture[3];
+
+        trans.position.y = 64.0f;
+        trans.position.x = (width / 2.0f) - ((sprite.texture.width / 2.0f) * 3.0f);
+        trans.scale.x = 3.0f;
+        trans.scale.y = 3.0f;
+        trans.position.z = 0.4f;
+
+        auto col = ColorComponent();
+        col.rgba = vec4f(1.0f, 1.0f, 1.0f, 1.0f);
+
+        view.addComponent(entityID, col);
+        view.addComponent(entityID, trans);
+        view.addComponent(entityID, sprite);
+
+        return entityID;
+    }
+
+    /**
      * Update the score numeral
      */
     final void setScore(View!ReadWrite view, EntityID id, int score)

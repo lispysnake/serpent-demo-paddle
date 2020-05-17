@@ -67,6 +67,7 @@ private:
     EntityID enemyPaddle;
     EntityID obstacle1;
     EntityID obstacle2;
+    EntityID countdownID;
     bool keyUp = false;
     bool keyDown = false;
     bool gravity = false;
@@ -165,6 +166,7 @@ private:
     {
         walls = arena.spawnWalls(view);
         arena.spawnBorder(view);
+        countdownID = arena.spawnCountdown(view);
         splash = arena.spawnSplash(view);
         scoreHuman = arena.spawnScore(view, PaddleOwner.PlayerOne);
         scoreEnemy = arena.spawnScore(view, PaddleOwner.PlayerTwo);
