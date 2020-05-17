@@ -355,11 +355,13 @@ public:
             idleProc.schedule((view) => arena.spawnBall(view));
         }
 
-        if (scoreHumanNumeric == 9)
+        import paddleGame : MaximumScore;
+
+        if (scoreHumanNumeric == MaximumScore)
         {
             audioManager.play(winClip);
         }
-        else if (scoreEnemyNumeric == 9)
+        else if (scoreEnemyNumeric == MaximumScore)
         {
             audioManager.play(loseClip);
         }

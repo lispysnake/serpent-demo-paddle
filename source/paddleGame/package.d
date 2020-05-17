@@ -27,3 +27,9 @@ public import paddleGame.app;
 public import paddleGame.ball;
 public import paddleGame.idle;
 public import paddleGame.stage;
+
+/**
+ * The maximum score for any player.
+ * First to reach this score - wins.
+ */
+const int MaximumScore = 3;
