@@ -37,6 +37,7 @@ import std.datetime;
 import paddleGame.stage;
 import paddleGame.ai;
 import paddleGame.idle;
+import paddleGame.fadeManager;
 import paddleGame.ball : BallComponent;
 
 /**
@@ -55,6 +56,7 @@ final class PaddleGame : serpent.App
 
 private:
     AudioManager audioManager;
+    FadeManager fadeManager;
     IdleProcessor idleProc;
     Track mainTrack;
     Track introTrack;
@@ -326,6 +328,8 @@ public:
 
         handlePlayerMovement(view);
 
+        fadeManager.update();
+
         if (endDemoMode && demoMode)
         {
             tweenSplash += context.deltaTime();
@@ -379,6 +383,7 @@ public:
 
     final override bool bootstrap(View!ReadWrite view)
     {
+        fadeManager = new FadeManager(this.context);
         audioManager = new AudioManager();
         audioManager.crossFadeTime = 1000;
         audioManager.trackVolume = 0.25f;
