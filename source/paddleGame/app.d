@@ -171,6 +171,9 @@ private:
         arena.spawnBorder(view);
         scoreHuman = arena.spawnScore(view, PaddleOwner.PlayerOne);
         scoreEnemy = arena.spawnScore(view, PaddleOwner.PlayerTwo);
+
+        obstacle1 = arena.spawnPaddle(view, PaddleOwner.ObstacleOne, PaddleType.Computer);
+        obstacle2 = arena.spawnPaddle(view, PaddleOwner.ObstacleTwo, PaddleType.Computer);
     }
 
     /**
@@ -216,12 +219,13 @@ private:
     {
         resetPlayArea(view);
 
-        arena.spawnBall(view);
+        /* Respawn entities */
         splash = arena.spawnSplash(view);
         player = arena.spawnPaddle(view, PaddleOwner.PlayerOne, PaddleType.Computer);
         enemyPaddle = arena.spawnPaddle(view, PaddleOwner.PlayerTwo, PaddleType.Computer);
-        obstacle1 = arena.spawnPaddle(view, PaddleOwner.ObstacleOne, PaddleType.Computer);
-        obstacle2 = arena.spawnPaddle(view, PaddleOwner.ObstacleTwo, PaddleType.Computer);
+
+        audioManager.play(introTrack);
+        arena.spawnBall(view);
     }
 
     /**
@@ -231,8 +235,10 @@ private:
     {
         resetPlayArea(view);
 
+        /* Respawn entities */
         player = arena.spawnPaddle(view, PaddleOwner.PlayerOne, PaddleType.Human);
         enemyPaddle = arena.spawnPaddle(view, PaddleOwner.PlayerTwo, PaddleType.Computer);
+
         audioManager.play(mainTrack);
         arena.spawnBall(view);
     }
@@ -371,8 +377,6 @@ public:
             impactClips[i] = new Clip(buildPath(assetBasePath, "audio",
                     "impactGeneric_light_00%d.ogg".format(i)));
         }
-
-        audioManager.play(introTrack);
 
         /* Construct the play arena */
         arena = new Stage(this.world, this.assetBasePath,
