@@ -133,6 +133,17 @@ public:
             int targetY = cast(int)(ballTransform.position.y - (sprite.texture.height / 2.0f));
             int positionY = cast(int) transform.position.y;
 
+            auto topBounds = 32;
+            auto bottomBounds = cast(int)(context.display.logicalHeight - 32.0f);
+            if (targetY <= topBounds)
+            {
+                targetY = topBounds;
+            }
+            else if (targetY + sprite.texture.height >= bottomBounds)
+            {
+                targetY = cast(int)(bottomBounds - sprite.texture.height);
+            }
+
             /* Ball heading away from us? TODO: Work out our potential position */
             if ((enemy.edge == AIEdge.Right && ballPhysics.body.velocity.x < 0.0f)
                     || (enemy.edge == AIEdge.Left && ballPhysics.body.velocity.x > 0.0f))
